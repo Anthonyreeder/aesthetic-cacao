@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Cacao — Entertainment Network</title>
+    <meta name="description" content="Aesthetic Cacao is a digital entertainment network producing short-form storytelling, gaming content, and relatable series across YouTube, TikTok, and Facebook.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0c;
+            --surface: #131318;
+            --border: #1e1e26;
+            --text: #e8e6f0;
+            --muted: #8a879a;
+            --accent: #c8956c;
+            --accent-light: #e4b08a;
+            --accent-glow: rgba(200, 149, 108, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 40%, var(--accent-glow), transparent),
+                radial-gradient(ellipse 80% 40% at 30% 70%, rgba(100, 60, 180, 0.06), transparent),
+                radial-gradient(ellipse 80% 40% at 70% 30%, rgba(200, 149, 108, 0.08), transparent);
+            pointer-events: none;
+        }
+
+        .logo-mark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent), #a07050);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            color: var(--muted);
+            font-weight: 300;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            animation: bob 2s ease-in-out infinite;
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(8px); opacity: 1; }
+        }
+
+        /* ── Sections ── */
+        section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-desc {
+            color: var(--muted);
+            max-width: 640px;
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
+        }
+
+        /* ── Channel Grid ── */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .channel-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.75rem;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 40px rgba(200, 149, 108, 0.08);
+        }
+
+        .channel-card .badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.65rem;
+            border-radius: 100px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .badge.gaming { background: rgba(255, 80, 80, 0.12); color: #ff6b6b; }
+        .badge.horror { background: rgba(180, 80, 255, 0.12); color: #b070ff; }
+        .badge.relatable { background: rgba(255, 200, 50, 0.12); color: #f0c040; }
+        .badge.drama { background: rgba(255, 100, 150, 0.12); color: #ff7090; }
+        .badge.knowledge { background: rgba(80, 200, 255, 0.12); color: #50c8ff; }
+        .badge.comedy { background: rgba(100, 220, 100, 0.12); color: #60dd60; }
+
+        .channel-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .channel-card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ── About ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            padding: 1.5rem 0;
+        }
+
+        .about-card .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .about-card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Contact / Footer ── */
+        .contact {
+            text-align: center;
+            padding: 5rem 2rem 3rem;
+        }
+
+        .contact .section-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-email {
+            display: inline-block;
+            font-size: 1.15rem;
+            color: var(--accent-light);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            padding-bottom: 2px;
+        }
+
+        .contact-email:hover {
+            border-color: var(--accent-light);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Privacy ── */
+        .privacy {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+        }
+
+        .privacy h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy p, .privacy li {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .privacy ul { padding-left: 1.5rem; }
+
+        @media (max-width: 600px) {
+            .channels-grid { grid-template-columns: 1fr; }
+            section { padding: 3rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ Hero ═══ -->
+<div class="hero">
+    <div class="logo-mark">Aesthetic Cacao</div>
+    <p class="tagline">A digital entertainment network crafting stories, sparking curiosity, and building communities across platforms.</p>
+    <div class="scroll-hint">↓ Explore</div>
+</div>
+
+<!-- ═══ Channels ═══ -->
+<section>
+    <div class="section-label">Our Channels</div>
+    <h2 class="section-title">Stories for every screen</h2>
+    <p class="section-desc">We produce original short-form series across YouTube, TikTok, and Facebook — from gaming creepypastas to relatable everyday moments.</p>
+
+    <div class="channels-grid">
+        <div class="channel-card">
+            <span class="badge horror">Horror</span>
+            <h3>PixelScares</h3>
+            <p>Minecraft creepypasta stories brought to life with puppet theater animation. Where every block hides something worse.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge drama">Drama</span>
+            <h3>Lovestruck</h3>
+            <p>Six singles compete for love in an animated reality show — drama, confessionals, and cliffhangers every episode.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge gaming">Gaming</span>
+            <h3>LobbyLurkers</h3>
+            <p>Roblox-themed creepypasta horror stories. Not every game was meant to be played.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge horror">Horror</span>
+            <h3>GhostLoot</h3>
+            <p>Fortnite-inspired horror tales. The storm isn't the only thing closing in.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge horror">Horror</span>
+            <h3>ToyboxTerror</h3>
+            <p>Poppy Playtime-inspired stories from the toy factory. Some toys were never meant to play with you.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge relatable">Relatable</span>
+            <h3>BrainOnShuffle</h3>
+            <p>ADHD life stories that hit different. When your brain has 47 tabs open.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge relatable">Relatable</span>
+            <h3>SpectrumStories</h3>
+            <p>Autism stories told with warmth and honesty. Seeing the world through different eyes.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>MindWorm</h3>
+            <p>Facts that burrow into your brain. Mind-blowing knowledge served in quick, punchy videos.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>SigmaVault</h3>
+            <p>Motivation, mindset, and self-improvement content for the grind.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>QuizDrop</h3>
+            <p>Interactive trivia and quiz content that challenges everything you think you know.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>DreamForge</h3>
+            <p>AI art, creative tech, and the future of digital imagination.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge comedy">Comedy</span>
+            <h3>JustGerald</h3>
+            <p>Gerald's chaotic adventures in animated comedy. Relatable, ridiculous, and always unhinged.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge gaming">Gaming</span>
+            <h3>LootLore</h3>
+            <p>Gaming stories, lore deep-dives, and the untold tales behind your favourite games.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge horror">Horror</span>
+            <h3>RotLore</h3>
+            <p>Dark decision-based horror stories. Every choice has consequences.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>BrainDrip</h3>
+            <p>Psychology, human behaviour, and the strange ways your mind works.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge knowledge">Knowledge</span>
+            <h3>LoopMind</h3>
+            <p>Thought experiments and philosophical puzzles that loop around your brain.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge comedy">Comedy</span>
+            <h3>TinyPawTales</h3>
+            <p>Heartwarming and hilarious animal stories animated with love.</p>
+        </div>
+        <div class="channel-card">
+            <span class="badge horror">Horror</span>
+            <h3>DarkDecisions</h3>
+            <p>Choose-your-fate horror where the audience decides what happens next.</p>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ About ═══ -->
+<section>
+    <div class="section-label">About</div>
+    <h2 class="section-title">Built for the scroll generation</h2>
+    <p class="section-desc">Aesthetic Cacao is an independent digital entertainment studio. We create original animated series, knowledge content, and interactive stories designed for how people actually watch today — vertical, fast, and on their phone.</p>
+
+    <div class="about-grid">
+        <div class="about-card">
+            <div class="num">18+</div>
+            <h4>Active Channels</h4>
+            <p>Across YouTube, TikTok, and Facebook reaching diverse audiences worldwide.</p>
+        </div>
+        <div class="about-card">
+            <div class="num">1000+</div>
+            <h4>Videos Published</h4>
+            <p>Original short-form content released daily across every platform.</p>
+        </div>
+        <div class="about-card">
+            <div class="num">3</div>
+            <h4>Platforms</h4>
+            <p>YouTube, TikTok, and Facebook — meeting audiences where they are.</p>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ Contact ═══ -->
+<div class="contact">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Business enquiries</h2>
+    <p style="color: var(--muted); margin-bottom: 1.5rem;">For partnerships, sponsorships, or press.</p>
+    <a class="contact-email" href="mailto:contact@aestheticcacao.com">contact@aestheticcacao.com</a>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ Privacy ═══ -->
+<div class="privacy" id="privacy">
+    <h2>Privacy Policy</h2>
+    <p>Last updated: April 2026</p>
+    <p>Aesthetic Cacao ("we", "us") operates YouTube channels and associated social media pages. This policy explains how we handle information in connection with our services.</p>
+    <p><strong>Information We Collect</strong></p>
+    <ul>
+        <li>We do not collect personal information directly from viewers.</li>
+        <li>Our YouTube channels use the YouTube API Services. By interacting with our content, you are also subject to <a href="https://policies.google.com/privacy" style="color: var(--accent-light);">Google's Privacy Policy</a>.</li>
+        <li>We use standard YouTube and social media analytics (views, watch time, demographics) provided by the platforms to improve our content.</li>
+    </ul>
+    <p><strong>YouTube API Services</strong></p>
+    <ul>
+        <li>Our applications use YouTube API Services to upload and manage video content on our channels.</li>
+        <li>We store OAuth tokens securely to maintain access to our own channels only.</li>
+        <li>We do not access, collect, or store any viewer data through the YouTube API.</li>
+        <li>You can revoke our application's access via <a href="https://security.google.com/settings/security/permissions" style="color: var(--accent-light);">Google Security Settings</a>.</li>
+    </ul>
+    <p><strong>Cookies & Tracking</strong></p>
+    <p>This website does not use cookies, analytics trackers, or any third-party scripts.</p>
+    <p><strong>Contact</strong></p>
+    <p>Questions about this policy? Email <a href="mailto:contact@aestheticcacao.com" style="color: var(--accent-light);">contact@aestheticcacao.com</a>.</p>
+</div>
+
+<!-- ═══ Footer ═══ -->
+<footer>
+    <p>&copy; 2026 Aesthetic Cacao. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
