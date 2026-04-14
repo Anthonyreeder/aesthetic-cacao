@@ -4,27 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BDS Anthony — Entertainment Hub</title>
-    <meta name="description" content="Explore channels, stories, quizzes, and more from the BDS Anthony entertainment network.">
+    <meta name="description" content="Explore channels, stories, quizzes, and more from the BDS Anthony entertainment network. Plus play Swords — a free RPG on Discord.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#7c5cff;--accent2:#ff5c87;--glow:rgba(124,92,255,.12)}
+        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#7c5cff;--accent2:#ff5c87;--discord:#5865F2;--glow:rgba(124,92,255,.12)}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-        .hero{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem;position:relative}
+        a{text-decoration:none}
+        .hero{min-height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem 2rem;position:relative}
         .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,var(--glow),transparent),radial-gradient(ellipse 50% 40% at 70% 60%,rgba(255,92,135,.06),transparent);pointer-events:none}
-        .hero h1{font-size:clamp(2.2rem,7vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero h1{font-size:clamp(2.2rem,7vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:.8rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .hero p{color:var(--muted);font-size:clamp(.95rem,2.5vw,1.15rem);max-width:520px}
-        .grid-section{max-width:1100px;margin:0 auto;padding:3rem 1.5rem 5rem}
-        .grid-section h2{font-size:1.1rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);font-weight:700;margin-bottom:2rem;text-align:center}
+
+        .discord-banner{background:linear-gradient(135deg,rgba(88,101,242,.15),rgba(88,101,242,.05));border:1px solid rgba(88,101,242,.2);max-width:800px;margin:0 auto 2rem;border-radius:16px;padding:2rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center}
+        .discord-banner .text{flex:1;min-width:260px}
+        .discord-banner h2{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
+        .discord-banner .sub{color:var(--muted);font-size:.92rem;margin-bottom:.2rem}
+        .discord-banner .features{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.8rem}
+        .discord-banner .feat{background:rgba(88,101,242,.12);border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:600;color:#99a5ff}
+        .btn-discord{display:inline-block;padding:.8rem 2rem;background:var(--discord);color:#fff;border-radius:50px;font-weight:700;font-size:.95rem;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+        .btn-discord:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(88,101,242,.3)}
+
+        .grid-section{max-width:1100px;margin:0 auto;padding:1rem 1.5rem 4rem}
+        .grid-section h2{font-size:1rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);font-weight:700;margin-bottom:1.5rem;text-align:center}
         .channels{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-        .ch{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-decoration:none;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block}
+        .ch{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block}
         .ch:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 30px var(--glow)}
-        .ch .tag{display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;padding:.2rem .6rem;border-radius:50px;font-weight:700;margin-bottom:.6rem}
+        .ch .tag{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;padding:.18rem .55rem;border-radius:50px;font-weight:700;margin-bottom:.5rem}
         .tag.gaming{background:rgba(255,80,80,.12);color:#ff6b6b}
         .tag.horror{background:rgba(160,80,255,.12);color:#b070ff}
         .tag.knowledge{background:rgba(80,200,255,.12);color:#50c8ff}
@@ -33,11 +43,11 @@
         .tag.drama{background:rgba(255,100,150,.12);color:#ff7090}
         .tag.motivation{background:rgba(255,160,60,.12);color:#ffa040}
         .tag.trivia{background:rgba(0,210,180,.12);color:#00d2b4}
-        .ch h3{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
-        .ch p{color:var(--muted);font-size:.85rem;line-height:1.5}
+        .ch h3{font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
+        .ch p{color:var(--muted);font-size:.82rem;line-height:1.45}
         footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border)}
-        footer a{color:var(--accent);text-decoration:none}
-        @media(max-width:600px){.channels{grid-template-columns:1fr}.grid-section{padding:2rem 1rem 4rem}}
+        footer a{color:var(--accent)}
+        @media(max-width:600px){.channels{grid-template-columns:1fr}.grid-section{padding:1rem 1rem 3rem}.discord-banner{margin:0 1rem 2rem;padding:1.5rem;flex-direction:column;text-align:center}.discord-banner .features{justify-content:center}}
     </style>
 </head>
 <body>
@@ -45,6 +55,21 @@
 <div class="hero">
     <h1>BDS Anthony</h1>
     <p>Stories, quizzes, creepypastas, facts, and more. Tap a channel to explore.</p>
+</div>
+
+<div class="discord-banner">
+    <div class="text">
+        <h2>Play Swords — Free RPG on Discord</h2>
+        <p class="sub">Create a character, accept quests from the guild board, fight monsters, and level up. A full RPG running right inside Discord.</p>
+        <div class="features">
+            <span class="feat">Create a Character</span>
+            <span class="feat">Fight Monsters</span>
+            <span class="feat">Accept Quests</span>
+            <span class="feat">Level Up</span>
+            <span class="feat">Party System</span>
+        </div>
+    </div>
+    <a class="btn-discord" href="https://discord.gg/qJBwnHHUYc">Join &amp; Play Free &rarr;</a>
 </div>
 
 <div class="grid-section">
@@ -78,7 +103,7 @@
         <a class="ch" href="/darkdecisions/">
             <span class="tag horror">Horror</span>
             <h3>Dark Decisions</h3>
-            <p>Choose-your-fate horror where the audience decides what happens next.</p>
+            <p>Choose-your-fate horror. You decide who lives and who dies.</p>
         </a>
         <a class="ch" href="/blocksarebuildable/">
             <span class="tag gaming">Gaming</span>
@@ -98,7 +123,7 @@
         <a class="ch" href="/craftrank/">
             <span class="tag gaming">Gaming</span>
             <h3>CraftRank</h3>
-            <p>Ranking the best and worst in Minecraft. Tier lists, builds, and battles.</p>
+            <p>Ranking the best and worst in Minecraft.</p>
         </a>
         <a class="ch" href="/glitchzone/">
             <span class="tag gaming">Gaming</span>
@@ -113,7 +138,7 @@
         <a class="ch" href="/pixelprice/">
             <span class="tag gaming">Gaming</span>
             <h3>PixelPrice</h3>
-            <p>How much are rare gaming items actually worth? Prices revealed.</p>
+            <p>How much are rare gaming items actually worth?</p>
         </a>
         <a class="ch" href="/quizdrop/">
             <span class="tag trivia">Trivia</span>
