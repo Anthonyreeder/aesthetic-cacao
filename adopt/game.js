@@ -96,7 +96,7 @@ function getRarity(lv){var r=RARITY_LEVELS[0];for(var i=0;i<RARITY_LEVELS.length
 function xpForNext(lv){return lv>=XP_TABLE.length-1?99999:XP_TABLE[lv]-XP_TABLE[lv-1];}
 function xpInLevel(lv,xp){return lv<=1?xp:xp-XP_TABLE[lv-1];}
 function levelFromXp(xp){for(var i=1;i<XP_TABLE.length;i++)if(xp<XP_TABLE[i])return i;return XP_TABLE.length;}
-function calcLevel(){if(!pet)return 1;return(pet.str||1)+(pet.def||1)+(pet.hp||10);}
+function calcLevel(){if(!pet)return 1;return(pet.str||1)+(pet.def||1)+Math.max(1,(pet.hp||10)-9);}
 
 function getTrainCD(statLv){
 if(statLv<=10)return 5*60000;
@@ -155,12 +155,13 @@ document.getElementById("pet-card").className="pet-card rarity-"+rar[1];
 var mood=getMood();
 document.getElementById("pet-mood").textContent=mood[0]+" "+mood[1];
 document.getElementById("pet-mood").style.color=mood[2];
-var statTotal=(pet.str||1)+(pet.def||1)+(pet.hp||10);
-var maxPossible=50+50+100;
+var hpContrib=Math.max(1,(pet.hp||10)-9);
+var statTotal=(pet.str||1)+(pet.def||1)+hpContrib;
+var maxPossible=50+50+91;
 var pct=Math.min(100,(statTotal/maxPossible)*100);
 document.getElementById("xp-fill").style.width=pct+"%";
-document.getElementById("xp-text").textContent="\uD83D\uDCAA "+(pet.str||1)+" + \uD83D\uDEE1\uFE0F "+(pet.def||1)+" + \u2764\uFE0F "+(pet.hp||10);
-document.getElementById("xp-next").textContent="Total: "+statTotal;
+document.getElementById("xp-text").textContent="\uD83D\uDCAA "+(pet.str||1)+" + \uD83D\uDEE1\uFE0F "+(pet.def||1)+" + \u2764\uFE0F "+hpContrib;
+document.getElementById("xp-next").textContent="Lv "+statTotal;
 function sb(id,val,vid){var el=document.getElementById(id);el.style.width=val+"%";el.style.background=val>60?"#44cc44":val>30?"#ddaa00":"#ff4444";document.getElementById(vid).textContent=Math.round(val)+"%";}
 sb("bar-hunger",pet.hunger,"val-hunger");sb("bar-energy",pet.energy,"val-energy");sb("bar-happy",pet.happiness,"val-happy");
 var ms=Date.now()-(pet.created||Date.now()),dd=Math.floor(ms/86400000),hh=Math.floor((ms%86400000)/3600000);
@@ -611,7 +612,7 @@ show("screen-hatch");
 if(typeof gtag!=="undefined")gtag("event","pet_adopt_start",{game:game});
 setTimeout(function(){document.getElementById("hatch-egg").style.animation="none";document.getElementById("hatch-egg").textContent="\u2728";document.getElementById("hatch-text").textContent="Here they come...";},2000);
 setTimeout(function(){
-pet={game:game,emoji:pick[0],name:pick[1],level:12,xp:0,hunger:50,energy:100,happiness:70,
+pet={game:game,emoji:pick[0],name:pick[1],level:3,xp:0,hunger:50,energy:100,happiness:70,
 str:1,def:1,hp:10,gold:1,weapon:null,wins:0,losses:0,bat_today:0,bat_date:"",
 last_feed:0,last_train:0,last_rest:0,last_jobs:{},last_train_stat:"str",
 created:Date.now(),lastVisit:Date.now()};
