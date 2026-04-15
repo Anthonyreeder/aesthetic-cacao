@@ -575,7 +575,7 @@ _sbSession=res.data.session;
 if(!_sbSession&&res.data.user)_sbSession={user:res.data.user};
 if(!_sbSession){showAuthError("reg-error","Check your email to confirm, then log in.");return;}
 sb.from("profiles").insert({id:_sbSession.user.id,display_name:name,age:age}).then(function(){});
-cloudSync();window._closeAuth();showAccountBar();
+cloudSync();window._closeAuth();showAccountBar();chatRenderInput();
 toast("Account created! "+pet.name+" is saved \u2601\uFE0F");
 if(typeof gtag!=="undefined")gtag("event","user_registered",{game:pet?pet.game:"none"});
 });
@@ -593,7 +593,7 @@ if(res.error){showAuthError("login-error",res.error.message);return;}
 _sbSession=res.data.session;
 loadCloudPet().then(function(loaded){
 if(loaded){var r=calcOffline();show("screen-pet");updateUI();updateCD();if(r)showAway(r);}
-window._closeAuth();showAccountBar();toast("Welcome back!");
+window._closeAuth();showAccountBar();chatRenderInput();toast("Welcome back!");
 if(typeof gtag!=="undefined")gtag("event","user_login",{game:pet?pet.game:"none"});
 });
 });
@@ -615,7 +615,7 @@ pet={game:game,emoji:pick[0],name:pick[1],level:12,xp:0,hunger:50,energy:100,hap
 str:1,def:1,hp:10,gold:1,weapon:null,wins:0,losses:0,bat_today:0,bat_date:"",
 last_feed:0,last_train:0,last_rest:0,last_jobs:{},last_train_stat:"str",
 created:Date.now(),lastVisit:Date.now()};
-save();show("screen-pet");updateUI();updateCD();toast("Welcome, "+pet.name+"!");confetti();
+save();show("screen-pet");updateUI();updateCD();toast("Welcome, "+pet.name+"!");confetti();chatInit();
 if(typeof gtag!=="undefined")gtag("event","pet_adopted",{game:game,character:pick[1]});
 },3500);
 };
@@ -636,6 +636,117 @@ if(_sbSession){sb.from("pets").delete().eq("user_id",_sbSession.user.id).then(fu
 localStorage.removeItem(KEY);pet=null;show("screen-pick");
 };
 
+// ── Chat System ─────────────────────────────────────────────
+var _chatOpen=false,_chatPoll=null,_chatLastId=0,_chatLoaded=false;
+
+function chatRenderInput(){
+var area=document.getElementById("chat-input-area");if(!area)return;
+if(_sbSession&&pet){
+area.innerHTML='<div class="chat-input-row"><input type="text" id="chat-input" placeholder="Say something..." maxlength="150" autocomplete="off"><button class="chat-send" id="chat-send-btn" onclick="window._sendChat()">Send</button></div>';
+var inp=document.getElementById("chat-input");
+if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
+}else if(pet&&!_sbSession){
+area.innerHTML='<div class="chat-cta"><a onclick="window._openAuth(\'register\')">Create an account</a> to chat with other players!</div>';
+}else{
+area.innerHTML='<div class="chat-cta">Adopt a pet to join the chat!</div>';
+}
+}
+
+function chatFormatTime(iso){
+var d=new Date(iso),now=new Date(),diff=now-d;
+if(diff<60000)return "now";
+if(diff<3600000)return Math.floor(diff/60000)+"m";
+if(diff<86400000)return Math.floor(diff/3600000)+"h";
+return Math.floor(diff/86400000)+"d";
+}
+
+function chatRenderMessages(msgs){
+var cont=document.getElementById("chat-messages");if(!cont)return;
+if(!msgs||msgs.length===0){cont.innerHTML='<div class="chat-empty">No messages yet. Say hi!</div>';return;}
+var wasAtBottom=cont.scrollHeight-cont.scrollTop-cont.clientHeight<40;
+cont.innerHTML="";
+msgs.forEach(function(m){
+var div=document.createElement("div");div.className="chat-msg";
+div.innerHTML='<span class="cm-avatar">'+m.pet_emoji+'</span><div class="cm-body"><span class="cm-name">'+m.pet_name+'</span><span class="cm-text">'+m.message.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</span></div><span class="cm-time">'+chatFormatTime(m.created_at)+'</span>';
+cont.appendChild(div);
+});
+if(wasAtBottom||!_chatLoaded)cont.scrollTop=cont.scrollHeight;
+_chatLoaded=true;
+if(msgs.length>0)_chatLastId=msgs[msgs.length-1].id;
+}
+
+function chatLoad(){
+if(!sb)return;
+sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
+if(res.data)chatRenderMessages(res.data);
+});
+}
+
+function chatPollNew(){
+if(!sb||!_chatOpen)return;
+sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
+if(res.data){
+chatRenderMessages(res.data);
+if(res.data.length>0&&res.data[res.data.length-1].id>_chatLastId){
+var dot=document.getElementById("chat-dot");
+if(dot&&!_chatOpen)dot.classList.add("pulse");
+}
+}
+});
+}
+
+window._toggleChat=function(){
+_chatOpen=!_chatOpen;
+var box=document.getElementById("chat-box");
+var tog=document.getElementById("chat-toggle");
+if(_chatOpen){
+box.classList.add("open");
+tog.style.display="none";
+chatRenderInput();
+chatLoad();
+if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);
+document.getElementById("chat-dot").classList.remove("pulse");
+var inp=document.getElementById("chat-input");if(inp)inp.focus();
+}else{
+box.classList.remove("open");
+tog.style.display="flex";
+}
+};
+
+window._sendChat=function(){
+if(!sb||!_sbSession||!pet)return;
+var inp=document.getElementById("chat-input");if(!inp)return;
+var msg=inp.value.trim();if(!msg)return;
+if(msg.length>150)msg=msg.slice(0,150);
+var btn=document.getElementById("chat-send-btn");
+if(btn)btn.disabled=true;
+inp.value="";
+sb.from("chat_messages").insert({
+user_id:_sbSession.user.id,
+pet_emoji:pet.emoji,
+pet_name:pet.name,
+message:msg
+}).then(function(res){
+if(btn)btn.disabled=false;
+if(res.error){toast("Couldn't send message");inp.value=msg;return;}
+chatLoad();
+if(typeof gtag!=="undefined")gtag("event","chat_message",{game:pet.game});
+});
+};
+
+function chatInit(){
+var tog=document.getElementById("chat-toggle");
+if(tog&&pet)tog.classList.add("visible");
+if(sb&&pet){
+sb.from("chat_messages").select("id",{count:"exact",head:true}).then(function(res){
+if(res.count&&res.count>0){
+var dot=document.getElementById("chat-dot");
+if(dot)dot.classList.add("pulse");
+}
+});
+}
+}
+
 // ── Init ───────────────────────────────────────────────────
 (function init(){
 var visits=parseInt(localStorage.getItem("bds_visits")||"0")+1;
@@ -645,6 +756,7 @@ function startUI(){
 if(pet){var r=calcOffline();show("screen-pet");updateUI();updateCD();if(r)showAway(r);checkSavePrompt();}
 else{var p=new URLSearchParams(window.location.search),g=p.get("game");if(g&&GAMES[g])window._startAdopt(g);else show("screen-pick");}
 setInterval(function(){updateCD();if(document.querySelector('[data-tab="train"]').classList.contains("active"))updateTrainUI();if(document.querySelector('[data-tab="jobs"]').classList.contains("active"))updateJobs();},1000);
+chatInit();
 }
 if(sb){
 sb.auth.getSession().then(function(res){
