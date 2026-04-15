@@ -2246,7 +2246,7 @@ roblox:{{color:'#ffcc00',chars:[
 var SB_URL='https://orupowewgrldfdsqwdwr.supabase.co';
 var SB_KEY='sb_publishable_gVsDPUh9mii_DSShVa8SUQ_VGxOQQhy';
 </script>
-<script src="game.js"></script>
+<script src="game.js?v={int(__import__('time').time())}"></script>
 </body>
 </html>'''
 
