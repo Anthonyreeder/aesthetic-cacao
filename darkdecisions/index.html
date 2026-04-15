@@ -4,70 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Decisions &mdash; BDS Anthony</title>
-    <meta name="description" content="Choose-your-fate horror where the audience decides what happens next.">
+    <meta name="description" content="Moral dilemmas, dark choices, and impossible scenarios.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#b070ff;--discord:#5865F2}
+        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#cc44ff;--discord:#5865F2}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
         a{color:var(--accent);text-decoration:none}
-        .back{display:inline-block;padding:1rem 1.5rem;font-size:.85rem}
-        .back:hover{text-decoration:underline}
+        .back{display:inline-block;padding:1rem 1.5rem;font-size:.85rem}.back:hover{text-decoration:underline}
         .hero{text-align:center;padding:3rem 1.5rem 2rem}
-        .badge{display:inline-block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;padding:.3rem .8rem;border-radius:50px;font-weight:700;margin-bottom:1rem;background:rgba(160,80,255,.12);color:#b070ff}
+        .badge{display:inline-block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;padding:.3rem .8rem;border-radius:50px;font-weight:700;margin-bottom:1rem;background:rgba(255,100,150,.12);color:#ff7090}
         .hero h1{font-size:clamp(2rem,7vw,3.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.6rem}
         .hero .hook{color:var(--muted);font-size:clamp(1rem,2.5vw,1.15rem);max-width:520px;margin:0 auto 1.5rem}
-        .btn{display:inline-block;padding:.7rem 1.8rem;border-radius:50px;font-weight:700;font-size:.9rem;text-decoration:none;transition:transform .15s,box-shadow .15s}
+        .btn{display:inline-block;padding:.7rem 1.8rem;border-radius:50px;font-weight:700;font-size:.9rem;transition:transform .15s,box-shadow .15s;cursor:pointer;border:none}
         .btn:hover{transform:translateY(-2px)}
-        .btn-primary{background:var(--accent);color:#fff}
-        .btn-primary:hover{box-shadow:0 6px 20px rgba(160,80,255,.12)}
-        .btn-discord{background:var(--discord);color:#fff;margin-left:.5rem}
-        .btn-discord:hover{box-shadow:0 6px 20px rgba(88,101,242,.3)}
+        .btn-primary{background:var(--accent);color:#111}.btn-primary:hover{box-shadow:0 6px 20px rgba(204,68,255,.12)}
+        .btn-discord{background:var(--discord);color:#fff;margin-left:.5rem}.btn-discord:hover{box-shadow:0 6px 20px rgba(88,101,242,.3)}
         .hero-buttons{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
         .section{max-width:720px;margin:0 auto;padding:2rem 1.5rem}
         .section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
         .item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.8rem}
-        .item h3{font-size:1rem;font-weight:700;margin-bottom:.3rem}
-        .item p{color:var(--muted);font-size:.88rem;line-height:1.55}
+        .item h3{font-size:1rem;font-weight:700;margin-bottom:.3rem}.item p{color:var(--muted);font-size:.88rem;line-height:1.55}
+        .gen-section{max-width:720px;margin:0 auto;padding:1rem 1.5rem 2rem}
+        .gen-section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);text-align:center}
+        .gen-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;text-align:center}
+        .gen-card h3{font-size:1.05rem;font-weight:700;margin-bottom:1rem}
+        .gen-btn{background:var(--accent);color:#111;border:none;padding:.75rem 2rem;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
+        .gen-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(204,68,255,.12)}
+        .gen-again{background:var(--border);color:var(--text);margin-top:1rem;font-size:.85rem;padding:.6rem 1.5rem}
+        .gen-again:hover{background:var(--accent);color:#111}
+        .gen-loader{margin:1.2rem 0}
+        .gen-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+        .gen-bar-fill{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s ease}
+        .gen-status{color:var(--muted);font-size:.82rem;margin-top:.5rem;font-style:italic}
+        .gen-result{font-size:1.1rem;font-weight:600;color:#fff;padding:1.2rem;margin-top:1rem;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:12px;line-height:1.5}
+        .gen-result.pop{animation:popIn .35s ease}
+        @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
         .discord-box{background:linear-gradient(135deg,rgba(88,101,242,.12),rgba(88,101,242,.04));border:1px solid rgba(88,101,242,.25);border-radius:14px;padding:1.8rem;text-align:center;margin:2rem auto;max-width:720px}
         .discord-box h2{color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;text-transform:none;letter-spacing:normal}
         .discord-box p{color:var(--muted);font-size:.9rem;margin-bottom:1rem;max-width:480px;margin-left:auto;margin-right:auto}
         .discord-box .btn-discord{font-size:1rem;padding:.8rem 2.2rem}
-        .yt-box{text-align:center;padding:1rem 1.5rem 2rem}
-        .yt-link{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.4rem;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.85rem;font-weight:600;transition:border-color .2s}
-        .yt-link:hover{border-color:var(--accent)}
-        .yt-link svg{width:18px;height:18px;fill:#ff0000}
         footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border);margin-top:1rem}
         footer a{color:var(--muted)}
-        @media(max-width:600px){.section{padding:1.5rem 1rem}.hero{padding:2rem 1rem 1.5rem}}
+        @media(max-width:600px){.section,.gen-section{padding:1.5rem 1rem}.hero{padding:2rem 1rem 1.5rem}}
     </style>
-<script async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8279041593834700 crossorigin=anonymous></script>
+    <script async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8279041593834700 crossorigin=anonymous></script>
 </head>
 <body>
 
 <a class="back" href="/">&larr; All Channels</a>
 
 <div class="hero">
-    <span class="badge">HORROR</span>
+    <span class="badge">DRAMA</span>
     <h1>Dark Decisions</h1>
-    <p class="hook">You decide who lives and who dies.</p>
+    <p class="hook">Every choice has a cost. What would you do?</p>
     <div class="hero-buttons">
-        <a class="btn btn-primary" href="https://youtube.com/@DarkDecisions">Choose your fate &rarr;</a>
+        <a class="btn btn-primary" href="https://youtube.com/@DarkDecisions">Watch on YouTube &rarr;</a>
         <a class="btn btn-discord" href="https://discord.gg/qJBwnHHUYc">Join Discord</a>
     </div>
 </div>
 
-<div class="section">
-    <h2>Impossible Choices</h2>
-        <div class="item"><h3>The Trolley Problem (But Worse)</h3><p>The classic thought experiment, but the people on the tracks are people you know. And you only have 3 seconds to decide.</p></div>
-    <div class="item"><h3>Save One</h3><p>Two doors. Behind one is your best friend. Behind the other is a stranger's child. You can only open one. The other locks forever.</p></div>
-    <div class="item"><h3>The Cure</h3><p>A cure exists for a deadly disease. But it requires a sacrifice. Not yours. Someone you've never met. Do you make the call?</p></div>
-    <div class="item"><h3>Rewind</h3><p>You can undo one moment in your life. But someone else's worst moment gets added to replace it. Is it worth it?</p></div>
-    <div class="item"><h3>The Button</h3><p>Press it, and you get everything you ever wanted. But one person, somewhere in the world, loses everything. You'll never know who.</p></div>
+
+
+<div class="gen-section">
+    <h2>Try These</h2>
+
+    <div class="gen-card" id="gen-dark_dilemma">
+        <h3>Dark Dilemma Generator</h3>
+        <button class="gen-btn" onclick="runGen_dark_dilemma()">
+            Get Dilemma
+        </button>
+        <div class="gen-loader" id="loader-dark_dilemma" style="display:none">
+            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
+            <p class="gen-status" id="status-dark_dilemma">Loading...</p>
+        </div>
+        <div class="gen-result" id="result-dark_dilemma" style="display:none"></div>
+        <button class="gen-btn gen-again" id="again-dark_dilemma" style="display:none" onclick="runGen_dark_dilemma()">
+            Generate Again
+        </button>
+    </div>
+
+    <div class="gen-card" id="gen-alignment">
+        <h3>Moral Alignment Check</h3>
+        <button class="gen-btn" onclick="runGen_alignment()">
+            Check Alignment
+        </button>
+        <div class="gen-loader" id="loader-alignment" style="display:none">
+            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
+            <p class="gen-status" id="status-alignment">Loading...</p>
+        </div>
+        <div class="gen-result" id="result-alignment" style="display:none"></div>
+        <button class="gen-btn gen-again" id="again-alignment" style="display:none" onclick="runGen_alignment()">
+            Generate Again
+        </button>
+    </div>
 
 </div>
 
@@ -77,16 +111,74 @@
     <a class="btn btn-discord" href="https://discord.gg/qJBwnHHUYc">Join &amp; Play Free &rarr;</a>
 </div>
 
-<div class="yt-box">
-    <a class="yt-link" href="https://youtube.com/@DarkDecisions">
-        <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.9 31.9 0 0 0 24 12a31.9 31.9 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
-        Subscribe on YouTube
-    </a>
-</div>
-
 <footer>
-    <p>&copy; 2026 BDS Anthony &middot; <a href="/">Home</a> &middot; <a href="/privacy.html">Privacy</a></p>
+    <a href="/">Home</a> &middot; <a href="/privacy.html">Privacy</a>
 </footer>
 
+<script>
+
+function runGen_dark_dilemma() {
+    var pool = ["You can save 5 strangers or 1 person you love. You have 10 seconds to choose.", "You're offered $10 million but someone you'll never meet loses 10 years of their life.", "You can know exactly when everyone around you will die, but you can never tell them.", "You find proof your best friend committed a crime. Do you turn them in?", "You can erase one painful memory, but you'll also lose the lesson it taught you.", "You discover your entire life has been a simulation. Do you want to wake up?", "You can read everyone's thoughts for 24 hours. After that, they can read yours for a week.", "You're given a button that gives you $1,000 every time you press it, but shortens a stranger's life by 1 day.", "You can restart your life from age 10 with all your current knowledge, but everyone else forgets you.", "You find out a close friend has been lying to you for years to protect your feelings. Do you confront them?", "You can guarantee your child becomes wildly successful, but they'll never be truly happy.", "You can live forever but you'll watch everyone you love grow old and die.", "You can prevent one historical tragedy but something equally bad will happen elsewhere.", "You overhear a stranger planning something terrible. If you intervene, your life is at risk.", "You can have perfect health forever but you can never form deep relationships again.", "Everyone you've ever wronged suddenly remembers exactly what you did. How do you face them?"];
+    var msgs = ["Loading moral crisis...", "Preparing impossible choice...", "There are no good options..."];
+    var loader = document.getElementById('loader-dark_dilemma');
+    var result = document.getElementById('result-dark_dilemma');
+    var again = document.getElementById('again-dark_dilemma');
+    var status = document.getElementById('status-dark_dilemma');
+    var bar = loader.querySelector('.gen-bar-fill');
+    result.style.display='none'; again.style.display='none';
+    loader.style.display='block'; bar.style.width='0%';
+    var step=0, total=msgs.length;
+    status.textContent=msgs[0];
+    var iv=setInterval(function(){
+        step++;
+        if(step>=total){
+            clearInterval(iv); bar.style.width='100%';
+            setTimeout(function(){
+                loader.style.display='none';
+                result.textContent=pool[Math.floor(Math.random()*pool.length)];
+                result.style.display='block';
+                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
+                again.style.display='inline-block';
+                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'darkdecisions_dark_dilemma',channel:'darkdecisions',generator_type:'dark_dilemma'});
+            },300);
+            return;
+        }
+        bar.style.width=((step/total)*100)+'%';
+        status.textContent=msgs[step];
+    },500);
+}
+
+function runGen_alignment() {
+    var pool = ["Lawful Good -- you follow the rules AND do the right thing. Boring but respectable.", "Neutral Good -- you do what's right regardless of rules. The hero nobody asked for.", "Chaotic Good -- you break rules to help people. Robin Hood energy.", "Lawful Neutral -- you follow rules even when they're dumb. Order above all.", "True Neutral -- you just want to be left alone. Switzerland in human form.", "Chaotic Neutral -- you do whatever benefits you. Wild card.", "Lawful Evil -- you use the system against people. Corporate villain energy.", "Neutral Evil -- you'll do anything to get ahead. No loyalty, no code.", "Chaotic Evil -- you just want to watch the world burn. Joker mode.", "Unaligned -- you don't have consistent morals. You're basically an NPC.", "Lawful Chaotic -- you make your own rules and follow them religiously. Confusing but iconic.", "True Good -- you're annoyingly nice and everyone suspects you're hiding something."];
+    var msgs = ["Scanning your soul...", "Weighing your karma...", "Consulting the moral compass..."];
+    var loader = document.getElementById('loader-alignment');
+    var result = document.getElementById('result-alignment');
+    var again = document.getElementById('again-alignment');
+    var status = document.getElementById('status-alignment');
+    var bar = loader.querySelector('.gen-bar-fill');
+    result.style.display='none'; again.style.display='none';
+    loader.style.display='block'; bar.style.width='0%';
+    var step=0, total=msgs.length;
+    status.textContent=msgs[0];
+    var iv=setInterval(function(){
+        step++;
+        if(step>=total){
+            clearInterval(iv); bar.style.width='100%';
+            setTimeout(function(){
+                loader.style.display='none';
+                result.textContent=pool[Math.floor(Math.random()*pool.length)];
+                result.style.display='block';
+                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
+                again.style.display='inline-block';
+                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'darkdecisions_alignment',channel:'darkdecisions',generator_type:'alignment'});
+            },300);
+            return;
+        }
+        bar.style.width=((step/total)*100)+'%';
+        status.textContent=msgs[step];
+    },500);
+}
+
+</script>
 </body>
 </html>
