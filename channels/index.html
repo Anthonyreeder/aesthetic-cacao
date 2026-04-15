@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Anthony &mdash; Entertainment Hub</title>
+    <meta name="description" content="Explore channels, stories, quizzes, and more from the BDS Anthony entertainment network.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#7c5cff;--accent2:#ff5c87;--discord:#5865F2;--glow:rgba(124,92,255,.12)}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+        a{text-decoration:none}
+
+        .hero{min-height:45vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem 1rem;position:relative}
+        .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,var(--glow),transparent),radial-gradient(ellipse 50% 40% at 70% 60%,rgba(255,92,135,.06),transparent);pointer-events:none}
+        .hero h1{font-size:clamp(2.4rem,8vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:.6rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero p{color:var(--muted);font-size:clamp(.95rem,2.5vw,1.15rem);max-width:520px;margin-bottom:.5rem}
+        .rotating-text{color:var(--accent);font-weight:700}
+
+        .stats-bar{display:flex;justify-content:center;gap:2.5rem;padding:1rem 1.5rem 2rem;flex-wrap:wrap}
+        .stat{text-align:center}
+        .stat .num{font-size:1.5rem;font-weight:800;color:#fff}
+        .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+        .picker{max-width:500px;margin:0 auto 2rem;text-align:center;padding:0 1.5rem}
+        .picker-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.85rem 2.2rem;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
+        .picker-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--glow)}
+        .picker-loader{margin:.8rem 0;display:none}
+        .picker-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+        .picker-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .3s ease}
+        .picker-status{color:var(--muted);font-size:.8rem;margin-top:.4rem;font-style:italic}
+        .picker-result{display:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-top:1rem;text-align:center}
+        .picker-result h3{margin-bottom:.3rem;font-size:1.1rem}
+        .picker-result p{color:var(--muted);font-size:.88rem;margin-bottom:.8rem}
+        .picker-result a{display:inline-block;padding:.55rem 1.5rem;background:var(--accent);color:#111;border-radius:50px;font-weight:700;font-size:.85rem}
+        .picker-result.pop{animation:popIn .35s ease}
+        @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+
+        .adopt-banner{max-width:600px;margin:0 auto 2rem;padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,212,255,.08));border:1px solid rgba(124,92,255,.3);border-radius:16px;display:flex;align-items:center;gap:1rem;transition:all .2s}
+        .adopt-banner:hover{border-color:rgba(124,92,255,.6);transform:translateY(-2px);box-shadow:0 8px 25px rgba(124,92,255,.15)}
+        .adopt-emoji{font-size:2.2rem;flex-shrink:0}
+        .adopt-title{font-weight:800;font-size:1rem;margin-bottom:.15rem}
+        .adopt-desc{color:var(--muted);font-size:.78rem;line-height:1.4}
+        .adopt-arrow{font-size:1.5rem;color:var(--accent2);flex-shrink:0;margin-left:auto}
+        .trending-section{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}
+        .trending-section>h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);font-weight:700;margin-bottom:1.2rem;text-align:center}
+        .trending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+        .ch-big{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block;position:relative}
+        .ch-big:hover{transform:translateY(-3px);border-color:var(--accent2);box-shadow:0 8px 30px rgba(255,92,135,.12)}
+        .ch-big h3{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
+        .ch-big p{color:var(--muted);font-size:.85rem;line-height:1.45}
+        .fire{position:absolute;top:1rem;right:1rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;padding:.2rem .6rem;border-radius:50px;font-weight:700;background:rgba(255,92,135,.15);color:var(--accent2)}
+
+        .grid-section{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}
+        .cat-section{margin-bottom:2rem}
+        .cat-title{font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:.8rem;padding-left:.2rem}
+        .channels{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem}
+        .ch{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.2rem;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block}
+        .ch:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 6px 24px var(--glow)}
+        .tag{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;padding:.18rem .55rem;border-radius:50px;font-weight:700;margin-bottom:.4rem}
+        .ch h3,.ch-big h3{margin-top:.2rem}
+        .ch h3{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+        .ch p{color:var(--muted);font-size:.8rem;line-height:1.4}
+
+        .discord-banner{background:linear-gradient(135deg,rgba(88,101,242,.15),rgba(88,101,242,.05));border:1px solid rgba(88,101,242,.2);max-width:800px;margin:1rem auto 2rem;border-radius:16px;padding:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center}
+        .discord-banner .text{flex:1;min-width:260px}
+        .discord-banner h2{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
+        .discord-banner .sub{color:var(--muted);font-size:.92rem}
+        .discord-banner .features{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
+        .discord-banner .feat{background:rgba(88,101,242,.12);border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:600;color:#99a5ff}
+        .btn-discord{display:inline-block;padding:.8rem 2rem;background:var(--discord);color:#fff;border-radius:50px;font-weight:700;font-size:.95rem;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+        .btn-discord:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(88,101,242,.3)}
+
+        footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border)}
+        footer a{color:var(--accent)}
+        @media(max-width:600px){.channels{grid-template-columns:1fr}.trending-grid{grid-template-columns:1fr}.grid-section,.trending-section{padding:0 1rem 2rem}.discord-banner{margin:1rem 1rem 2rem;padding:1.5rem;flex-direction:column;text-align:center}.discord-banner .features{justify-content:center}.stats-bar{gap:1.5rem}}
+    </style>
+    <script async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8279041593834700 crossorigin=anonymous></script>
+</head>
+<body>
+
+<div class="hero">
+    <h1>BDS Anthony</h1>
+    <p>Stories. Quizzes. Hot Takes. Gaming. <span class="rotating-text" id="rotator"></span></p>
+</div>
+
+<div class="stats-bar">
+    <div class="stat"><div class="num">400K+</div><div class="label">Total Views</div></div>
+    <div class="stat"><div class="num">19</div><div class="label">Channels</div></div>
+    <div class="stat"><div class="num">950+</div><div class="label">Videos</div></div>
+    <div class="stat"><div class="num">400+</div><div class="label">Subscribers</div></div>
+</div>
+
+<div class="picker">
+    <button class="picker-btn" onclick="runPicker()">What Should I Watch?</button>
+    <div class="picker-loader" id="picker-loader">
+        <div class="picker-bar"><div class="picker-bar-fill" id="picker-bar"></div></div>
+        <p class="picker-status" id="picker-status">Scanning channels...</p>
+    </div>
+    <div class="picker-result" id="picker-result"></div>
+</div>
+
+<div class="trending-section">
+    <h2>Trending Now</h2>
+    <div class="trending-grid">
+        <a class="ch-big" href="/glitchzone/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
+            <h3>GlitchZone</h3>
+            <p>Game-breaking glitches the devs don't want you to know.</p>
+        </a>
+<a class="ch-big" href="/rbxrogebait/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
+            <h3>RBX RogeBait</h3>
+            <p>Roblox hot takes that'll make you rage.</p>
+        </a>
+<a class="ch-big" href="/mcrogebait/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
+            <h3>MC RogeBait</h3>
+            <p>Minecraft opinions that will trigger the entire fanbase.</p>
+        </a>
+<a class="ch-big" href="/blocksarebuildable/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
+            <h3>BlocksAreBuildable</h3>
+            <p>Things about Minecraft you definitely didn't know.</p>
+        </a>
+<a class="ch-big" href="/lootlore/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
+            <h3>LootLore</h3>
+            <p>The stories behind gaming's rarest loot.</p>
+        </a>
+    </div>
+</div>
+
+<div class="grid-section">
+    <div class="cat-section">
+        <h3 class="cat-title">Gaming</h3>
+        <div class="channels"><a class="ch" href="/fnrogebait/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
+            <h3>FN RogeBait</h3>
+            <p>Fortnite takes so hot they'll get you banned from Reddit.</p>
+        </a>
+<a class="ch" href="/robloxbeliever/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
+            <h3>RobloxBeliever</h3>
+            <p>The Roblox stories nobody tells you about.</p>
+        </a>
+<a class="ch" href="/craftrank/">
+            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
+            <h3>CraftRank</h3>
+            <p>Ranking everything in gaming. No mercy.</p>
+        </a></div>
+    </div>
+    <div class="cat-section">
+        <h3 class="cat-title">Knowledge &amp; Trivia</h3>
+        <div class="channels"><a class="ch" href="/braindrap/">
+            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
+            <h3>BrainDrap</h3>
+            <p>Psychology facts that change how you see people.</p>
+        </a>
+<a class="ch" href="/quizdrop/">
+            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
+            <h3>QuizDrop</h3>
+            <p>Trivia questions that make you feel dumb.</p>
+        </a>
+<a class="ch" href="/wouldyourather/">
+            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
+            <h3>WouldYouRather</h3>
+            <p>Impossible choices. No good answers.</p>
+        </a>
+<a class="ch" href="/mindworm/">
+            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
+            <h3>MindWorm</h3>
+            <p>Thoughts that burrow into your brain and never leave.</p>
+        </a>
+<a class="ch" href="/factoryfiles/">
+            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
+            <h3>FactoryFiles</h3>
+            <p>The files they don't want you to open.</p>
+        </a>
+<a class="ch" href="/mythboosted/">
+            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
+            <h3>MythBoosted</h3>
+            <p>Think you know what's real? Prove it.</p>
+        </a></div>
+    </div>
+    <div class="cat-section">
+        <h3 class="cat-title">Entertainment</h3>
+        <div class="channels"><a class="ch" href="/sigmavault/">
+            <span class="tag" style="background:rgba(255,160,60,.12);color:#ffa040">MOTIVATION</span>
+            <h3>SigmaVault</h3>
+            <p>Sigma quotes that hit different at 3AM.</p>
+        </a>
+<a class="ch" href="/tinypawstales/">
+            <span class="tag" style="background:rgba(100,220,100,.12);color:#60dd60">COMEDY</span>
+            <h3>TinyPawsTales</h3>
+            <p>Adorable animal stories with unexpected twists.</p>
+        </a>
+<a class="ch" href="/justgerald/">
+            <span class="tag" style="background:rgba(100,220,100,.12);color:#60dd60">COMEDY</span>
+            <h3>JustGerald</h3>
+            <p>Gerald does things. Regrets follow.</p>
+        </a>
+<a class="ch" href="/darkdecisions/">
+            <span class="tag" style="background:rgba(255,100,150,.12);color:#ff7090">DRAMA</span>
+            <h3>Dark Decisions</h3>
+            <p>Every choice has a cost. What would you do?</p>
+        </a>
+<a class="ch" href="/lovestruck/">
+            <span class="tag" style="background:rgba(255,100,150,.12);color:#ff7090">DRAMA</span>
+            <h3>Lovestruck</h3>
+            <p>Love stories that hit you right in the feels.</p>
+        </a></div>
+    </div>
+</div>
+
+<div class="discord-banner">
+    <div class="text">
+        <h2>Play Swords &mdash; Free RPG on Discord</h2>
+        <p class="sub">Create a character, accept quests, fight monsters, and level up. A full RPG running inside Discord.</p>
+        <div class="features">
+            <span class="feat">Create a Character</span>
+            <span class="feat">Fight Monsters</span>
+            <span class="feat">Accept Quests</span>
+            <span class="feat">Level Up</span>
+            <span class="feat">Party System</span>
+        </div>
+    </div>
+    <a class="btn-discord" href="https://discord.gg/qJBwnHHUYc">Join &amp; Play Free &rarr;</a>
+</div>
+
+<footer>
+    <a href="/privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+var pool = [["glitchzone", "GlitchZone", "Game-breaking glitches the devs don't want you to know."], ["blocksarebuildable", "BlocksAreBuildable", "Things about Minecraft you definitely didn't know."], ["rbxrogebait", "RBX RogeBait", "Roblox hot takes that'll make you rage."], ["mcrogebait", "MC RogeBait", "Minecraft opinions that will trigger the entire fanbase."], ["fnrogebait", "FN RogeBait", "Fortnite takes so hot they'll get you banned from Reddit."], ["lootlore", "LootLore", "The stories behind gaming's rarest loot."], ["robloxbeliever", "RobloxBeliever", "The Roblox stories nobody tells you about."], ["braindrap", "BrainDrap", "Psychology facts that change how you see people."], ["quizdrop", "QuizDrop", "Trivia questions that make you feel dumb."], ["sigmavault", "SigmaVault", "Sigma quotes that hit different at 3AM."], ["tinypawstales", "TinyPawsTales", "Adorable animal stories with unexpected twists."], ["craftrank", "CraftRank", "Ranking everything in gaming. No mercy."], ["wouldyourather", "WouldYouRather", "Impossible choices. No good answers."], ["justgerald", "JustGerald", "Gerald does things. Regrets follow."], ["mindworm", "MindWorm", "Thoughts that burrow into your brain and never leave."], ["factoryfiles", "FactoryFiles", "The files they don't want you to open."], ["darkdecisions", "Dark Decisions", "Every choice has a cost. What would you do?"], ["lovestruck", "Lovestruck", "Love stories that hit you right in the feels."], ["mythboosted", "MythBoosted", "Think you know what's real? Prove it."]];
+var msgs = ["Scanning channels...","Analyzing your vibe...","Finding the perfect match...","Almost there..."];
+function runPicker(){
+    var loader=document.getElementById('picker-loader');
+    var result=document.getElementById('picker-result');
+    var bar=document.getElementById('picker-bar');
+    var status=document.getElementById('picker-status');
+    result.style.display='none';loader.style.display='block';bar.style.width='0%';
+    var step=0;status.textContent=msgs[0];
+    var iv=setInterval(function(){
+        step++;
+        if(step>=msgs.length){
+            clearInterval(iv);bar.style.width='100%';
+            setTimeout(function(){
+                loader.style.display='none';
+                var pick=pool[Math.floor(Math.random()*pool.length)];
+                result.innerHTML='<h3>'+pick[1]+'</h3><p>'+pick[2]+'</p><a href="/'+pick[0]+'/">Check it out &rarr;</a>';
+                result.style.display='block';
+                result.classList.remove('pop');void result.offsetWidth;result.classList.add('pop');
+                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'homepage_picker',channel:'homepage',generator_type:'channel_picker'});
+            },300);
+            return;
+        }
+        bar.style.width=((step/msgs.length)*100)+'%';
+        status.textContent=msgs[step];
+    },500);
+}
+var words=["Glitches.","Hot Takes.","Dark Facts.","Loot Drops.","Brain Worms.","Sigma Quotes.","Moral Dilemmas.","Trivia.","Rankings."];
+var wi=0;var rotEl=document.getElementById('rotator');
+setInterval(function(){wi=(wi+1)%words.length;rotEl.style.opacity=0;setTimeout(function(){rotEl.textContent=words[wi];rotEl.style.opacity=1;},300);},2500);
+rotEl.style.transition='opacity .3s';rotEl.textContent=words[0];
+</script>
+</body>
+</html>

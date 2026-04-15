@@ -1,283 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BDS Anthony &mdash; Entertainment Hub</title>
-    <meta name="description" content="Explore channels, stories, quizzes, and more from the BDS Anthony entertainment network.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
-    <style>
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#0b0b0f;--card:#14141b;--border:#1f1f2b;--text:#eae8f2;--muted:#8b89a0;--accent:#7c5cff;--accent2:#ff5c87;--discord:#5865F2;--glow:rgba(124,92,255,.12)}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-        a{text-decoration:none}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>BDS Anthony &mdash; Adopt Your Character</title>
+<meta name="description" content="Adopt a Fortnite, Minecraft, or Roblox character. Feed, train, and level them up!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
+<script async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8279041593834700 crossorigin=anonymous></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#08080e;--card:#10101a;--border:#1a1a2c;--text:#eae8f2;--muted:#7a788e;--accent:#7c5cff}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
 
-        .hero{min-height:45vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem 1rem;position:relative}
-        .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 40%,var(--glow),transparent),radial-gradient(ellipse 50% 40% at 70% 60%,rgba(255,92,135,.06),transparent);pointer-events:none}
-        .hero h1{font-size:clamp(2.4rem,8vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:.6rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .hero p{color:var(--muted);font-size:clamp(.95rem,2.5vw,1.15rem);max-width:520px;margin-bottom:.5rem}
-        .rotating-text{color:var(--accent);font-weight:700}
+/* ── Screens ── */
+.screen{display:none}.screen.active{display:block}
 
-        .stats-bar{display:flex;justify-content:center;gap:2.5rem;padding:1rem 1.5rem 2rem;flex-wrap:wrap}
-        .stat{text-align:center}
-        .stat .num{font-size:1.5rem;font-weight:800;color:#fff}
-        .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+/* ── Pick / Landing Screen ── */
+.pick-hero{text-align:center;padding:clamp(2rem,8vh,5rem) 1.5rem 1.5rem;position:relative;overflow:hidden}
+.pick-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,255,.12) 0%,transparent 60%);pointer-events:none}
+.pick-hero h1{font-size:clamp(2rem,7vw,3.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.1;margin-bottom:.6rem;position:relative}
+.pick-hero h1 span{background:linear-gradient(135deg,#7c5cff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pick-hero .sub{color:var(--muted);font-size:clamp(.9rem,2.5vw,1.1rem);max-width:500px;margin:0 auto;position:relative}
 
-        .picker{max-width:500px;margin:0 auto 2rem;text-align:center;padding:0 1.5rem}
-        .picker-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.85rem 2.2rem;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
-        .picker-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--glow)}
-        .picker-loader{margin:.8rem 0;display:none}
-        .picker-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-        .picker-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .3s ease}
-        .picker-status{color:var(--muted);font-size:.8rem;margin-top:.4rem;font-style:italic}
-        .picker-result{display:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-top:1rem;text-align:center}
-        .picker-result h3{margin-bottom:.3rem;font-size:1.1rem}
-        .picker-result p{color:var(--muted);font-size:.88rem;margin-bottom:.8rem}
-        .picker-result a{display:inline-block;padding:.55rem 1.5rem;background:var(--accent);color:#111;border-radius:50px;font-weight:700;font-size:.85rem}
-        .picker-result.pop{animation:popIn .35s ease}
-        @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.game-banner{position:relative;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.game-banner:hover{transform:scale(1.01);z-index:2}
+.game-banner:active{transform:scale(.99)}
 
-        .adopt-banner{max-width:600px;margin:0 auto 2rem;padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,212,255,.08));border:1px solid rgba(124,92,255,.3);border-radius:16px;display:flex;align-items:center;gap:1rem;transition:all .2s}
-        .adopt-banner:hover{border-color:rgba(124,92,255,.6);transform:translateY(-2px);box-shadow:0 8px 25px rgba(124,92,255,.15)}
-        .adopt-emoji{font-size:2.2rem;flex-shrink:0}
-        .adopt-title{font-weight:800;font-size:1rem;margin-bottom:.15rem}
-        .adopt-desc{color:var(--muted);font-size:.78rem;line-height:1.4}
-        .adopt-arrow{font-size:1.5rem;color:var(--accent2);flex-shrink:0;margin-left:auto}
-        .trending-section{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}
-        .trending-section>h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);font-weight:700;margin-bottom:1.2rem;text-align:center}
-        .trending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-        .ch-big{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block;position:relative}
-        .ch-big:hover{transform:translateY(-3px);border-color:var(--accent2);box-shadow:0 8px 30px rgba(255,92,135,.12)}
-        .ch-big h3{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
-        .ch-big p{color:var(--muted);font-size:.85rem;line-height:1.45}
-        .fire{position:absolute;top:1rem;right:1rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;padding:.2rem .6rem;border-radius:50px;font-weight:700;background:rgba(255,92,135,.15);color:var(--accent2)}
+.gb-inner{max-width:1000px;margin:0 auto;padding:clamp(2.5rem,5vh,4rem) 1.5rem;display:flex;align-items:center;gap:clamp(1.5rem,3vw,3rem);position:relative;z-index:1}
+.gb-left{flex:1;min-width:0}
+.gb-tag{display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.14em;padding:.25rem .8rem;border-radius:50px;font-weight:800;margin-bottom:.8rem}
+.gb-title{font-size:clamp(1.6rem,5vw,2.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.15;margin-bottom:.5rem}
+.gb-hook{font-size:clamp(.85rem,2vw,1rem);line-height:1.5;margin-bottom:1.2rem;max-width:480px}
+.gb-stats{display:flex;gap:1.5rem;font-size:.78rem;margin-bottom:1.2rem}
+.gb-stats span{display:flex;align-items:center;gap:.3rem}
+.gb-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2.2rem;border-radius:50px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;transition:transform .15s,box-shadow .15s;letter-spacing:.01em}
+.gb-btn:hover{transform:translateY(-2px)}
+.gb-btn:active{transform:scale(.97)}
 
-        .grid-section{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}
-        .cat-section{margin-bottom:2rem}
-        .cat-title{font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:.8rem;padding-left:.2rem}
-        .channels{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem}
-        .ch{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.2rem;color:var(--text);transition:transform .2s,border-color .2s,box-shadow .2s;display:block}
-        .ch:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 6px 24px var(--glow)}
-        .tag{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;padding:.18rem .55rem;border-radius:50px;font-weight:700;margin-bottom:.4rem}
-        .ch h3,.ch-big h3{margin-top:.2rem}
-        .ch h3{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
-        .ch p{color:var(--muted);font-size:.8rem;line-height:1.4}
+.gb-right{flex-shrink:0;display:flex;flex-wrap:wrap;gap:.5rem;max-width:200px;justify-content:center}
+.gb-char{background:rgba(255,255,255,.06);border-radius:12px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:1px solid rgba(255,255,255,.08);transition:transform .2s}
+.game-banner:hover .gb-char{animation:charBounce .4s ease}
+@keyframes charBounce{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 
-        .discord-banner{background:linear-gradient(135deg,rgba(88,101,242,.15),rgba(88,101,242,.05));border:1px solid rgba(88,101,242,.2);max-width:800px;margin:1rem auto 2rem;border-radius:16px;padding:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center}
-        .discord-banner .text{flex:1;min-width:260px}
-        .discord-banner h2{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
-        .discord-banner .sub{color:var(--muted);font-size:.92rem}
-        .discord-banner .features{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
-        .discord-banner .feat{background:rgba(88,101,242,.12);border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:600;color:#99a5ff}
-        .btn-discord{display:inline-block;padding:.8rem 2rem;background:var(--discord);color:#fff;border-radius:50px;font-weight:700;font-size:.95rem;transition:transform .15s,box-shadow .15s;white-space:nowrap}
-        .btn-discord:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(88,101,242,.3)}
+.banner-fn{background:linear-gradient(135deg,rgba(0,60,120,.6) 0%,rgba(0,20,50,.8) 100%);border-top:1px solid rgba(0,180,255,.15);border-bottom:1px solid rgba(0,180,255,.08)}
+.banner-fn .gb-tag{background:rgba(0,212,255,.15);color:#00d4ff}.banner-fn .gb-btn{background:#00d4ff;color:#0a1a2a;box-shadow:0 4px 20px rgba(0,212,255,.25)}.banner-fn .gb-btn:hover{box-shadow:0 8px 30px rgba(0,212,255,.35)}
+.banner-mc{background:linear-gradient(135deg,rgba(20,80,20,.6) 0%,rgba(10,30,10,.8) 100%);border-top:1px solid rgba(85,255,85,.12);border-bottom:1px solid rgba(85,255,85,.06)}
+.banner-mc .gb-tag{background:rgba(85,255,85,.12);color:#55ff55}.banner-mc .gb-btn{background:#55ff55;color:#0a2a0a;box-shadow:0 4px 20px rgba(85,255,85,.2)}.banner-mc .gb-btn:hover{box-shadow:0 8px 30px rgba(85,255,85,.3)}
+.banner-rb{background:linear-gradient(135deg,rgba(100,80,0,.5) 0%,rgba(40,30,0,.8) 100%);border-top:1px solid rgba(255,204,0,.15);border-bottom:1px solid rgba(255,204,0,.08)}
+.banner-rb .gb-tag{background:rgba(255,204,0,.12);color:#ffcc00}.banner-rb .gb-btn{background:#ffcc00;color:#2a2000;box-shadow:0 4px 20px rgba(255,204,0,.2)}.banner-rb .gb-btn:hover{box-shadow:0 8px 30px rgba(255,204,0,.3)}
 
-        footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border)}
-        footer a{color:var(--accent)}
-        @media(max-width:600px){.channels{grid-template-columns:1fr}.trending-grid{grid-template-columns:1fr}.grid-section,.trending-section{padding:0 1rem 2rem}.discord-banner{margin:1rem 1rem 2rem;padding:1.5rem;flex-direction:column;text-align:center}.discord-banner .features{justify-content:center}.stats-bar{gap:1.5rem}}
-    </style>
-    <script async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8279041593834700 crossorigin=anonymous></script>
+.how-it-works{max-width:800px;margin:0 auto;padding:3rem 1.5rem;text-align:center}
+.how-it-works h2{font-size:1rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);font-weight:700;margin-bottom:2rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.5rem}
+.step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1rem}
+.step-num{font-size:2rem;margin-bottom:.4rem}.step-title{font-weight:800;font-size:.9rem;margin-bottom:.3rem}.step-desc{color:var(--muted);font-size:.78rem;line-height:1.45}
+
+.pick-footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.72rem;border-top:1px solid var(--border)}
+.pick-footer a{color:var(--muted);margin:0 .4rem}
+
+@media(max-width:700px){.gb-inner{flex-direction:column;text-align:center}.gb-right{max-width:none;margin-top:.5rem}.gb-stats{justify-content:center}.gb-hook{margin-left:auto;margin-right:auto}}
+
+/* ── Hatch Screen ── */
+#screen-hatch{padding-top:30vh;text-align:center}
+.egg{font-size:5rem;display:inline-block;animation:eggShake 0.25s infinite alternate}
+@keyframes eggShake{0%{transform:rotate(-10deg)scale(1)}50%{transform:rotate(10deg)scale(1.08)}100%{transform:rotate(-10deg)scale(1)}}
+.hatch-text{color:var(--muted);font-size:.95rem;margin-top:1.5rem;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.hatch-crack{animation:crack .3s ease forwards}
+@keyframes crack{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(0);opacity:0}}
+
+/* ── Dashboard ── */
+#screen-pet{max-width:440px;margin:0 auto;padding:1rem 1.2rem 3rem;text-align:center}
+.pet-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:2rem 1.5rem 1.5rem;margin:1rem 0;position:relative;transition:border-color .5s,box-shadow .5s}
+.pet-card.rarity-common{border-color:#555}.pet-card.rarity-uncommon{border-color:#44cc44;box-shadow:0 0 20px rgba(68,204,68,.1)}
+.pet-card.rarity-rare{border-color:#4488ff;box-shadow:0 0 25px rgba(68,136,255,.15)}.pet-card.rarity-epic{border-color:#aa44ff;box-shadow:0 0 30px rgba(170,68,255,.2)}
+.pet-card.rarity-legendary{border-color:#ffaa00;box-shadow:0 0 35px rgba(255,170,0,.2)}
+.pet-emoji{font-size:3.5rem;margin-bottom:.3rem}
+.pet-name{font-size:1.5rem;font-weight:900;letter-spacing:-.02em}
+.pet-level{color:var(--muted);font-size:.85rem;margin-top:.2rem}
+.rarity-badge{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;padding:.2rem .7rem;border-radius:50px;font-weight:800;margin-top:.5rem}
+.rarity-common .rarity-badge{background:rgba(128,128,128,.2);color:#999}
+.rarity-uncommon .rarity-badge{background:rgba(68,204,68,.15);color:#66ee66}
+.rarity-rare .rarity-badge{background:rgba(68,136,255,.15);color:#66aaff}
+.rarity-epic .rarity-badge{background:rgba(170,68,255,.15);color:#cc77ff}
+.rarity-legendary .rarity-badge{background:rgba(255,170,0,.15);color:#ffcc44}
+.mood-text{font-size:.8rem;margin-top:.5rem}
+
+.xp-section{margin:1.2rem 0}
+.xp-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:.3rem}
+.xp-bar{height:8px;background:var(--card);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.xp-fill{height:100%;background:linear-gradient(90deg,#7c5cff,#aa77ff);border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1)}
+
+.stats{display:flex;flex-direction:column;gap:.7rem;margin:1rem 0}
+.stat-row{display:flex;align-items:center;gap:.6rem}
+.stat-icon{font-size:1rem;width:1.5rem;text-align:center;flex-shrink:0}
+.stat-name{font-size:.78rem;font-weight:600;width:4rem;text-align:left;flex-shrink:0}
+.stat-bar{flex:1;height:10px;background:var(--card);border-radius:5px;overflow:hidden;border:1px solid var(--border)}
+.stat-fill{height:100%;border-radius:5px;transition:width .5s ease,background .3s}
+.stat-val{font-size:.72rem;font-weight:700;width:2.5rem;text-align:right;flex-shrink:0}
+
+.actions{display:flex;flex-direction:column;gap:.6rem;margin:1.2rem 0}
+.action-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .2s;text-align:left;width:100%;font-family:inherit;color:var(--text)}
+.action-btn:not(.on-cooldown):not(.no-energy):hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 15px rgba(124,92,255,.12)}
+.action-btn.ready{border-color:rgba(68,204,68,.4)}
+.action-btn.on-cooldown{opacity:.55;cursor:default}.action-btn.no-energy{opacity:.4;cursor:default}
+.act-emoji{font-size:1.5rem;flex-shrink:0}
+.act-info{flex:1}.act-name{font-weight:700;font-size:.95rem}.act-desc{color:var(--muted);font-size:.75rem;margin-top:.1rem}
+.act-status{font-size:.78rem;font-weight:600;color:var(--muted);flex-shrink:0}
+.act-status.ready-text{color:#66ee66}
+
+.toast{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%)translateY(-120%);background:#1a1a2e;border:1px solid var(--accent);border-radius:12px;padding:.8rem 1.5rem;font-size:.88rem;font-weight:600;z-index:100;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%)translateY(0)}
+
+.levelup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;z-index:200;align-items:center;justify-content:center;flex-direction:column}
+.levelup-overlay.show{display:flex}
+.levelup-text{font-size:clamp(2rem,10vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#ffcc00,#ff6b6b,#aa44ff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:lvlPulse .6s ease}
+.levelup-sub{color:var(--muted);font-size:1rem;margin-top:.5rem}.levelup-rarity{font-size:1.2rem;font-weight:800;margin-top:.8rem}
+@keyframes lvlPulse{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.lvl-confetti{position:fixed;inset:0;pointer-events:none;z-index:201;overflow:hidden}
+.lvl-confetti .c{position:absolute;width:8px;height:8px;border-radius:2px;animation:confDrop 2s ease-out forwards}
+@keyframes confDrop{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(100vh)rotate(720deg);opacity:0}}
+
+.away-report{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;margin:1rem 0;text-align:left}
+.away-report h3{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.08em}
+.away-line{font-size:.8rem;margin:.25rem 0;display:flex;justify-content:space-between}
+.away-line .change.neg{color:#ff6b6b}.away-line .change.pos{color:#66ee66}
+
+.pet-footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted)}
+.pet-footer a{color:var(--muted);margin:0 .3rem}
+.release-btn{background:none;border:none;color:var(--muted);font-size:.7rem;cursor:pointer;margin-top:.5rem;text-decoration:underline;font-family:inherit}.release-btn:hover{color:#ff6b6b}
+
+@media(max-width:400px){#screen-pet{padding:1rem .8rem 3rem}.pet-card{padding:1.5rem 1rem 1rem}}
+</style>
 </head>
 <body>
 
-<div class="hero">
-    <h1>BDS Anthony</h1>
-    <p>Stories. Quizzes. Hot Takes. Gaming. <span class="rotating-text" id="rotator"></span></p>
-</div>
-
-<div class="stats-bar">
-    <div class="stat"><div class="num">400K+</div><div class="label">Total Views</div></div>
-    <div class="stat"><div class="num">19</div><div class="label">Channels</div></div>
-    <div class="stat"><div class="num">950+</div><div class="label">Videos</div></div>
-    <div class="stat"><div class="num">400+</div><div class="label">Subscribers</div></div>
-</div>
-
-<div class="picker">
-    <button class="picker-btn" onclick="runPicker()">What Should I Watch?</button>
-    <div class="picker-loader" id="picker-loader">
-        <div class="picker-bar"><div class="picker-bar-fill" id="picker-bar"></div></div>
-        <p class="picker-status" id="picker-status">Scanning channels...</p>
+<!-- Pick Game - Full Width Landing -->
+<div class="screen" id="screen-pick">
+    <div class="pick-hero">
+        <h1><span>Adopt.</span> Feed. Train.<br>Level Up.</h1>
+        <p class="sub">Choose a world. Get a random character. Come back every day to keep them alive and watch them evolve.</p>
     </div>
-    <div class="picker-result" id="picker-result"></div>
-</div>
 
-<div class="adopt-banner" onclick="window.location='/adopt/'" style="cursor:pointer">
-    <div class="adopt-emoji">&#129370;</div>
-    <div>
-        <div class="adopt-title">Adopt Your Character</div>
-        <div class="adopt-desc">Choose Fortnite, Minecraft, or Roblox. Feed, train &amp; level up your companion!</div>
-    </div>
-    <div class="adopt-arrow">&rarr;</div>
-</div>
-
-<div class="trending-section">
-    <h2>Trending Now</h2>
-    <div class="trending-grid">
-        <a class="ch-big" href="/glitchzone/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
-            <h3>GlitchZone</h3>
-            <p>Game-breaking glitches the devs don't want you to know.</p>
-        </a>
-<a class="ch-big" href="/rbxrogebait/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
-            <h3>RBX RogeBait</h3>
-            <p>Roblox hot takes that'll make you rage.</p>
-        </a>
-<a class="ch-big" href="/mcrogebait/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
-            <h3>MC RogeBait</h3>
-            <p>Minecraft opinions that will trigger the entire fanbase.</p>
-        </a>
-<a class="ch-big" href="/blocksarebuildable/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
-            <h3>BlocksAreBuildable</h3>
-            <p>Things about Minecraft you definitely didn't know.</p>
-        </a>
-<a class="ch-big" href="/lootlore/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span> <span class="fire">Trending</span>
-            <h3>LootLore</h3>
-            <p>The stories behind gaming's rarest loot.</p>
-        </a>
-    </div>
-</div>
-
-<div class="grid-section">
-    <div class="cat-section">
-        <h3 class="cat-title">Gaming</h3>
-        <div class="channels"><a class="ch" href="/fnrogebait/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
-            <h3>FN RogeBait</h3>
-            <p>Fortnite takes so hot they'll get you banned from Reddit.</p>
-        </a>
-<a class="ch" href="/robloxbeliever/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
-            <h3>RobloxBeliever</h3>
-            <p>The Roblox stories nobody tells you about.</p>
-        </a>
-<a class="ch" href="/craftrank/">
-            <span class="tag" style="background:rgba(255,80,80,.12);color:#ff6b6b">GAMING</span>
-            <h3>CraftRank</h3>
-            <p>Ranking everything in gaming. No mercy.</p>
-        </a></div>
-    </div>
-    <div class="cat-section">
-        <h3 class="cat-title">Knowledge &amp; Trivia</h3>
-        <div class="channels"><a class="ch" href="/braindrap/">
-            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
-            <h3>BrainDrap</h3>
-            <p>Psychology facts that change how you see people.</p>
-        </a>
-<a class="ch" href="/quizdrop/">
-            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
-            <h3>QuizDrop</h3>
-            <p>Trivia questions that make you feel dumb.</p>
-        </a>
-<a class="ch" href="/wouldyourather/">
-            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
-            <h3>WouldYouRather</h3>
-            <p>Impossible choices. No good answers.</p>
-        </a>
-<a class="ch" href="/mindworm/">
-            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
-            <h3>MindWorm</h3>
-            <p>Thoughts that burrow into your brain and never leave.</p>
-        </a>
-<a class="ch" href="/factoryfiles/">
-            <span class="tag" style="background:rgba(80,200,255,.12);color:#50c8ff">KNOWLEDGE</span>
-            <h3>FactoryFiles</h3>
-            <p>The files they don't want you to open.</p>
-        </a>
-<a class="ch" href="/mythboosted/">
-            <span class="tag" style="background:rgba(0,210,180,.12);color:#00d2b4">TRIVIA</span>
-            <h3>MythBoosted</h3>
-            <p>Think you know what's real? Prove it.</p>
-        </a></div>
-    </div>
-    <div class="cat-section">
-        <h3 class="cat-title">Entertainment</h3>
-        <div class="channels"><a class="ch" href="/sigmavault/">
-            <span class="tag" style="background:rgba(255,160,60,.12);color:#ffa040">MOTIVATION</span>
-            <h3>SigmaVault</h3>
-            <p>Sigma quotes that hit different at 3AM.</p>
-        </a>
-<a class="ch" href="/tinypawstales/">
-            <span class="tag" style="background:rgba(100,220,100,.12);color:#60dd60">COMEDY</span>
-            <h3>TinyPawsTales</h3>
-            <p>Adorable animal stories with unexpected twists.</p>
-        </a>
-<a class="ch" href="/justgerald/">
-            <span class="tag" style="background:rgba(100,220,100,.12);color:#60dd60">COMEDY</span>
-            <h3>JustGerald</h3>
-            <p>Gerald does things. Regrets follow.</p>
-        </a>
-<a class="ch" href="/darkdecisions/">
-            <span class="tag" style="background:rgba(255,100,150,.12);color:#ff7090">DRAMA</span>
-            <h3>Dark Decisions</h3>
-            <p>Every choice has a cost. What would you do?</p>
-        </a>
-<a class="ch" href="/lovestruck/">
-            <span class="tag" style="background:rgba(255,100,150,.12);color:#ff7090">DRAMA</span>
-            <h3>Lovestruck</h3>
-            <p>Love stories that hit you right in the feels.</p>
-        </a></div>
-    </div>
-</div>
-
-<div class="discord-banner">
-    <div class="text">
-        <h2>Play Swords &mdash; Free RPG on Discord</h2>
-        <p class="sub">Create a character, accept quests, fight monsters, and level up. A full RPG running inside Discord.</p>
-        <div class="features">
-            <span class="feat">Create a Character</span>
-            <span class="feat">Fight Monsters</span>
-            <span class="feat">Accept Quests</span>
-            <span class="feat">Level Up</span>
-            <span class="feat">Party System</span>
+    <div class="game-banner banner-fn" onclick="window._startAdopt('fortnite')">
+        <div class="gb-inner">
+            <div class="gb-left">
+                <div class="gb-tag">Fortnite</div>
+                <div class="gb-title">Storm Survivors</div>
+                <div class="gb-hook">20 characters waiting in the storm. Shadow agents, peely clones, skull troopers, and more. Adopt one before they&rsquo;re gone.</div>
+                <div class="gb-stats"><span>&#128100; 20 Characters</span><span>&#9889; 5 Rarities</span><span>&#128200; 20 Levels</span></div>
+                <div class="gb-btn">Adopt a Fortnite Character &rarr;</div>
+            </div>
+            <div class="gb-right">
+                <div class="gb-char">&#128374;&#65039;</div><div class="gb-char">&#127820;</div><div class="gb-char">&#128031;</div>
+                <div class="gb-char">&#128128;</div><div class="gb-char">&#128081;</div><div class="gb-char">&#128640;</div>
+                <div class="gb-char">&#128570;</div><div class="gb-char">&#9889;</div><div class="gb-char">&#10024;</div>
+            </div>
         </div>
     </div>
-    <a class="btn-discord" href="https://discord.gg/qJBwnHHUYc">Join &amp; Play Free &rarr;</a>
+
+    <div class="game-banner banner-mc" onclick="window._startAdopt('minecraft')">
+        <div class="gb-inner">
+            <div class="gb-left">
+                <div class="gb-tag">Minecraft</div>
+                <div class="gb-title">Block Companions</div>
+                <div class="gb-hook">From diamond steves to axolotl friends. 20 mobs and miners need a home. Mine, craft, and raise them to legendary status.</div>
+                <div class="gb-stats"><span>&#128100; 20 Characters</span><span>&#128142; 5 Rarities</span><span>&#128200; 20 Levels</span></div>
+                <div class="gb-btn">Adopt a Minecraft Character &rarr;</div>
+            </div>
+            <div class="gb-right">
+                <div class="gb-char">&#128142;</div><div class="gb-char">&#128154;</div><div class="gb-char">&#128126;</div>
+                <div class="gb-char">&#128293;</div><div class="gb-char">&#128058;</div><div class="gb-char">&#128029;</div>
+                <div class="gb-char">&#129422;</div><div class="gb-char">&#128055;</div><div class="gb-char">&#129418;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-banner banner-rb" onclick="window._startAdopt('roblox')">
+        <div class="gb-inner">
+            <div class="gb-left">
+                <div class="gb-tag">Roblox</div>
+                <div class="gb-title">Blox Buddies</div>
+                <div class="gb-hook">Noob heroes, bacon hair legends, phantom cadets. 20 Roblox characters are waiting to be adopted. Will you raise a champion?</div>
+                <div class="gb-stats"><span>&#128100; 20 Characters</span><span>&#11088; 5 Rarities</span><span>&#128200; 20 Levels</span></div>
+                <div class="gb-btn">Adopt a Roblox Character &rarr;</div>
+            </div>
+            <div class="gb-right">
+                <div class="gb-char">&#128522;</div><div class="gb-char">&#129363;</div><div class="gb-char">&#11088;</div>
+                <div class="gb-char">&#127939;</div><div class="gb-char">&#128081;</div><div class="gb-char">&#128270;</div>
+                <div class="gb-char">&#129370;</div><div class="gb-char">&#128120;</div><div class="gb-char">&#127918;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step"><div class="step-num">&#129370;</div><div class="step-title">Adopt</div><div class="step-desc">Pick a world and get a random character</div></div>
+            <div class="step"><div class="step-num">&#127830;</div><div class="step-title">Feed &amp; Train</div><div class="step-desc">Keep them alive and earn XP</div></div>
+            <div class="step"><div class="step-num">&#9200;</div><div class="step-title">Come Back</div><div class="step-desc">Actions have cooldowns &mdash; return to keep growing</div></div>
+            <div class="step"><div class="step-num">&#11088;</div><div class="step-title">Evolve</div><div class="step-desc">Level up from Common to Legendary</div></div>
+        </div>
+    </div>
+
+    <div class="pick-footer">
+        <a href="/channels/">Our Channels</a> &middot; <a href="https://discord.gg/qJBwnHHUYc">Discord</a> &middot; <a href="/privacy.html">Privacy</a>
+    </div>
 </div>
 
-<footer>
-    <a href="/privacy.html">Privacy Policy</a>
-</footer>
+<!-- Hatching Animation -->
+<div class="screen" id="screen-hatch" style="text-align:center">
+    <div class="egg" id="hatch-egg">&#129370;</div>
+    <p class="hatch-text" id="hatch-text">Hatching...</p>
+</div>
+
+<!-- Pet Dashboard -->
+<div class="screen" id="screen-pet">
+    <div id="away-box"></div>
+    <div class="pet-card" id="pet-card">
+        <div class="pet-emoji" id="pet-emoji"></div>
+        <div class="pet-name" id="pet-name"></div>
+        <div class="pet-level" id="pet-level"></div>
+        <div class="rarity-badge" id="pet-rarity"></div>
+        <div class="mood-text" id="pet-mood"></div>
+    </div>
+    <div class="xp-section">
+        <div class="xp-label"><span id="xp-text">XP</span><span id="xp-next">Next level</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+    </div>
+    <div class="stats">
+        <div class="stat-row"><span class="stat-icon">&#127830;</span><span class="stat-name">Hunger</span><div class="stat-bar"><div class="stat-fill" id="bar-hunger"></div></div><span class="stat-val" id="val-hunger"></span></div>
+        <div class="stat-row"><span class="stat-icon">&#9889;</span><span class="stat-name">Energy</span><div class="stat-bar"><div class="stat-fill" id="bar-energy"></div></div><span class="stat-val" id="val-energy"></span></div>
+        <div class="stat-row"><span class="stat-icon">&#128150;</span><span class="stat-name">Happy</span><div class="stat-bar"><div class="stat-fill" id="bar-happy"></div></div><span class="stat-val" id="val-happy"></span></div>
+    </div>
+    <div class="actions">
+        <button class="action-btn" id="btn-feed" onclick="window._doAction('feed')">
+            <span class="act-emoji">&#127830;</span>
+            <div class="act-info"><div class="act-name">Feed</div><div class="act-desc">Restores hunger &amp; a bit of happiness</div></div>
+            <span class="act-status" id="cd-feed">Ready!</span>
+        </button>
+        <button class="action-btn" id="btn-train" onclick="window._doAction('train')">
+            <span class="act-emoji">&#9876;&#65039;</span>
+            <div class="act-info"><div class="act-name">Train</div><div class="act-desc">Earn XP, costs energy &amp; hunger</div></div>
+            <span class="act-status" id="cd-train">Ready!</span>
+        </button>
+        <button class="action-btn" id="btn-rest" onclick="window._doAction('rest')">
+            <span class="act-emoji">&#128564;</span>
+            <div class="act-info"><div class="act-name">Rest</div><div class="act-desc">Restores energy &amp; happiness</div></div>
+            <span class="act-status" id="cd-rest">Ready!</span>
+        </button>
+    </div>
+    <div class="pet-footer">
+        <div>Adopted <span id="pet-age"></span> ago</div>
+        <a href="/">Home</a> &middot; <a href="/channels/">Channels</a> &middot; <a href="https://discord.gg/qJBwnHHUYc">Discord</a>
+        <br><button class="release-btn" onclick="window._releasePet()">Release this pet</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Level Up Overlay -->
+<div class="levelup-overlay" id="levelup">
+    <div class="levelup-text" id="lvl-text">LEVEL UP!</div>
+    <div class="levelup-sub" id="lvl-sub"></div>
+    <div class="levelup-rarity" id="lvl-rarity"></div>
+</div>
+<div class="lvl-confetti" id="lvl-confetti"></div>
 
 <script>
-var pool = [["glitchzone", "GlitchZone", "Game-breaking glitches the devs don't want you to know."], ["blocksarebuildable", "BlocksAreBuildable", "Things about Minecraft you definitely didn't know."], ["rbxrogebait", "RBX RogeBait", "Roblox hot takes that'll make you rage."], ["mcrogebait", "MC RogeBait", "Minecraft opinions that will trigger the entire fanbase."], ["fnrogebait", "FN RogeBait", "Fortnite takes so hot they'll get you banned from Reddit."], ["lootlore", "LootLore", "The stories behind gaming's rarest loot."], ["robloxbeliever", "RobloxBeliever", "The Roblox stories nobody tells you about."], ["braindrap", "BrainDrap", "Psychology facts that change how you see people."], ["quizdrop", "QuizDrop", "Trivia questions that make you feel dumb."], ["sigmavault", "SigmaVault", "Sigma quotes that hit different at 3AM."], ["tinypawstales", "TinyPawsTales", "Adorable animal stories with unexpected twists."], ["craftrank", "CraftRank", "Ranking everything in gaming. No mercy."], ["wouldyourather", "WouldYouRather", "Impossible choices. No good answers."], ["justgerald", "JustGerald", "Gerald does things. Regrets follow."], ["mindworm", "MindWorm", "Thoughts that burrow into your brain and never leave."], ["factoryfiles", "FactoryFiles", "The files they don't want you to open."], ["darkdecisions", "Dark Decisions", "Every choice has a cost. What would you do?"], ["lovestruck", "Lovestruck", "Love stories that hit you right in the feels."], ["mythboosted", "MythBoosted", "Think you know what's real? Prove it."]];
-var msgs = ["Scanning channels...","Analyzing your vibe...","Finding the perfect match...","Almost there..."];
-function runPicker(){
-    var loader=document.getElementById('picker-loader');
-    var result=document.getElementById('picker-result');
-    var bar=document.getElementById('picker-bar');
-    var status=document.getElementById('picker-status');
-    result.style.display='none';loader.style.display='block';bar.style.width='0%';
-    var step=0;status.textContent=msgs[0];
-    var iv=setInterval(function(){
-        step++;
-        if(step>=msgs.length){
-            clearInterval(iv);bar.style.width='100%';
-            setTimeout(function(){
-                loader.style.display='none';
-                var pick=pool[Math.floor(Math.random()*pool.length)];
-                result.innerHTML='<h3>'+pick[1]+'</h3><p>'+pick[2]+'</p><a href="/'+pick[0]+'/">Check it out &rarr;</a>';
-                result.style.display='block';
-                result.classList.remove('pop');void result.offsetWidth;result.classList.add('pop');
-                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'homepage_picker',channel:'homepage',generator_type:'channel_picker'});
-            },300);
-            return;
-        }
-        bar.style.width=((step/msgs.length)*100)+'%';
-        status.textContent=msgs[step];
-    },500);
+var GAMES={
+fortnite:{color:'#00d4ff',chars:[
+["🕶️","Shadow Agent"],["🍌","Peely Jr."],["🐟","Fishstick Clone"],["⚡","Drift Puppy"],
+["🧸","Cuddle Cub"],["🦅","Raven Chick"],["😺","Meowscles Kit"],["🐱","Lynx Cub"],
+["🚀","Dark Voyager Mini"],["💀","Skull Pup"],["❄️","Ice Prince"],["🔧","Rust Recruit"],
+["✨","Brite Baby"],["👑","Midas Spark"],["🌟","Omega Hatchling"],["🛡","Knight Squire"],
+["🎸","Marshmello Mini"],["🐺","Dire Pup"],["🎨","Abstrakt Jr."],["👻","Ghoul Scout"]
+]},
+minecraft:{color:'#55ff55',chars:[
+["💎","Diamond Steve"],["💚","Creeper Buddy"],["👾","Ender Pup"],["🤖","Iron Golem Jr."],
+["🔥","Blaze Sprite"],["💀","Wither Cub"],["👻","Phantom Kit"],["🐷","Piglin Pal"],
+["🦎","Axolotl Friend"],["🗿","Warden Whisper"],["🐝","Bee Buddy"],["💥","Ghast Baby"],
+["🟢","Slime Blob"],["🐺","Wolf Pup"],["🦊","Fox Kit"],["🌸","Allay Sprite"],
+["🦃","Shulker Baby"],["🐠","Guardian Guppy"],["🧐","Villager Sprout"],["🐤","Chicken Scout"]
+]},
+roblox:{color:'#ffcc00',chars:[
+["😊","Noob Hero"],["🥓","Bacon Hair Legend"],["⭐","Guest Star"],["🏗️","Builder Bot"],
+["🏘","Bloxburg Baby"],["🥚","Adopt Me Egg"],["🏠","Brookhaven Kid"],["🏃","Jailbreak Runner"],
+["🔎","Mystery Sleuth"],["🔫","Arsenal Rookie"],["👻","Phantom Cadet"],["🥷","Shindo Cub"],
+["🍎","Blox Fruit Seed"],["😈","Doors Entity Jr."],["🐷","Piggy Clone"],["🐝","Bee Swarm Drone"],
+["🦄","Pet Sim Hatchling"],["👑","Royal Star"],["🎮","Tower Titan Jr."],["👽","Alien Intern"]
+]}
+};
+
+var XP_TABLE=[0,50,130,240,380,550,750,1000,1300,1650,2050,2500,3050,3700,4450,5300,6300,7450,8800,10400,12300];
+var RARITY_LEVELS=[[1,'common','Common','#888'],[5,'uncommon','Uncommon','#44cc44'],[10,'rare','Rare','#4488ff'],[15,'epic','Epic','#aa44ff'],[20,'legendary','Legendary','#ffaa00']];
+var CD_FEED=15*60000,CD_TRAIN=30*60000,CD_REST=45*60000;
+var FEED_MSGS=["is feeling full!","loved that snack!","gobbled it up!","wants more already!"];
+var TRAIN_MSGS=["pushed through the training!","is getting stronger!","broke a sweat!","leveled their skills!"];
+var REST_MSGS=["is recharging nicely.","needed that nap.","feels refreshed!","is full of energy now!"];
+var KEY='bds_pet_v1',pet=null;
+
+function load(){try{pet=JSON.parse(localStorage.getItem(KEY));}catch(e){pet=null;}}
+function save(){localStorage.setItem(KEY,JSON.stringify(pet));}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.getElementById(id).classList.add('active');}
+function getRarity(lv){var r=RARITY_LEVELS[0];for(var i=0;i<RARITY_LEVELS.length;i++)if(lv>=RARITY_LEVELS[i][0])r=RARITY_LEVELS[i];return r;}
+function xpForNext(lv){return lv>=XP_TABLE.length-1?99999:XP_TABLE[lv]-XP_TABLE[lv-1];}
+function xpInLevel(lv,xp){return lv<=1?xp:xp-XP_TABLE[lv-1];}
+function levelFromXp(xp){for(var i=1;i<XP_TABLE.length;i++)if(xp<XP_TABLE[i])return i;return XP_TABLE.length;}
+function getMood(){
+    if(pet.hunger<15)return['😩','Starving!','#ff4444'];
+    if(pet.happiness<20)return['😢','Sad...','#ff6b6b'];
+    if(pet.energy<15)return['😴','Exhausted','#8888ff'];
+    if(pet.hunger<35)return['😕','Hungry','#ffaa44'];
+    if(pet.happiness>80&&pet.hunger>60&&pet.energy>60)return['🤩','Ecstatic!','#ffcc00'];
+    if(pet.happiness>60)return['😊','Happy','#66ee66'];
+    return['😐','Okay','#7a788e'];
 }
-var words=["Glitches.","Hot Takes.","Dark Facts.","Loot Drops.","Brain Worms.","Sigma Quotes.","Moral Dilemmas.","Trivia.","Rankings."];
-var wi=0;var rotEl=document.getElementById('rotator');
-setInterval(function(){wi=(wi+1)%words.length;rotEl.style.opacity=0;setTimeout(function(){rotEl.textContent=words[wi];rotEl.style.opacity=1;},300);},2500);
-rotEl.style.transition='opacity .3s';rotEl.textContent=words[0];
+
+function calcOffline(){
+    if(!pet||!pet.lastVisit)return null;
+    var now=Date.now(),hrs=(now-pet.lastVisit)/3600000;
+    if(hrs<0.01)return null;
+    var r={hours:hrs,oH:pet.hunger,oE:pet.energy,oP:pet.happiness};
+    pet.hunger=Math.max(0,Math.round(pet.hunger-hrs*8));
+    pet.energy=Math.min(100,Math.round(pet.energy+hrs*4));
+    pet.happiness=Math.max(0,Math.round(pet.happiness-hrs*(pet.hunger<25?5:1.5)));
+    r.nH=pet.hunger;r.nE=pet.energy;r.nP=pet.happiness;
+    pet.lastVisit=now;save();return r;
+}
+
+function showAway(r){
+    if(!r||r.hours<0.05){document.getElementById('away-box').innerHTML='';return;}
+    var h=r.hours,ts=h>=1?Math.floor(h)+'h '+Math.round((h%1)*60)+'m':Math.round(h*60)+'m';
+    function d(o,n){var v=Math.round(n-o);return v>=0?'+'+v:''+v;}
+    function c(o,n){return n>=o?'pos':'neg';}
+    document.getElementById('away-box').innerHTML='<div class="away-report"><h3>While you were away ('+ts+')</h3>'+
+        '<div class="away-line"><span>🍖 Hunger</span><span class="change '+c(r.oH,r.nH)+'">'+d(r.oH,r.nH)+'% → '+r.nH+'%</span></div>'+
+        '<div class="away-line"><span>⚡ Energy</span><span class="change '+c(r.oE,r.nE)+'">'+d(r.oE,r.nE)+'% → '+r.nE+'%</span></div>'+
+        '<div class="away-line"><span>💖 Happy</span><span class="change '+c(r.oP,r.nP)+'">'+d(r.oP,r.nP)+'% → '+r.nP+'%</span></div></div>';
+    setTimeout(function(){document.getElementById('away-box').innerHTML='';},8000);
+}
+
+function updateUI(){
+    if(!pet)return;
+    document.getElementById('pet-emoji').textContent=pet.emoji;
+    document.getElementById('pet-name').textContent=pet.name;
+    document.getElementById('pet-level').textContent='Level '+pet.level;
+    var rar=getRarity(pet.level);
+    document.getElementById('pet-rarity').textContent=rar[2];
+    document.getElementById('pet-rarity').style.cssText='background:'+rar[3]+'22;color:'+rar[3];
+    document.getElementById('pet-card').className='pet-card rarity-'+rar[1];
+    var mood=getMood();
+    document.getElementById('pet-mood').textContent=mood[0]+' '+mood[1];
+    document.getElementById('pet-mood').style.color=mood[2];
+    var needed=xpForNext(pet.level),inLvl=xpInLevel(pet.level,pet.xp),pct=Math.min(100,needed>0?(inLvl/needed)*100:100);
+    document.getElementById('xp-fill').style.width=pct+'%';
+    document.getElementById('xp-text').textContent=inLvl+'/'+needed+' XP';
+    document.getElementById('xp-next').textContent='Level '+(pet.level+1);
+    function sb(id,val,vid){var el=document.getElementById(id);el.style.width=val+'%';el.style.background=val>60?'#44cc44':val>30?'#ddaa00':'#ff4444';document.getElementById(vid).textContent=Math.round(val)+'%';}
+    sb('bar-hunger',pet.hunger,'val-hunger');sb('bar-energy',pet.energy,'val-energy');sb('bar-happy',pet.happiness,'val-happy');
+    var ms=Date.now()-(pet.created||Date.now()),dd=Math.floor(ms/86400000),hh=Math.floor((ms%86400000)/3600000);
+    document.getElementById('pet-age').textContent=dd>0?dd+'d '+hh+'h':hh>0?hh+'h':'just now';
+}
+
+function updateCD(){
+    if(!pet)return;var now=Date.now();
+    function sc(a,cd,bi,ci){var rem=Math.max(0,(pet['last_'+a]||0)+cd-now),b=document.getElementById(bi),c=document.getElementById(ci);
+    b.classList.remove('ready','on-cooldown','no-energy');
+    if(rem>0){b.classList.add('on-cooldown');var m=Math.floor(rem/60000),s=Math.floor((rem%60000)/1000);c.textContent=m+':'+(s<10?'0':'')+s;c.classList.remove('ready-text');}
+    else if(a==='train'&&pet.energy<20){b.classList.add('no-energy');c.textContent='Need energy';c.classList.remove('ready-text');}
+    else{b.classList.add('ready');c.textContent='Ready!';c.classList.add('ready-text');}}
+    sc('feed',CD_FEED,'btn-feed','cd-feed');sc('train',CD_TRAIN,'btn-train','cd-train');sc('rest',CD_REST,'btn-rest','cd-rest');
+}
+
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}
+
+function confetti(){
+    var c=document.getElementById('lvl-confetti');c.innerHTML='';
+    var cols=['#ff5c87','#7c5cff','#00d2b4','#ffcc00','#ff6b6b','#50c8ff','#60dd60','#ffa040','#aa44ff','#ffaa00'];
+    for(var i=0;i<50;i++){var p=document.createElement('div');p.className='c';p.style.left=Math.random()*100+'%';p.style.top='-10px';p.style.background=cols[i%cols.length];p.style.animationDelay=Math.random()*0.8+'s';p.style.width=(5+Math.random()*8)+'px';p.style.height=p.style.width;c.appendChild(p);}
+    setTimeout(function(){c.innerHTML='';},3000);
+}
+
+function showLevelUp(lv,oldR,newR){
+    document.getElementById('lvl-text').textContent='LEVEL '+lv+'!';
+    document.getElementById('lvl-sub').textContent=pet.name+' grew stronger!';
+    document.getElementById('lvl-rarity').innerHTML=oldR[1]!==newR[1]?'Evolved to <span style="color:'+newR[3]+'">'+newR[2]+'</span>!':'';
+    document.getElementById('levelup').classList.add('show');confetti();
+    if(typeof gtag!=='undefined')gtag('event','pet_levelup',{level:lv,rarity:newR[1],game:pet.game});
+    setTimeout(function(){document.getElementById('levelup').classList.remove('show');},2800);
+}
+
+window._doAction=function(action){
+    if(!pet)return;var now=Date.now(),cd={feed:CD_FEED,train:CD_TRAIN,rest:CD_REST};
+    if(now-(pet['last_'+action]||0)<cd[action])return;
+    if(action==='train'&&pet.energy<20){toast('Not enough energy! Rest first.');return;}
+    var oldLv=pet.level,oldR=getRarity(oldLv),msgs,res='';
+    if(action==='feed'){pet.hunger=Math.min(100,pet.hunger+25);pet.happiness=Math.min(100,pet.happiness+5);msgs=FEED_MSGS;}
+    else if(action==='train'){var xp=15+Math.floor(Math.random()*11);pet.xp+=xp;pet.energy=Math.max(0,pet.energy-20);pet.hunger=Math.max(0,pet.hunger-10);pet.level=levelFromXp(pet.xp);msgs=TRAIN_MSGS;res='+'+xp+' XP! ';}
+    else{pet.energy=Math.min(100,pet.energy+40);pet.happiness=Math.min(100,pet.happiness+10);msgs=REST_MSGS;}
+    pet['last_'+action]=now;pet.lastVisit=now;save();updateUI();updateCD();
+    toast(res+pet.name+' '+msgs[Math.floor(Math.random()*msgs.length)]);
+    if(typeof gtag!=='undefined')gtag('event','pet_action',{action:action,game:pet.game,level:pet.level});
+    if(pet.level>oldLv)setTimeout(function(){showLevelUp(pet.level,oldR,getRarity(pet.level));},400);
+};
+
+window._startAdopt=function(game){
+    var g=GAMES[game],pick=g.chars[Math.floor(Math.random()*g.chars.length)];
+    show('screen-hatch');
+    if(typeof gtag!=='undefined')gtag('event','pet_adopt_start',{game:game});
+    setTimeout(function(){document.getElementById('hatch-egg').style.animation='none';document.getElementById('hatch-egg').textContent='✨';document.getElementById('hatch-text').textContent='Here they come...';},2000);
+    setTimeout(function(){
+        pet={game:game,emoji:pick[0],name:pick[1],level:1,xp:0,hunger:50,energy:100,happiness:70,created:Date.now(),lastVisit:Date.now(),last_feed:0,last_train:0,last_rest:0};
+        save();show('screen-pet');updateUI();updateCD();toast('Welcome, '+pet.name+'!');confetti();
+        if(typeof gtag!=='undefined')gtag('event','pet_adopted',{game:game,character:pick[1]});
+    },3500);
+};
+
+window._releasePet=function(){
+    if(!confirm('Release '+pet.name+'? This cannot be undone.'))return;
+    localStorage.removeItem(KEY);pet=null;show('screen-pick');
+};
+
+(function init(){
+    load();
+    if(pet){var r=calcOffline();show('screen-pet');updateUI();updateCD();if(r)showAway(r);}
+    else{var p=new URLSearchParams(window.location.search),g=p.get('game');if(g&&GAMES[g])window._startAdopt(g);else show('screen-pick');}
+    setInterval(updateCD,1000);
+})();
 </script>
 </body>
 </html>
