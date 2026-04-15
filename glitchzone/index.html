@@ -7,7 +7,7 @@
     <meta name="description" content="The wildest exploits, bugs, and glitches across every game.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
     <style>
@@ -29,21 +29,56 @@
         .section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
         .item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.8rem}
         .item h3{font-size:1rem;font-weight:700;margin-bottom:.3rem}.item p{color:var(--muted);font-size:.88rem;line-height:1.55}
+
         .gen-section{max-width:720px;margin:0 auto;padding:1rem 1.5rem 2rem}
         .gen-section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);text-align:center}
-        .gen-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;text-align:center}
-        .gen-card h3{font-size:1.05rem;font-weight:700;margin-bottom:1rem}
-        .gen-btn{background:var(--accent);color:#111;border:none;padding:.75rem 2rem;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
-        .gen-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,255,128,.12)}
-        .gen-again{background:var(--border);color:var(--text);margin-top:1rem;font-size:.85rem;padding:.6rem 1.5rem}
-        .gen-again:hover{background:var(--accent);color:#111}
-        .gen-loader{margin:1.2rem 0}
-        .gen-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-        .gen-bar-fill{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s ease}
-        .gen-status{color:var(--muted);font-size:.82rem;margin-top:.5rem;font-style:italic}
-        .gen-result{font-size:1.1rem;font-weight:600;color:#fff;padding:1.2rem;margin-top:1rem;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:12px;line-height:1.5}
-        .gen-result.pop{animation:popIn .35s ease}
-        @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+        .gen-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:2rem 1.5rem;margin-bottom:1.2rem;text-align:center;position:relative;overflow:hidden;transition:border-color .4s,box-shadow .4s}
+        .gen-card.active{border-color:var(--accent);box-shadow:0 0 30px rgba(0,255,128,.12),0 0 60px rgba(0,255,128,.12)}
+        .gen-card h3{font-size:1.15rem;font-weight:800;margin-bottom:1.2rem;letter-spacing:-.01em}
+        .gen-btn{background:var(--accent);color:#111;border:none;padding:.85rem 2.4rem;border-radius:50px;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .15s;letter-spacing:.01em}
+        .gen-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 25px rgba(0,255,128,.12)}
+        .gen-btn:active{transform:scale(.97)}
+        .gen-again{background:transparent;color:var(--text);margin-top:1.2rem;font-size:.88rem;padding:.65rem 1.8rem;border:1px solid var(--border)}
+        .gen-again:hover{background:var(--accent);color:#111;border-color:var(--accent)}
+
+        .gen-stage{margin:1.5rem 0 .5rem;min-height:80px}
+        .gen-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;margin:0 auto .8rem;animation:spin .6s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .gen-scramble{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);min-height:1.4em;letter-spacing:.02em;opacity:.7}
+        .gen-status{color:var(--muted);font-size:.78rem;margin-top:.6rem;font-style:italic}
+
+        .gen-result-wrap{margin-top:1.2rem;perspective:800px}
+        .gen-result-inner{font-size:1.2rem;font-weight:700;color:#fff;padding:1.5rem 1.2rem;border-radius:14px;line-height:1.5;position:relative}
+        .gen-result-inner.style-spin{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--accent);animation:resultSlam .4s cubic-bezier(.17,.67,.29,1.4)}
+        .gen-result-inner.style-loot{border:2px solid;animation:lootReveal .5s ease}
+        .gen-result-inner.style-meter{background:var(--bg);border:1px solid var(--border);padding:0;overflow:hidden;border-radius:14px}
+        .gen-result-inner.style-type{background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);font-family:'Inter',sans-serif;font-weight:500;font-size:1.05rem;text-align:left}
+        .gen-result-inner.style-flip{animation:cardFlip .6s ease;transform-origin:center;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--accent)}
+        .gen-result-inner.style-reveal{background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--accent);animation:resultSlam .4s ease}
+
+        .meter-bar-outer{height:48px;background:var(--card);position:relative}
+        .meter-bar-inner{height:100%;transition:width 1.5s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:flex-end;padding-right:12px;font-weight:800;font-size:1.1rem;color:#111}
+        .meter-label{padding:1rem;font-weight:700;font-size:1rem}
+
+        .loot-common .gen-result-inner{border-color:#888;color:#aaa}
+        .loot-uncommon .gen-result-inner{border-color:#44cc44;color:#66ee66;box-shadow:0 0 15px rgba(68,204,68,.2)}
+        .loot-rare .gen-result-inner{border-color:#4488ff;color:#66aaff;box-shadow:0 0 20px rgba(68,136,255,.25)}
+        .loot-epic .gen-result-inner{border-color:#aa44ff;color:#cc77ff;box-shadow:0 0 25px rgba(170,68,255,.3)}
+        .loot-legendary .gen-result-inner{border-color:#ffaa00;color:#ffcc44;box-shadow:0 0 30px rgba(255,170,0,.35),0 0 60px rgba(255,170,0,.15)}
+        .loot-mythic .gen-result-inner{border-color:#ff2244;color:#ff6677;box-shadow:0 0 40px rgba(255,34,68,.4),0 0 80px rgba(255,34,68,.2)}
+        .loot-rarity-tag{display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;padding:.25rem .7rem;border-radius:50px;font-weight:800;margin-bottom:.6rem}
+
+        @keyframes resultSlam{0%{transform:scale(0)translateY(20px);opacity:0}60%{transform:scale(1.05)translateY(-5px)}100%{transform:scale(1)translateY(0);opacity:1}}
+        @keyframes lootReveal{0%{transform:scale(0)rotateY(90deg);opacity:0}50%{transform:scale(1.1)rotateY(-10deg)}100%{transform:scale(1)rotateY(0);opacity:1}}
+        @keyframes cardFlip{0%{transform:rotateY(180deg)scale(.8);opacity:0}100%{transform:rotateY(0)scale(1);opacity:1}}
+        @keyframes typeChar{from{width:0}to{width:100%}}
+        @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+        .shake{animation:shake .4s ease}
+
+        .confetti-container{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+        .confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards;opacity:0}
+        @keyframes confettiFall{0%{transform:translateY(0)rotate(0deg)scale(0);opacity:1}50%{opacity:1}100%{transform:translateY(200px)rotate(720deg)scale(1);opacity:0}}
+
         .discord-box{background:linear-gradient(135deg,rgba(88,101,242,.12),rgba(88,101,242,.04));border:1px solid rgba(88,101,242,.25);border-radius:14px;padding:1.8rem;text-align:center;margin:2rem auto;max-width:720px}
         .discord-box h2{color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;text-transform:none;letter-spacing:normal}
         .discord-box p{color:var(--muted);font-size:.9rem;margin-bottom:1rem;max-width:480px;margin-left:auto;margin-right:auto}
@@ -78,34 +113,42 @@
 <div class="gen-section">
     <h2>Try These</h2>
 
-    <div class="gen-card" id="gen-glitch_name">
+    <div class="gen-card" id="gen-glitch_name" data-style="spin">
         <h3>Glitch Name Generator</h3>
-        <button class="gen-btn" onclick="runGen_glitch_name()">
+        <button class="gen-btn" id="btn-glitch_name" onclick="runGen_glitch_name()">
             Generate Glitch
         </button>
-        <div class="gen-loader" id="loader-glitch_name" style="display:none">
-            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
-            <p class="gen-status" id="status-glitch_name">Loading...</p>
+        <div class="gen-stage" id="stage-glitch_name" style="display:none">
+            <div class="gen-spinner"></div>
+            <div class="gen-scramble" id="scramble-glitch_name"></div>
+            <p class="gen-status" id="status-glitch_name"></p>
         </div>
-        <div class="gen-result" id="result-glitch_name" style="display:none"></div>
+        <div class="gen-result-wrap" id="result-glitch_name" style="display:none">
+            <div class="gen-result-inner" id="inner-glitch_name"></div>
+        </div>
         <button class="gen-btn gen-again" id="again-glitch_name" style="display:none" onclick="runGen_glitch_name()">
-            Generate Again
+            Go Again
         </button>
+        <div class="confetti-container" id="confetti-glitch_name"></div>
     </div>
 
-    <div class="gen-card" id="gen-glitch_challenge">
+    <div class="gen-card" id="gen-glitch_challenge" data-style="spin">
         <h3>Random Glitch Challenge</h3>
-        <button class="gen-btn" onclick="runGen_glitch_challenge()">
+        <button class="gen-btn" id="btn-glitch_challenge" onclick="runGen_glitch_challenge()">
             Get Challenge
         </button>
-        <div class="gen-loader" id="loader-glitch_challenge" style="display:none">
-            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
-            <p class="gen-status" id="status-glitch_challenge">Loading...</p>
+        <div class="gen-stage" id="stage-glitch_challenge" style="display:none">
+            <div class="gen-spinner"></div>
+            <div class="gen-scramble" id="scramble-glitch_challenge"></div>
+            <p class="gen-status" id="status-glitch_challenge"></p>
         </div>
-        <div class="gen-result" id="result-glitch_challenge" style="display:none"></div>
+        <div class="gen-result-wrap" id="result-glitch_challenge" style="display:none">
+            <div class="gen-result-inner" id="inner-glitch_challenge"></div>
+        </div>
         <button class="gen-btn gen-again" id="again-glitch_challenge" style="display:none" onclick="runGen_glitch_challenge()">
-            Generate Again
+            Go Again
         </button>
+        <div class="confetti-container" id="confetti-glitch_challenge"></div>
     </div>
 
 </div>
@@ -121,67 +164,166 @@
 </footer>
 
 <script>
+function _spawnConfetti(containerId){
+    var c=document.getElementById(containerId);if(!c)return;
+    c.innerHTML='';
+    var colors=['#ff5c87','#7c5cff','#00d2b4','#ffcc00','#ff6b6b','#50c8ff','#60dd60','#ffa040'];
+    for(var i=0;i<30;i++){
+        var p=document.createElement('div');p.className='confetti-piece';
+        p.style.left=Math.random()*100+'%';p.style.top=Math.random()*30+'%';
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDelay=Math.random()*0.5+'s';
+        p.style.width=(4+Math.random()*8)+'px';p.style.height=(4+Math.random()*8)+'px';
+        c.appendChild(p);
+    }
+}
+
+function _getLootRarity(text){
+    var t=text.toUpperCase();
+    if(t.indexOf('MYTHIC')===0)return 'mythic';
+    if(t.indexOf('LEGENDARY')===0)return 'legendary';
+    if(t.indexOf('EPIC')===0)return 'epic';
+    if(t.indexOf('RARE')===0)return 'rare';
+    if(t.indexOf('UNCOMMON')===0)return 'uncommon';
+    return 'common';
+}
+
+var _lootColors={common:'#888',uncommon:'#44cc44',rare:'#4488ff',epic:'#aa44ff',legendary:'#ffaa00',mythic:'#ff2244'};
+
+function _typewriterEffect(el,text,speed){
+    el.textContent='';el.style.display='block';
+    var i=0;var iv=setInterval(function(){
+        if(i>=text.length){clearInterval(iv);return;}
+        el.textContent+=text[i];i++;
+    },speed||25);
+}
+
+function _runGenerator(id,pool,msgs,style,slug,genType){
+    var card=document.getElementById('gen-'+id);
+    var btn=document.getElementById('btn-'+id);
+    var stage=document.getElementById('stage-'+id);
+    var scramble=document.getElementById('scramble-'+id);
+    var status=document.getElementById('status-'+id);
+    var resultWrap=document.getElementById('result-'+id);
+    var inner=document.getElementById('inner-'+id);
+    var again=document.getElementById('again-'+id);
+
+    btn.style.display='none';again.style.display='none';resultWrap.style.display='none';
+    stage.style.display='block';card.classList.add('active');
+    card.className=card.className.replace(/loot-\w+/g,'').trim();
+
+    var pick=pool[Math.floor(Math.random()*pool.length)];
+    var step=0;
+
+    if(style==='spin'){
+        var scrambleIv=setInterval(function(){
+            scramble.textContent=pool[Math.floor(Math.random()*pool.length)].substring(0,40);
+        },80);
+        status.textContent=msgs[0];
+        var msgIv=setInterval(function(){
+            step++;if(step>=msgs.length){step=msgs.length-1;}
+            status.textContent=msgs[step];
+        },400);
+        setTimeout(function(){
+            clearInterval(scrambleIv);clearInterval(msgIv);
+            scramble.textContent='';stage.style.display='none';
+            inner.className='gen-result-inner style-spin';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');card.classList.add('shake');
+            setTimeout(function(){card.classList.remove('shake');},400);
+            _spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+600);
+
+    }else if(style==='loot'){
+        scramble.textContent='Opening...';
+        status.textContent=msgs[0];
+        var msgIv2=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv2);stage.style.display='none';
+            var rarity=_getLootRarity(pick);
+            card.classList.add('loot-'+rarity);
+            var rarityLabel=rarity.toUpperCase();
+            var color=_lootColors[rarity]||'#888';
+            inner.className='gen-result-inner style-loot';
+            inner.innerHTML='<span class="loot-rarity-tag" style="background:'+color+'22;color:'+color+'">'+rarityLabel+'</span><br>'+pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');
+            if(rarity==='legendary'||rarity==='mythic'||rarity==='epic')_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+500);
+
+    }else if(style==='meter'){
+        scramble.textContent='Measuring...';
+        status.textContent=msgs[0];
+        var msgIv3=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},400);
+        setTimeout(function(){
+            clearInterval(msgIv3);stage.style.display='none';
+            var parts=pick.match(/(\d+\.?\d*)\/10/);
+            var val=parts?parseFloat(parts[1]):5;
+            var pct=Math.min(val/10*100,100);
+            var hue=120-(val/10*120);
+            var barColor='hsl('+hue+',80%,50%)';
+            inner.className='gen-result-inner style-meter';
+            inner.innerHTML='<div class="meter-bar-outer"><div class="meter-bar-inner" id="mbar-'+id+'" style="width:0%;background:'+barColor+'">'+val+'/10</div></div><div class="meter-label">'+pick.replace(/\d+\.?\d*\/10\s*--?\s*/,'')+'</div>';
+            resultWrap.style.display='block';
+            setTimeout(function(){document.getElementById('mbar-'+id).style.width=pct+'%';},50);
+            again.style.display='inline-block';card.classList.remove('active');
+            if(val>=8)_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+500);
+
+    }else if(style==='type'){
+        scramble.textContent='';
+        status.textContent=msgs[0];
+        var msgIv4=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv4);stage.style.display='none';
+            inner.className='gen-result-inner style-type';inner.textContent='';
+            resultWrap.style.display='block';
+            _typewriterEffect(inner,pick,30);
+            again.style.display='inline-block';card.classList.remove('active');
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+400);
+
+    }else if(style==='flip'){
+        scramble.textContent='?';scramble.style.fontSize='2rem';
+        status.textContent=msgs[0];
+        var msgIv5=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},400);
+        setTimeout(function(){
+            clearInterval(msgIv5);scramble.style.fontSize='';stage.style.display='none';
+            inner.className='gen-result-inner style-flip';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+600);
+
+    }else if(style==='reveal'){
+        scramble.textContent='';
+        status.textContent=msgs[0];
+        var msgIv6=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv6);stage.style.display='none';
+            inner.className='gen-result-inner style-reveal';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+400);
+    }
+}
 
 function runGen_glitch_name() {
-    var pool = ["The Phantom Wall Clip", "Infinite Jump Cascade", "Shadow Realm Teleport", "The Backwards Long Jump", "Null Pointer Noclip", "Texture Corruption Warp", "Out of Bounds Void Skip", "The Invisible Hitbox", "Memory Leak Duplication", "The Respawn Loop", "Gravity Inversion Bug", "The Unloaded Chunk Exploit", "Animation Cancel Dash", "The Floating Point Error", "Desync Teleportation", "The Frozen Timer Glitch", "Collision Mesh Bypass", "Ragdoll Physics Break", "The God Mode Overflow", "Inventory Corruption Dupe", "The Boundary Break", "Asset Streaming Exploit", "The Camera Clip Trick", "Server Tick Manipulation", "The Negative Health Bug", "Render Distance Abuse", "The Checkpoint Warp", "Input Buffer Overflow", "The Shadow Clone Glitch", "Map Geometry Exploit", "The Zero Gravity Bug", "Packet Loss Teleport"];
-    var msgs = ["Scanning memory addresses...", "Corrupting save data...", "Bypassing anti-cheat...", "Injecting exploit code...", "Overflowing the buffer..."];
-    var loader = document.getElementById('loader-glitch_name');
-    var result = document.getElementById('result-glitch_name');
-    var again = document.getElementById('again-glitch_name');
-    var status = document.getElementById('status-glitch_name');
-    var bar = loader.querySelector('.gen-bar-fill');
-    result.style.display='none'; again.style.display='none';
-    loader.style.display='block'; bar.style.width='0%';
-    var step=0, total=msgs.length;
-    status.textContent=msgs[0];
-    var iv=setInterval(function(){
-        step++;
-        if(step>=total){
-            clearInterval(iv); bar.style.width='100%';
-            setTimeout(function(){
-                loader.style.display='none';
-                result.textContent=pool[Math.floor(Math.random()*pool.length)];
-                result.style.display='block';
-                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
-                again.style.display='inline-block';
-                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'glitchzone_glitch_name',channel:'glitchzone',generator_type:'glitch_name'});
-            },300);
-            return;
-        }
-        bar.style.width=((step/total)*100)+'%';
-        status.textContent=msgs[step];
-    },500);
+    var pool=["The Phantom Wall Clip", "Infinite Jump Cascade", "Shadow Realm Teleport", "The Backwards Long Jump", "Null Pointer Noclip", "Texture Corruption Warp", "Out of Bounds Void Skip", "The Invisible Hitbox", "Memory Leak Duplication", "The Respawn Loop", "Gravity Inversion Bug", "The Unloaded Chunk Exploit", "Animation Cancel Dash", "The Floating Point Error", "Desync Teleportation", "The Frozen Timer Glitch", "Collision Mesh Bypass", "Ragdoll Physics Break", "The God Mode Overflow", "Inventory Corruption Dupe", "The Boundary Break", "Asset Streaming Exploit", "The Camera Clip Trick", "Server Tick Manipulation", "The Negative Health Bug", "Render Distance Abuse", "The Checkpoint Warp", "Input Buffer Overflow", "The Shadow Clone Glitch", "Map Geometry Exploit", "The Zero Gravity Bug", "Packet Loss Teleport"];
+    var msgs=["Scanning memory addresses...", "Corrupting save data...", "Bypassing anti-cheat...", "Injecting exploit code...", "Overflowing the buffer..."];
+    var style="spin";
+    _runGenerator("glitch_name",pool,msgs,style,"glitchzone","glitch_name");
 }
 
 function runGen_glitch_challenge() {
-    var pool = ["Beat a boss using only glitched weapons", "Clip through 5 walls in under 60 seconds", "Complete a level entirely out of bounds", "Win a match while invisible", "Duplicate an item without getting caught", "Skip an entire area using a single glitch", "Reach the final boss in under 3 minutes using exploits", "Play an entire session upside down (camera glitch)", "Beat a raid using only unpatched bugs", "Get to the map boundary and survive for 5 minutes", "Win a PvP fight using only movement glitches", "Complete a speedrun category using a newly found skip", "Stack 3 different glitches in one run", "Clip into a developer room nobody was meant to see", "Beat the tutorial using an end-game exploit", "Trigger 10 different glitches in a single session", "Find a glitch that hasn't been documented yet", "Use a physics bug to launch yourself across the map", "Complete a no-damage run using only bugs", "Break the game's economy with a single dupe glitch"];
-    var msgs = ["Loading challenge parameters...", "Calibrating difficulty...", "Selecting game..."];
-    var loader = document.getElementById('loader-glitch_challenge');
-    var result = document.getElementById('result-glitch_challenge');
-    var again = document.getElementById('again-glitch_challenge');
-    var status = document.getElementById('status-glitch_challenge');
-    var bar = loader.querySelector('.gen-bar-fill');
-    result.style.display='none'; again.style.display='none';
-    loader.style.display='block'; bar.style.width='0%';
-    var step=0, total=msgs.length;
-    status.textContent=msgs[0];
-    var iv=setInterval(function(){
-        step++;
-        if(step>=total){
-            clearInterval(iv); bar.style.width='100%';
-            setTimeout(function(){
-                loader.style.display='none';
-                result.textContent=pool[Math.floor(Math.random()*pool.length)];
-                result.style.display='block';
-                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
-                again.style.display='inline-block';
-                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'glitchzone_glitch_challenge',channel:'glitchzone',generator_type:'glitch_challenge'});
-            },300);
-            return;
-        }
-        bar.style.width=((step/total)*100)+'%';
-        status.textContent=msgs[step];
-    },500);
+    var pool=["Beat a boss using only glitched weapons", "Clip through 5 walls in under 60 seconds", "Complete a level entirely out of bounds", "Win a match while invisible", "Duplicate an item without getting caught", "Skip an entire area using a single glitch", "Reach the final boss in under 3 minutes using exploits", "Play an entire session upside down (camera glitch)", "Beat a raid using only unpatched bugs", "Get to the map boundary and survive for 5 minutes", "Win a PvP fight using only movement glitches", "Complete a speedrun category using a newly found skip", "Stack 3 different glitches in one run", "Clip into a developer room nobody was meant to see", "Beat the tutorial using an end-game exploit", "Trigger 10 different glitches in a single session", "Find a glitch that hasn't been documented yet", "Use a physics bug to launch yourself across the map", "Complete a no-damage run using only bugs", "Break the game's economy with a single dupe glitch"];
+    var msgs=["Loading challenge parameters...", "Calibrating difficulty...", "Selecting game..."];
+    var style="spin";
+    _runGenerator("glitch_challenge",pool,msgs,style,"glitchzone","glitch_challenge");
 }
 
 </script>

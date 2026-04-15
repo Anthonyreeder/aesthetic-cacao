@@ -7,7 +7,7 @@
     <meta name="description" content="Awkward moments, relatable fails, and Gerald being Gerald.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V3Q88DLJ8K"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V3Q88DLJ8K');</script>
     <style>
@@ -29,21 +29,56 @@
         .section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
         .item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.8rem}
         .item h3{font-size:1rem;font-weight:700;margin-bottom:.3rem}.item p{color:var(--muted);font-size:.88rem;line-height:1.55}
+
         .gen-section{max-width:720px;margin:0 auto;padding:1rem 1.5rem 2rem}
         .gen-section h2{font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);text-align:center}
-        .gen-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;text-align:center}
-        .gen-card h3{font-size:1.05rem;font-weight:700;margin-bottom:1rem}
-        .gen-btn{background:var(--accent);color:#111;border:none;padding:.75rem 2rem;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
-        .gen-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(119,221,0,.12)}
-        .gen-again{background:var(--border);color:var(--text);margin-top:1rem;font-size:.85rem;padding:.6rem 1.5rem}
-        .gen-again:hover{background:var(--accent);color:#111}
-        .gen-loader{margin:1.2rem 0}
-        .gen-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-        .gen-bar-fill{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s ease}
-        .gen-status{color:var(--muted);font-size:.82rem;margin-top:.5rem;font-style:italic}
-        .gen-result{font-size:1.1rem;font-weight:600;color:#fff;padding:1.2rem;margin-top:1rem;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:12px;line-height:1.5}
-        .gen-result.pop{animation:popIn .35s ease}
-        @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+        .gen-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:2rem 1.5rem;margin-bottom:1.2rem;text-align:center;position:relative;overflow:hidden;transition:border-color .4s,box-shadow .4s}
+        .gen-card.active{border-color:var(--accent);box-shadow:0 0 30px rgba(119,221,0,.12),0 0 60px rgba(119,221,0,.12)}
+        .gen-card h3{font-size:1.15rem;font-weight:800;margin-bottom:1.2rem;letter-spacing:-.01em}
+        .gen-btn{background:var(--accent);color:#111;border:none;padding:.85rem 2.4rem;border-radius:50px;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .15s;letter-spacing:.01em}
+        .gen-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 25px rgba(119,221,0,.12)}
+        .gen-btn:active{transform:scale(.97)}
+        .gen-again{background:transparent;color:var(--text);margin-top:1.2rem;font-size:.88rem;padding:.65rem 1.8rem;border:1px solid var(--border)}
+        .gen-again:hover{background:var(--accent);color:#111;border-color:var(--accent)}
+
+        .gen-stage{margin:1.5rem 0 .5rem;min-height:80px}
+        .gen-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;margin:0 auto .8rem;animation:spin .6s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .gen-scramble{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);min-height:1.4em;letter-spacing:.02em;opacity:.7}
+        .gen-status{color:var(--muted);font-size:.78rem;margin-top:.6rem;font-style:italic}
+
+        .gen-result-wrap{margin-top:1.2rem;perspective:800px}
+        .gen-result-inner{font-size:1.2rem;font-weight:700;color:#fff;padding:1.5rem 1.2rem;border-radius:14px;line-height:1.5;position:relative}
+        .gen-result-inner.style-spin{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--accent);animation:resultSlam .4s cubic-bezier(.17,.67,.29,1.4)}
+        .gen-result-inner.style-loot{border:2px solid;animation:lootReveal .5s ease}
+        .gen-result-inner.style-meter{background:var(--bg);border:1px solid var(--border);padding:0;overflow:hidden;border-radius:14px}
+        .gen-result-inner.style-type{background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);font-family:'Inter',sans-serif;font-weight:500;font-size:1.05rem;text-align:left}
+        .gen-result-inner.style-flip{animation:cardFlip .6s ease;transform-origin:center;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--accent)}
+        .gen-result-inner.style-reveal{background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--accent);animation:resultSlam .4s ease}
+
+        .meter-bar-outer{height:48px;background:var(--card);position:relative}
+        .meter-bar-inner{height:100%;transition:width 1.5s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:flex-end;padding-right:12px;font-weight:800;font-size:1.1rem;color:#111}
+        .meter-label{padding:1rem;font-weight:700;font-size:1rem}
+
+        .loot-common .gen-result-inner{border-color:#888;color:#aaa}
+        .loot-uncommon .gen-result-inner{border-color:#44cc44;color:#66ee66;box-shadow:0 0 15px rgba(68,204,68,.2)}
+        .loot-rare .gen-result-inner{border-color:#4488ff;color:#66aaff;box-shadow:0 0 20px rgba(68,136,255,.25)}
+        .loot-epic .gen-result-inner{border-color:#aa44ff;color:#cc77ff;box-shadow:0 0 25px rgba(170,68,255,.3)}
+        .loot-legendary .gen-result-inner{border-color:#ffaa00;color:#ffcc44;box-shadow:0 0 30px rgba(255,170,0,.35),0 0 60px rgba(255,170,0,.15)}
+        .loot-mythic .gen-result-inner{border-color:#ff2244;color:#ff6677;box-shadow:0 0 40px rgba(255,34,68,.4),0 0 80px rgba(255,34,68,.2)}
+        .loot-rarity-tag{display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;padding:.25rem .7rem;border-radius:50px;font-weight:800;margin-bottom:.6rem}
+
+        @keyframes resultSlam{0%{transform:scale(0)translateY(20px);opacity:0}60%{transform:scale(1.05)translateY(-5px)}100%{transform:scale(1)translateY(0);opacity:1}}
+        @keyframes lootReveal{0%{transform:scale(0)rotateY(90deg);opacity:0}50%{transform:scale(1.1)rotateY(-10deg)}100%{transform:scale(1)rotateY(0);opacity:1}}
+        @keyframes cardFlip{0%{transform:rotateY(180deg)scale(.8);opacity:0}100%{transform:rotateY(0)scale(1);opacity:1}}
+        @keyframes typeChar{from{width:0}to{width:100%}}
+        @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+        .shake{animation:shake .4s ease}
+
+        .confetti-container{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+        .confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards;opacity:0}
+        @keyframes confettiFall{0%{transform:translateY(0)rotate(0deg)scale(0);opacity:1}50%{opacity:1}100%{transform:translateY(200px)rotate(720deg)scale(1);opacity:0}}
+
         .discord-box{background:linear-gradient(135deg,rgba(88,101,242,.12),rgba(88,101,242,.04));border:1px solid rgba(88,101,242,.25);border-radius:14px;padding:1.8rem;text-align:center;margin:2rem auto;max-width:720px}
         .discord-box h2{color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.5rem;text-transform:none;letter-spacing:normal}
         .discord-box p{color:var(--muted);font-size:.9rem;margin-bottom:1rem;max-width:480px;margin-left:auto;margin-right:auto}
@@ -73,34 +108,42 @@
 <div class="gen-section">
     <h2>Try These</h2>
 
-    <div class="gen-card" id="gen-gerald_moment">
+    <div class="gen-card" id="gen-gerald_moment" data-style="type">
         <h3>Gerald Moment Generator</h3>
-        <button class="gen-btn" onclick="runGen_gerald_moment()">
+        <button class="gen-btn" id="btn-gerald_moment" onclick="runGen_gerald_moment()">
             What Did Gerald Do?
         </button>
-        <div class="gen-loader" id="loader-gerald_moment" style="display:none">
-            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
-            <p class="gen-status" id="status-gerald_moment">Loading...</p>
+        <div class="gen-stage" id="stage-gerald_moment" style="display:none">
+            <div class="gen-spinner"></div>
+            <div class="gen-scramble" id="scramble-gerald_moment"></div>
+            <p class="gen-status" id="status-gerald_moment"></p>
         </div>
-        <div class="gen-result" id="result-gerald_moment" style="display:none"></div>
+        <div class="gen-result-wrap" id="result-gerald_moment" style="display:none">
+            <div class="gen-result-inner" id="inner-gerald_moment"></div>
+        </div>
         <button class="gen-btn gen-again" id="again-gerald_moment" style="display:none" onclick="runGen_gerald_moment()">
-            Generate Again
+            Go Again
         </button>
+        <div class="confetti-container" id="confetti-gerald_moment"></div>
     </div>
 
-    <div class="gen-card" id="gen-awkward_scenario">
+    <div class="gen-card" id="gen-awkward_scenario" data-style="type">
         <h3>Awkward Scenario Generator</h3>
-        <button class="gen-btn" onclick="runGen_awkward_scenario()">
+        <button class="gen-btn" id="btn-awkward_scenario" onclick="runGen_awkward_scenario()">
             Generate Scenario
         </button>
-        <div class="gen-loader" id="loader-awkward_scenario" style="display:none">
-            <div class="gen-bar"><div class="gen-bar-fill"></div></div>
-            <p class="gen-status" id="status-awkward_scenario">Loading...</p>
+        <div class="gen-stage" id="stage-awkward_scenario" style="display:none">
+            <div class="gen-spinner"></div>
+            <div class="gen-scramble" id="scramble-awkward_scenario"></div>
+            <p class="gen-status" id="status-awkward_scenario"></p>
         </div>
-        <div class="gen-result" id="result-awkward_scenario" style="display:none"></div>
+        <div class="gen-result-wrap" id="result-awkward_scenario" style="display:none">
+            <div class="gen-result-inner" id="inner-awkward_scenario"></div>
+        </div>
         <button class="gen-btn gen-again" id="again-awkward_scenario" style="display:none" onclick="runGen_awkward_scenario()">
-            Generate Again
+            Go Again
         </button>
+        <div class="confetti-container" id="confetti-awkward_scenario"></div>
     </div>
 
 </div>
@@ -116,67 +159,166 @@
 </footer>
 
 <script>
+function _spawnConfetti(containerId){
+    var c=document.getElementById(containerId);if(!c)return;
+    c.innerHTML='';
+    var colors=['#ff5c87','#7c5cff','#00d2b4','#ffcc00','#ff6b6b','#50c8ff','#60dd60','#ffa040'];
+    for(var i=0;i<30;i++){
+        var p=document.createElement('div');p.className='confetti-piece';
+        p.style.left=Math.random()*100+'%';p.style.top=Math.random()*30+'%';
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDelay=Math.random()*0.5+'s';
+        p.style.width=(4+Math.random()*8)+'px';p.style.height=(4+Math.random()*8)+'px';
+        c.appendChild(p);
+    }
+}
+
+function _getLootRarity(text){
+    var t=text.toUpperCase();
+    if(t.indexOf('MYTHIC')===0)return 'mythic';
+    if(t.indexOf('LEGENDARY')===0)return 'legendary';
+    if(t.indexOf('EPIC')===0)return 'epic';
+    if(t.indexOf('RARE')===0)return 'rare';
+    if(t.indexOf('UNCOMMON')===0)return 'uncommon';
+    return 'common';
+}
+
+var _lootColors={common:'#888',uncommon:'#44cc44',rare:'#4488ff',epic:'#aa44ff',legendary:'#ffaa00',mythic:'#ff2244'};
+
+function _typewriterEffect(el,text,speed){
+    el.textContent='';el.style.display='block';
+    var i=0;var iv=setInterval(function(){
+        if(i>=text.length){clearInterval(iv);return;}
+        el.textContent+=text[i];i++;
+    },speed||25);
+}
+
+function _runGenerator(id,pool,msgs,style,slug,genType){
+    var card=document.getElementById('gen-'+id);
+    var btn=document.getElementById('btn-'+id);
+    var stage=document.getElementById('stage-'+id);
+    var scramble=document.getElementById('scramble-'+id);
+    var status=document.getElementById('status-'+id);
+    var resultWrap=document.getElementById('result-'+id);
+    var inner=document.getElementById('inner-'+id);
+    var again=document.getElementById('again-'+id);
+
+    btn.style.display='none';again.style.display='none';resultWrap.style.display='none';
+    stage.style.display='block';card.classList.add('active');
+    card.className=card.className.replace(/loot-\w+/g,'').trim();
+
+    var pick=pool[Math.floor(Math.random()*pool.length)];
+    var step=0;
+
+    if(style==='spin'){
+        var scrambleIv=setInterval(function(){
+            scramble.textContent=pool[Math.floor(Math.random()*pool.length)].substring(0,40);
+        },80);
+        status.textContent=msgs[0];
+        var msgIv=setInterval(function(){
+            step++;if(step>=msgs.length){step=msgs.length-1;}
+            status.textContent=msgs[step];
+        },400);
+        setTimeout(function(){
+            clearInterval(scrambleIv);clearInterval(msgIv);
+            scramble.textContent='';stage.style.display='none';
+            inner.className='gen-result-inner style-spin';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');card.classList.add('shake');
+            setTimeout(function(){card.classList.remove('shake');},400);
+            _spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+600);
+
+    }else if(style==='loot'){
+        scramble.textContent='Opening...';
+        status.textContent=msgs[0];
+        var msgIv2=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv2);stage.style.display='none';
+            var rarity=_getLootRarity(pick);
+            card.classList.add('loot-'+rarity);
+            var rarityLabel=rarity.toUpperCase();
+            var color=_lootColors[rarity]||'#888';
+            inner.className='gen-result-inner style-loot';
+            inner.innerHTML='<span class="loot-rarity-tag" style="background:'+color+'22;color:'+color+'">'+rarityLabel+'</span><br>'+pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');
+            if(rarity==='legendary'||rarity==='mythic'||rarity==='epic')_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+500);
+
+    }else if(style==='meter'){
+        scramble.textContent='Measuring...';
+        status.textContent=msgs[0];
+        var msgIv3=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},400);
+        setTimeout(function(){
+            clearInterval(msgIv3);stage.style.display='none';
+            var parts=pick.match(/(\d+\.?\d*)\/10/);
+            var val=parts?parseFloat(parts[1]):5;
+            var pct=Math.min(val/10*100,100);
+            var hue=120-(val/10*120);
+            var barColor='hsl('+hue+',80%,50%)';
+            inner.className='gen-result-inner style-meter';
+            inner.innerHTML='<div class="meter-bar-outer"><div class="meter-bar-inner" id="mbar-'+id+'" style="width:0%;background:'+barColor+'">'+val+'/10</div></div><div class="meter-label">'+pick.replace(/\d+\.?\d*\/10\s*--?\s*/,'')+'</div>';
+            resultWrap.style.display='block';
+            setTimeout(function(){document.getElementById('mbar-'+id).style.width=pct+'%';},50);
+            again.style.display='inline-block';card.classList.remove('active');
+            if(val>=8)_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+500);
+
+    }else if(style==='type'){
+        scramble.textContent='';
+        status.textContent=msgs[0];
+        var msgIv4=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv4);stage.style.display='none';
+            inner.className='gen-result-inner style-type';inner.textContent='';
+            resultWrap.style.display='block';
+            _typewriterEffect(inner,pick,30);
+            again.style.display='inline-block';card.classList.remove('active');
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+400);
+
+    }else if(style==='flip'){
+        scramble.textContent='?';scramble.style.fontSize='2rem';
+        status.textContent=msgs[0];
+        var msgIv5=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},400);
+        setTimeout(function(){
+            clearInterval(msgIv5);scramble.style.fontSize='';stage.style.display='none';
+            inner.className='gen-result-inner style-flip';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');_spawnConfetti('confetti-'+id);
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*400+600);
+
+    }else if(style==='reveal'){
+        scramble.textContent='';
+        status.textContent=msgs[0];
+        var msgIv6=setInterval(function(){step++;if(step<msgs.length)status.textContent=msgs[step];},500);
+        setTimeout(function(){
+            clearInterval(msgIv6);stage.style.display='none';
+            inner.className='gen-result-inner style-reveal';inner.textContent=pick;
+            resultWrap.style.display='block';again.style.display='inline-block';
+            card.classList.remove('active');
+            if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:slug+'_'+genType,channel:slug,generator_type:genType});
+        },msgs.length*500+400);
+    }
+}
 
 function runGen_gerald_moment() {
-    var pool = ["Gerald waved back at someone who wasn't waving at him. In a meeting.", "Gerald tried to push a pull door. Twice. While people watched.", "Gerald said 'you too' when the waiter said 'enjoy your meal.'", "Gerald accidentally liked a photo from 3 years ago while stalking someone.", "Gerald walked into a glass door at full speed in front of his crush.", "Gerald sent a text about someone... to that someone.", "Gerald confidently gave wrong directions to a tourist. For 5 minutes.", "Gerald tried to high-five someone who was reaching for something behind him.", "Gerald accidentally joined a zoom meeting with his camera on in bed.", "Gerald called his teacher 'mom' in high school. He was in college.", "Gerald laughed at a joke that wasn't a joke.", "Gerald said 'goodbye' on the phone and then kept talking.", "Gerald stood up to leave and walked the wrong direction. Twice.", "Gerald tried to be cool leaning on a wall. The wall was a door.", "Gerald wore his shirt inside out for an entire day and nobody told him.", "Gerald replied 'lol' to a serious message about someone's feelings.", "Gerald forgot someone's name 3 seconds after being introduced.", "Gerald tried to tell a joke. Nobody laughed. He explained it. Still nothing.", "Gerald accidentally screen-shared his search history in a presentation.", "Gerald pointed at someone and said 'that's the guy' when the guy was standing right behind him."];
-    var msgs = ["Gerald is thinking...", "This can't end well...", "Gerald has entered the chat..."];
-    var loader = document.getElementById('loader-gerald_moment');
-    var result = document.getElementById('result-gerald_moment');
-    var again = document.getElementById('again-gerald_moment');
-    var status = document.getElementById('status-gerald_moment');
-    var bar = loader.querySelector('.gen-bar-fill');
-    result.style.display='none'; again.style.display='none';
-    loader.style.display='block'; bar.style.width='0%';
-    var step=0, total=msgs.length;
-    status.textContent=msgs[0];
-    var iv=setInterval(function(){
-        step++;
-        if(step>=total){
-            clearInterval(iv); bar.style.width='100%';
-            setTimeout(function(){
-                loader.style.display='none';
-                result.textContent=pool[Math.floor(Math.random()*pool.length)];
-                result.style.display='block';
-                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
-                again.style.display='inline-block';
-                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'justgerald_gerald_moment',channel:'justgerald',generator_type:'gerald_moment'});
-            },300);
-            return;
-        }
-        bar.style.width=((step/total)*100)+'%';
-        status.textContent=msgs[step];
-    },500);
+    var pool=["Gerald waved back at someone who wasn't waving at him. In a meeting.", "Gerald tried to push a pull door. Twice. While people watched.", "Gerald said 'you too' when the waiter said 'enjoy your meal.'", "Gerald accidentally liked a photo from 3 years ago while stalking someone.", "Gerald walked into a glass door at full speed in front of his crush.", "Gerald sent a text about someone... to that someone.", "Gerald confidently gave wrong directions to a tourist. For 5 minutes.", "Gerald tried to high-five someone who was reaching for something behind him.", "Gerald accidentally joined a zoom meeting with his camera on in bed.", "Gerald called his teacher 'mom' in high school. He was in college.", "Gerald laughed at a joke that wasn't a joke.", "Gerald said 'goodbye' on the phone and then kept talking.", "Gerald stood up to leave and walked the wrong direction. Twice.", "Gerald tried to be cool leaning on a wall. The wall was a door.", "Gerald wore his shirt inside out for an entire day and nobody told him.", "Gerald replied 'lol' to a serious message about someone's feelings.", "Gerald forgot someone's name 3 seconds after being introduced.", "Gerald tried to tell a joke. Nobody laughed. He explained it. Still nothing.", "Gerald accidentally screen-shared his search history in a presentation.", "Gerald pointed at someone and said 'that's the guy' when the guy was standing right behind him."];
+    var msgs=["Gerald is thinking...", "This can't end well...", "Gerald has entered the chat..."];
+    var style="type";
+    _runGenerator("gerald_moment",pool,msgs,style,"justgerald","gerald_moment");
 }
 
 function runGen_awkward_scenario() {
-    var pool = ["You're in a quiet elevator and your stomach makes a noise that sounds like a whale", "You accidentally FaceTimed someone while talking about them", "You're singing in the car and lock eyes with someone at a red light", "You go for a handshake and they go for a fist bump. You grab their fist.", "You tell a long story and realize halfway through you already told them yesterday", "Someone holds the door for you but you're too far away. Now you have to jog.", "You wave at someone in public and a stranger waves back thinking it was for them", "You're on a video call and realize your camera has been on the whole time", "You say 'see you later' to someone and then walk the same direction", "You're eating alone and someone asks 'are you waiting for someone?' No. Just eating. Alone.", "You laugh out loud at your phone in a silent waiting room", "You're walking towards someone and you both keep moving the same direction to dodge each other", "Someone asks you what you do for fun and your mind goes completely blank", "You accidentally send a voice message instead of deleting it"];
-    var msgs = ["Loading cringe...", "Preparing secondhand embarrassment...", "Activating awkward mode..."];
-    var loader = document.getElementById('loader-awkward_scenario');
-    var result = document.getElementById('result-awkward_scenario');
-    var again = document.getElementById('again-awkward_scenario');
-    var status = document.getElementById('status-awkward_scenario');
-    var bar = loader.querySelector('.gen-bar-fill');
-    result.style.display='none'; again.style.display='none';
-    loader.style.display='block'; bar.style.width='0%';
-    var step=0, total=msgs.length;
-    status.textContent=msgs[0];
-    var iv=setInterval(function(){
-        step++;
-        if(step>=total){
-            clearInterval(iv); bar.style.width='100%';
-            setTimeout(function(){
-                loader.style.display='none';
-                result.textContent=pool[Math.floor(Math.random()*pool.length)];
-                result.style.display='block';
-                result.classList.remove('pop'); void result.offsetWidth; result.classList.add('pop');
-                again.style.display='inline-block';
-                if(typeof gtag!=='undefined')gtag('event','generator_click',{event_category:'generators',event_label:'justgerald_awkward_scenario',channel:'justgerald',generator_type:'awkward_scenario'});
-            },300);
-            return;
-        }
-        bar.style.width=((step/total)*100)+'%';
-        status.textContent=msgs[step];
-    },500);
+    var pool=["You're in a quiet elevator and your stomach makes a noise that sounds like a whale", "You accidentally FaceTimed someone while talking about them", "You're singing in the car and lock eyes with someone at a red light", "You go for a handshake and they go for a fist bump. You grab their fist.", "You tell a long story and realize halfway through you already told them yesterday", "Someone holds the door for you but you're too far away. Now you have to jog.", "You wave at someone in public and a stranger waves back thinking it was for them", "You're on a video call and realize your camera has been on the whole time", "You say 'see you later' to someone and then walk the same direction", "You're eating alone and someone asks 'are you waiting for someone?' No. Just eating. Alone.", "You laugh out loud at your phone in a silent waiting room", "You're walking towards someone and you both keep moving the same direction to dodge each other", "Someone asks you what you do for fun and your mind goes completely blank", "You accidentally send a voice message instead of deleting it"];
+    var msgs=["Loading cringe...", "Preparing secondhand embarrassment...", "Activating awkward mode..."];
+    var style="type";
+    _runGenerator("awkward_scenario",pool,msgs,style,"justgerald","awkward_scenario");
 }
 
 </script>
