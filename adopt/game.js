@@ -3,7 +3,7 @@
 
 var XP_TABLE=[0,50,130,240,380,550,750,1000,1300,1650,2050,2500,3050,3700,4450,5300,6300,7450,8800,10400,12300];
 var RARITY_LEVELS=[[1,'common','Common','#888'],[20,'uncommon','Uncommon','#44cc44'],[50,'rare','Rare','#4488ff'],[100,'epic','Epic','#aa44ff'],[150,'legendary','Legendary','#ffaa00']];
-var CD_FEED=15*60000,CD_REST=45*60000,JOB_CD=10*60000,MAX_BATTLES=10;
+var CD_FEED=15*60000,CD_REST=45*60000,MAX_BATTLES=10;
 var FEED_MSGS=["is feeling full!","loved that snack!","gobbled it up!","wants more already!"];
 var REST_MSGS=["is recharging nicely.","needed that nap.","feels refreshed!","is full of energy now!"];
 var JOB_WIN=["Nailed it! \uD83D\uDCB0","Easy money!","Like a pro!","Crushed it!","Ka-ching!","Smooth operator!"];
@@ -11,25 +11,25 @@ var JOB_FAIL=["Not this time...","So close!","Total fail \uD83D\uDC80","Better l
 
 var JOBS={
 fortnite:[
-{emoji:"\uD83E\uDDF9",name:"Sweep Lobby Confetti",desc:"Someone has to clean up after Victory Royale",gold:1,base:95,lvl:1},
-{emoji:"\uD83D\uDCE6",name:"Deliver Mats",desc:"Run building materials across the map",gold:2,base:75,lvl:3},
-{emoji:"\uD83C\uDFD7\uFE0F",name:"Guard the Fort",desc:"Stand there and look intimidating",gold:4,base:55,lvl:6},
-{emoji:"\u26C8\uFE0F",name:"Storm Scout",desc:"Check if the storm is still there (it is)",gold:8,base:35,lvl:10},
-{emoji:"\uD83C\uDFAF",name:"Bounty Hunter",desc:"Track a target. Try not to get eliminated",gold:15,base:20,lvl:15}
+{emoji:"\uD83E\uDDF9",name:"Sweep Lobby Confetti",desc:"Someone has to clean up after Victory Royale",gold:1,base:95,lvl:1,cd:5*60000},
+{emoji:"\uD83D\uDCE6",name:"Deliver Mats",desc:"Run building materials across the map",gold:2,base:75,lvl:3,cd:15*60000},
+{emoji:"\uD83C\uDFD7\uFE0F",name:"Guard the Fort",desc:"Stand there and look intimidating",gold:4,base:55,lvl:6,cd:30*60000},
+{emoji:"\u26C8\uFE0F",name:"Storm Scout",desc:"Check if the storm is still there (it is)",gold:8,base:35,lvl:10,cd:60*60000},
+{emoji:"\uD83C\uDFAF",name:"Bounty Hunter",desc:"Track a target. Try not to get eliminated",gold:15,base:20,lvl:15,cd:120*60000}
 ],
 minecraft:[
-{emoji:"\uD83E\uDE93",name:"Punch Trees",desc:"Classic first day job. Splinter warning",gold:1,base:95,lvl:1},
-{emoji:"\u26CF\uFE0F",name:"Mine Coal",desc:"Into the darkness for some rocks",gold:2,base:75,lvl:3},
-{emoji:"\uD83C\uDF3E",name:"Farm Wheat",desc:"Don't jump on the crops!",gold:4,base:55,lvl:6},
-{emoji:"\uD83D\uDD6F\uFE0F",name:"Cave Explorer",desc:"Bring torches. Lots of torches",gold:8,base:35,lvl:10},
-{emoji:"\uD83D\uDC09",name:"Dragon Raid",desc:"Visit the End. What could go wrong?",gold:15,base:20,lvl:15}
+{emoji:"\uD83E\uDE93",name:"Punch Trees",desc:"Classic first day job. Splinter warning",gold:1,base:95,lvl:1,cd:5*60000},
+{emoji:"\u26CF\uFE0F",name:"Mine Coal",desc:"Into the darkness for some rocks",gold:2,base:75,lvl:3,cd:15*60000},
+{emoji:"\uD83C\uDF3E",name:"Farm Wheat",desc:"Don't jump on the crops!",gold:4,base:55,lvl:6,cd:30*60000},
+{emoji:"\uD83D\uDD6F\uFE0F",name:"Cave Explorer",desc:"Bring torches. Lots of torches",gold:8,base:35,lvl:10,cd:60*60000},
+{emoji:"\uD83D\uDC09",name:"Dragon Raid",desc:"Visit the End. What could go wrong?",gold:15,base:20,lvl:15,cd:120*60000}
 ],
 roblox:[
-{emoji:"\uD83E\uDE99",name:"Collect Coins",desc:"Run around the obby grabbing coins",gold:1,base:95,lvl:1},
-{emoji:"\uD83C\uDF55",name:"Pizza Delivery",desc:"Work at the pizza place. Don't eat the order",gold:2,base:75,lvl:3},
-{emoji:"\uD83C\uDFE6",name:"Guard the Bank",desc:"Jailbreak security duty. Nap responsibly",gold:4,base:55,lvl:6},
-{emoji:"\uD83C\uDFC6",name:"Obby Champion",desc:"Complete the impossible tower",gold:8,base:35,lvl:10},
-{emoji:"\uD83D\uDC7E",name:"Final Boss",desc:"Take on the ultimate challenge",gold:15,base:20,lvl:15}
+{emoji:"\uD83E\uDE99",name:"Collect Coins",desc:"Run around the obby grabbing coins",gold:1,base:95,lvl:1,cd:5*60000},
+{emoji:"\uD83C\uDF55",name:"Pizza Delivery",desc:"Work at the pizza place. Don't eat the order",gold:2,base:75,lvl:3,cd:15*60000},
+{emoji:"\uD83C\uDFE6",name:"Guard the Bank",desc:"Jailbreak security duty. Nap responsibly",gold:4,base:55,lvl:6,cd:30*60000},
+{emoji:"\uD83C\uDFC6",name:"Obby Champion",desc:"Complete the impossible tower",gold:8,base:35,lvl:10,cd:60*60000},
+{emoji:"\uD83D\uDC7E",name:"Final Boss",desc:"Take on the ultimate challenge",gold:15,base:20,lvl:15,cd:120*60000}
 ]};
 
 var LOOT_TIERS=[
@@ -87,7 +87,7 @@ if(!pet.wins)pet.wins=0;
 if(!pet.losses)pet.losses=0;
 if(!pet.bat_today)pet.bat_today=0;
 if(!pet.bat_date)pet.bat_date="";
-if(!pet.last_job)pet.last_job=0;
+if(!pet.last_jobs)pet.last_jobs={};
 if(!pet.last_train_stat)pet.last_train_stat="str";
 }}
 function save(){localStorage.setItem(KEY,JSON.stringify(pet));}
@@ -268,21 +268,24 @@ cloudSync();
 };
 
 // ── Jobs ───────────────────────────────────────────────────
+function fmtCD(ms){var m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000);return m+":"+(s<10?"0":"")+s;}
 function updateJobs(){
 if(!pet)return;
 var jobs=JOBS[pet.game]||JOBS.fortnite;
-var now=Date.now(),rem=Math.max(0,(pet.last_job||0)+JOB_CD-now);
-var cdEl=document.getElementById("job-cd-global");
-if(rem>0){var m=Math.floor(rem/60000),s=Math.floor((rem%60000)/1000);cdEl.textContent="Next job in "+m+":"+(s<10?"0":"")+s;}
-else cdEl.textContent="";
+var now=Date.now();
+if(!pet.last_jobs)pet.last_jobs={};
+document.getElementById("job-cd-global").textContent="";
 var cont=document.getElementById("jobs-list");cont.innerHTML="";
 jobs.forEach(function(job,idx){
-var locked=pet.level<job.lvl,onCd=rem>0&&!locked;
+var locked=pet.level<job.lvl;
+var rem=Math.max(0,((pet.last_jobs||{})[idx]||0)+job.cd-now);
+var onCd=rem>0&&!locked;
 var chance=getJobChance(job.base);
 var div=document.createElement("div");
 div.className="job-card"+(locked?" locked":"")+(onCd?" on-cd":"");
 div.id="job-"+idx;
-div.innerHTML='<div class="job-top"><span class="job-emoji">'+job.emoji+'</span><div class="job-info"><div class="job-name">'+job.name+'</div><div class="job-desc">'+job.desc+'</div></div><div class="job-reward"><div class="job-gold">\uD83D\uDCB0 '+job.gold+'</div><div class="job-chance">'+(locked?"Lv "+job.lvl+" req":chance+"% chance")+'</div></div></div><div class="job-anim"><div class="ja-emoji"></div><div class="ja-text"></div></div>';
+var statusTxt=locked?"Lv "+job.lvl+" req":onCd?fmtCD(rem):chance+"% chance";
+div.innerHTML='<div class="job-top"><span class="job-emoji">'+job.emoji+'</span><div class="job-info"><div class="job-name">'+job.name+'</div><div class="job-desc">'+job.desc+'</div></div><div class="job-reward"><div class="job-gold">\uD83D\uDCB0 '+job.gold+'</div><div class="job-chance">'+statusTxt+'</div></div></div><div class="job-anim"><div class="ja-emoji"></div><div class="ja-text"></div></div>';
 if(!locked&&!onCd)div.onclick=function(){window._doJob(idx);};
 cont.appendChild(div);
 });
@@ -290,12 +293,13 @@ cont.appendChild(div);
 
 window._doJob=function(idx){
 if(!pet)return;var now=Date.now();
-if(now-(pet.last_job||0)<JOB_CD)return;
+if(!pet.last_jobs)pet.last_jobs={};
 var jobs=JOBS[pet.game]||JOBS.fortnite;var job=jobs[idx];
 if(!job||pet.level<job.lvl)return;
+if(now-((pet.last_jobs[idx])||0)<job.cd)return;
 var chance=getJobChance(job.base);
 var success=Math.random()*100<chance;
-pet.last_job=now;pet.lastVisit=now;
+pet.last_jobs[idx]=now;pet.lastVisit=now;
 var card=document.getElementById("job-"+idx);if(!card)return;
 var anim=card.querySelector(".job-anim");
 var emojiEl=anim.querySelector(".ja-emoji"),textEl=anim.querySelector(".ja-text");
@@ -517,7 +521,7 @@ happiness:d.happiness,last_feed:d.last_feed,last_train:d.last_train,last_rest:d.
 created:new Date(d.created_at).getTime(),lastVisit:new Date(d.last_visit).getTime(),
 str:d.strength||1,def:d.defence||1,hp:d.health||10,gold:d.gold||0,
 weapon:d.weapon?JSON.parse(d.weapon):null,wins:d.wins||0,losses:d.losses||0,
-bat_today:0,bat_date:"",last_job:0,last_train_stat:"str"};
+bat_today:0,bat_date:"",last_jobs:{},last_train_stat:"str"};
 save();return true;
 }).catch(function(){return false;});
 }
@@ -609,7 +613,7 @@ setTimeout(function(){document.getElementById("hatch-egg").style.animation="none
 setTimeout(function(){
 pet={game:game,emoji:pick[0],name:pick[1],level:12,xp:0,hunger:50,energy:100,happiness:70,
 str:1,def:1,hp:10,gold:1,weapon:null,wins:0,losses:0,bat_today:0,bat_date:"",
-last_feed:0,last_train:0,last_rest:0,last_job:0,last_train_stat:"str",
+last_feed:0,last_train:0,last_rest:0,last_jobs:{},last_train_stat:"str",
 created:Date.now(),lastVisit:Date.now()};
 save();show("screen-pet");updateUI();updateCD();toast("Welcome, "+pet.name+"!");confetti();
 if(typeof gtag!=="undefined")gtag("event","pet_adopted",{game:game,character:pick[1]});

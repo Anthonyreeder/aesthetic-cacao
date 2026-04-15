@@ -2071,7 +2071,7 @@ a{{color:var(--accent);text-decoration:none}}
     <!-- Jobs Tab -->
     <div class="tab-panel" id="panel-jobs">
         <div class="jobs-list" id="jobs-list"></div>
-        <div style="text-align:center;margin-top:.5rem"><span class="train-cd" id="job-cd-global"></span></div>
+        <div style="text-align:center;margin-top:.5rem"><span class="train-cd" id="job-cd-global" style="display:none"></span></div>
     </div>
     <!-- Loot Tab -->
     <div class="tab-panel" id="panel-loot">
