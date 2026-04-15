@@ -41,6 +41,12 @@
         .picker-result.pop{animation:popIn .35s ease}
         @keyframes popIn{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
 
+        .adopt-banner{max-width:600px;margin:0 auto 2rem;padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,212,255,.08));border:1px solid rgba(124,92,255,.3);border-radius:16px;display:flex;align-items:center;gap:1rem;transition:all .2s}
+        .adopt-banner:hover{border-color:rgba(124,92,255,.6);transform:translateY(-2px);box-shadow:0 8px 25px rgba(124,92,255,.15)}
+        .adopt-emoji{font-size:2.2rem;flex-shrink:0}
+        .adopt-title{font-weight:800;font-size:1rem;margin-bottom:.15rem}
+        .adopt-desc{color:var(--muted);font-size:.78rem;line-height:1.4}
+        .adopt-arrow{font-size:1.5rem;color:var(--accent2);flex-shrink:0;margin-left:auto}
         .trending-section{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}
         .trending-section>h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);font-weight:700;margin-bottom:1.2rem;text-align:center}
         .trending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
@@ -97,6 +103,15 @@
         <p class="picker-status" id="picker-status">Scanning channels...</p>
     </div>
     <div class="picker-result" id="picker-result"></div>
+</div>
+
+<div class="adopt-banner" onclick="window.location='/adopt/'" style="cursor:pointer">
+    <div class="adopt-emoji">&#129370;</div>
+    <div>
+        <div class="adopt-title">Adopt Your Character</div>
+        <div class="adopt-desc">Choose Fortnite, Minecraft, or Roblox. Feed, train &amp; level up your companion!</div>
+    </div>
+    <div class="adopt-arrow">&rarr;</div>
 </div>
 
 <div class="trending-section">

@@ -1567,6 +1567,12 @@ def build_homepage():
         .picker-result.pop{{animation:popIn .35s ease}}
         @keyframes popIn{{0%{{transform:scale(.9);opacity:0}}100%{{transform:scale(1);opacity:1}}}}
 
+        .adopt-banner{{max-width:600px;margin:0 auto 2rem;padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,212,255,.08));border:1px solid rgba(124,92,255,.3);border-radius:16px;display:flex;align-items:center;gap:1rem;transition:all .2s}}
+        .adopt-banner:hover{{border-color:rgba(124,92,255,.6);transform:translateY(-2px);box-shadow:0 8px 25px rgba(124,92,255,.15)}}
+        .adopt-emoji{{font-size:2.2rem;flex-shrink:0}}
+        .adopt-title{{font-weight:800;font-size:1rem;margin-bottom:.15rem}}
+        .adopt-desc{{color:var(--muted);font-size:.78rem;line-height:1.4}}
+        .adopt-arrow{{font-size:1.5rem;color:var(--accent2);flex-shrink:0;margin-left:auto}}
         .trending-section{{max-width:1100px;margin:0 auto;padding:0 1.5rem 2rem}}
         .trending-section>h2{{font-size:.85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);font-weight:700;margin-bottom:1.2rem;text-align:center}}
         .trending-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}}
@@ -1623,6 +1629,15 @@ def build_homepage():
         <p class="picker-status" id="picker-status">Scanning channels...</p>
     </div>
     <div class="picker-result" id="picker-result"></div>
+</div>
+
+<div class="adopt-banner" onclick="window.location='/adopt/'" style="cursor:pointer">
+    <div class="adopt-emoji">&#129370;</div>
+    <div>
+        <div class="adopt-title">Adopt Your Character</div>
+        <div class="adopt-desc">Choose Fortnite, Minecraft, or Roblox. Feed, train &amp; level up your companion!</div>
+    </div>
+    <div class="adopt-arrow">&rarr;</div>
 </div>
 
 <div class="trending-section">
@@ -1694,6 +1709,485 @@ rotEl.style.transition='opacity .3s';rotEl.textContent=words[0];
 </html>'''
 
 
+# ─── Adopt page (Tamagotchi-lite pet game) ───────────────────────────────────
+
+def build_adopt_page():
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Adopt Your Character &mdash; BDS Anthony</title>
+<meta name="description" content="Adopt a Fortnite, Minecraft, or Roblox character. Feed, train, and level them up!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
+{ADSENSE}
+<style>
+*,*::before,*::after{{margin:0;padding:0;box-sizing:border-box}}
+:root{{--bg:#0a0a10;--card:#12121c;--border:#1c1c2e;--text:#eae8f2;--muted:#7a788e;--accent:#7c5cff}}
+body{{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}}
+a{{color:var(--accent);text-decoration:none}}
+.back{{display:inline-block;padding:.8rem 1.2rem;font-size:.82rem;color:var(--muted)}}.back:hover{{color:var(--text)}}
+
+/* ── Screens ── */
+.screen{{display:none;max-width:420px;margin:0 auto;padding:1rem 1.2rem 3rem;text-align:center}}
+.screen.active{{display:block}}
+
+/* ── Pick Screen ── */
+#screen-pick h1{{font-size:clamp(1.6rem,6vw,2.4rem);font-weight:900;letter-spacing:-.03em;margin:1.5rem 0 .5rem}}
+#screen-pick .sub{{color:var(--muted);font-size:.95rem;margin-bottom:2rem}}
+.game-cards{{display:flex;flex-direction:column;gap:.8rem}}
+.game-card{{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:1rem;text-align:left}}
+.game-card:hover{{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,255,.15)}}
+.game-card .gc-emoji{{font-size:2.2rem;flex-shrink:0}}
+.game-card .gc-name{{font-weight:800;font-size:1.1rem}}.game-card .gc-desc{{color:var(--muted);font-size:.82rem;margin-top:.15rem}}
+
+/* ── Hatch Screen ── */
+#screen-hatch{{padding-top:25vh}}
+.egg{{font-size:5rem;display:inline-block;animation:eggShake 0.3s infinite alternate}}
+@keyframes eggShake{{0%{{transform:rotate(-8deg)scale(1)}}50%{{transform:rotate(8deg)scale(1.05)}}100%{{transform:rotate(-8deg)scale(1)}}}}
+.hatch-text{{color:var(--muted);font-size:.9rem;margin-top:1.5rem;animation:pulse 1s infinite}}
+@keyframes pulse{{0%,100%{{opacity:.5}}50%{{opacity:1}}}}
+
+/* ── Dashboard ── */
+.pet-card{{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:2rem 1.5rem 1.5rem;margin:1rem 0;position:relative;transition:border-color .5s,box-shadow .5s}}
+.pet-card.rarity-common{{border-color:#555}}.pet-card.rarity-uncommon{{border-color:#44cc44;box-shadow:0 0 20px rgba(68,204,68,.1)}}
+.pet-card.rarity-rare{{border-color:#4488ff;box-shadow:0 0 25px rgba(68,136,255,.15)}}.pet-card.rarity-epic{{border-color:#aa44ff;box-shadow:0 0 30px rgba(170,68,255,.2)}}
+.pet-card.rarity-legendary{{border-color:#ffaa00;box-shadow:0 0 35px rgba(255,170,0,.2)}}
+.pet-emoji{{font-size:3.5rem;margin-bottom:.3rem}}
+.pet-name{{font-size:1.5rem;font-weight:900;letter-spacing:-.02em}}
+.pet-level{{color:var(--muted);font-size:.85rem;margin-top:.2rem}}
+.rarity-badge{{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;padding:.2rem .7rem;border-radius:50px;font-weight:800;margin-top:.5rem}}
+.rarity-common .rarity-badge{{background:rgba(128,128,128,.2);color:#999}}
+.rarity-uncommon .rarity-badge{{background:rgba(68,204,68,.15);color:#66ee66}}
+.rarity-rare .rarity-badge{{background:rgba(68,136,255,.15);color:#66aaff}}
+.rarity-epic .rarity-badge{{background:rgba(170,68,255,.15);color:#cc77ff}}
+.rarity-legendary .rarity-badge{{background:rgba(255,170,0,.15);color:#ffcc44}}
+.mood-text{{font-size:.8rem;margin-top:.5rem}}
+
+/* ── XP Bar ── */
+.xp-section{{margin:1.2rem 0}}
+.xp-label{{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:.3rem}}
+.xp-bar{{height:8px;background:var(--card);border-radius:4px;overflow:hidden;border:1px solid var(--border)}}
+.xp-fill{{height:100%;background:linear-gradient(90deg,#7c5cff,#aa77ff);border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1)}}
+
+/* ── Stat Bars ── */
+.stats{{display:flex;flex-direction:column;gap:.7rem;margin:1rem 0}}
+.stat-row{{display:flex;align-items:center;gap:.6rem}}
+.stat-icon{{font-size:1rem;width:1.5rem;text-align:center;flex-shrink:0}}
+.stat-name{{font-size:.78rem;font-weight:600;width:4rem;text-align:left;flex-shrink:0}}
+.stat-bar{{flex:1;height:10px;background:var(--card);border-radius:5px;overflow:hidden;border:1px solid var(--border);position:relative}}
+.stat-fill{{height:100%;border-radius:5px;transition:width .5s ease,background .3s}}
+.stat-val{{font-size:.72rem;font-weight:700;width:2.5rem;text-align:right;flex-shrink:0}}
+
+/* ── Actions ── */
+.actions{{display:flex;flex-direction:column;gap:.6rem;margin:1.2rem 0}}
+.action-btn{{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .2s;text-align:left;width:100%;font-family:inherit;color:var(--text)}}
+.action-btn:not(.on-cooldown):hover{{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 15px rgba(124,92,255,.12)}}
+.action-btn.ready{{border-color:rgba(68,204,68,.4)}}
+.action-btn.ready .act-status{{color:#66ee66}}
+.action-btn.on-cooldown{{opacity:.55;cursor:default}}
+.action-btn.no-energy{{opacity:.4;cursor:default}}
+.act-emoji{{font-size:1.5rem;flex-shrink:0}}
+.act-info{{flex:1}}
+.act-name{{font-weight:700;font-size:.95rem}}.act-desc{{color:var(--muted);font-size:.75rem;margin-top:.1rem}}
+.act-status{{font-size:.78rem;font-weight:600;color:var(--muted);flex-shrink:0}}
+.act-status.ready-text{{color:#66ee66}}
+
+/* ── Feedback Toast ── */
+.toast{{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%)translateY(-120%);background:#1a1a2e;border:1px solid var(--accent);border-radius:12px;padding:.8rem 1.5rem;font-size:.88rem;font-weight:600;z-index:100;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.4)}}
+.toast.show{{transform:translateX(-50%)translateY(0)}}
+
+/* ── Level Up Overlay ── */
+.levelup-overlay{{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;z-index:200;align-items:center;justify-content:center;flex-direction:column}}
+.levelup-overlay.show{{display:flex}}
+.levelup-text{{font-size:clamp(2rem,10vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#ffcc00,#ff6b6b,#aa44ff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:lvlPulse .6s ease}}
+.levelup-sub{{color:var(--muted);font-size:1rem;margin-top:.5rem}}
+.levelup-rarity{{font-size:1.2rem;font-weight:800;margin-top:.8rem}}
+@keyframes lvlPulse{{0%{{transform:scale(0)}}60%{{transform:scale(1.15)}}100%{{transform:scale(1)}}}}
+.levelup-confetti{{position:fixed;inset:0;pointer-events:none;z-index:201;overflow:hidden}}
+.levelup-confetti .c{{position:absolute;width:8px;height:8px;border-radius:2px;animation:confDrop 2s ease-out forwards}}
+@keyframes confDrop{{0%{{transform:translateY(-20px)rotate(0);opacity:1}}100%{{transform:translateY(100vh)rotate(720deg);opacity:0}}}}
+
+/* ── Away Report ── */
+.away-report{{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;margin:1rem 0;text-align:left}}
+.away-report h3{{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.08em}}
+.away-line{{font-size:.8rem;margin:.25rem 0;display:flex;justify-content:space-between}}
+.away-line .change.neg{{color:#ff6b6b}}.away-line .change.pos{{color:#66ee66}}
+
+/* ── Footer ── */
+.pet-footer{{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted)}}
+.pet-footer a{{color:var(--muted);margin:0 .3rem}}
+.release-btn{{background:none;border:none;color:var(--muted);font-size:.7rem;cursor:pointer;margin-top:.5rem;text-decoration:underline;font-family:inherit}}
+.release-btn:hover{{color:#ff6b6b}}
+
+@media(max-width:400px){{.screen{{padding:1rem .8rem 3rem}}.pet-card{{padding:1.5rem 1rem 1rem}}}}
+</style>
+</head>
+<body>
+
+<a class="back" href="/">&larr; Home</a>
+
+<!-- Pick Game -->
+<div class="screen" id="screen-pick">
+    <h1>Adopt Your Character</h1>
+    <p class="sub">Choose your world. Raise your companion.</p>
+    <div class="game-cards">
+        <div class="game-card" onclick="startAdopt('fortnite')" style="--gc:#00d4ff">
+            <div class="gc-emoji">&#9889;</div>
+            <div><div class="gc-name">Fortnite</div><div class="gc-desc">Storm fighters, agents &amp; legends</div></div>
+        </div>
+        <div class="game-card" onclick="startAdopt('minecraft')" style="--gc:#55ff55">
+            <div class="gc-emoji">&#9935;&#65039;</div>
+            <div><div class="gc-name">Minecraft</div><div class="gc-desc">Miners, mobs &amp; survival companions</div></div>
+        </div>
+        <div class="game-card" onclick="startAdopt('roblox')" style="--gc:#ffcc00">
+            <div class="gc-emoji">&#127918;</div>
+            <div><div class="gc-name">Roblox</div><div class="gc-desc">Noobs, builders &amp; rising legends</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Hatching Animation -->
+<div class="screen" id="screen-hatch">
+    <div class="egg" id="hatch-egg">&#129370;</div>
+    <p class="hatch-text" id="hatch-text">Hatching...</p>
+</div>
+
+<!-- Pet Dashboard -->
+<div class="screen" id="screen-pet">
+    <div id="away-box"></div>
+    <div class="pet-card" id="pet-card">
+        <div class="pet-emoji" id="pet-emoji"></div>
+        <div class="pet-name" id="pet-name"></div>
+        <div class="pet-level" id="pet-level"></div>
+        <div class="rarity-badge" id="pet-rarity"></div>
+        <div class="mood-text" id="pet-mood"></div>
+    </div>
+    <div class="xp-section">
+        <div class="xp-label"><span id="xp-text">XP</span><span id="xp-next">Next level</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+    </div>
+    <div class="stats">
+        <div class="stat-row"><span class="stat-icon">&#127830;</span><span class="stat-name">Hunger</span><div class="stat-bar"><div class="stat-fill" id="bar-hunger"></div></div><span class="stat-val" id="val-hunger"></span></div>
+        <div class="stat-row"><span class="stat-icon">&#9889;</span><span class="stat-name">Energy</span><div class="stat-bar"><div class="stat-fill" id="bar-energy"></div></div><span class="stat-val" id="val-energy"></span></div>
+        <div class="stat-row"><span class="stat-icon">&#128150;</span><span class="stat-name">Happy</span><div class="stat-bar"><div class="stat-fill" id="bar-happy"></div></div><span class="stat-val" id="val-happy"></span></div>
+    </div>
+    <div class="actions">
+        <button class="action-btn" id="btn-feed" onclick="doAction('feed')">
+            <span class="act-emoji">&#127830;</span>
+            <div class="act-info"><div class="act-name">Feed</div><div class="act-desc">Restores hunger &amp; a bit of happiness</div></div>
+            <span class="act-status" id="cd-feed">Ready!</span>
+        </button>
+        <button class="action-btn" id="btn-train" onclick="doAction('train')">
+            <span class="act-emoji">&#9876;&#65039;</span>
+            <div class="act-info"><div class="act-name">Train</div><div class="act-desc">Earn XP, costs energy &amp; hunger</div></div>
+            <span class="act-status" id="cd-train">Ready!</span>
+        </button>
+        <button class="action-btn" id="btn-rest" onclick="doAction('rest')">
+            <span class="act-emoji">&#128564;</span>
+            <div class="act-info"><div class="act-name">Rest</div><div class="act-desc">Restores energy &amp; happiness</div></div>
+            <span class="act-status" id="cd-rest">Ready!</span>
+        </button>
+    </div>
+    <div class="pet-footer">
+        <div>Adopted <span id="pet-age"></span> ago</div>
+        <a href="/">Home</a>&middot;<a href="{DISCORD}">Discord</a>
+        <br><button class="release-btn" onclick="releasePet()">Release this pet</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Level Up Overlay -->
+<div class="levelup-overlay" id="levelup">
+    <div class="levelup-text" id="lvl-text">LEVEL UP!</div>
+    <div class="levelup-sub" id="lvl-sub"></div>
+    <div class="levelup-rarity" id="lvl-rarity"></div>
+</div>
+<div class="levelup-confetti" id="lvl-confetti"></div>
+
+<script>
+(function(){{
+var GAMES={{
+fortnite:{{color:'#00d4ff',chars:[
+["&#128374;&#65039;","Shadow Agent"],["&#127820;","Peely Jr."],["&#128031;","Fishstick Clone"],["&#9889;","Drift Puppy"],
+["&#129528;","Cuddle Cub"],["&#129413;","Raven Chick"],["&#128570;","Meowscles Kit"],["&#128049;","Lynx Cub"],
+["&#128640;","Dark Voyager Mini"],["&#128128;","Skull Pup"],["&#10052;&#65039;","Ice Prince"],["&#128295;","Rust Recruit"],
+["&#10024;","Brite Baby"],["&#128081;","Midas Spark"],["&#127775;","Omega Hatchling"],["&#128737;","Knight Squire"],
+["&#127928;","Marshmello Mini"],["&#128058;","Dire Pup"],["&#127912;","Abstrakt Jr."],["&#128123;","Ghoul Scout"]
+]}},
+minecraft:{{color:'#55ff55',chars:[
+["&#128142;","Diamond Steve"],["&#128154;","Creeper Buddy"],["&#128126;","Ender Pup"],["&#129302;","Iron Golem Jr."],
+["&#128293;","Blaze Sprite"],["&#128128;","Wither Cub"],["&#128123;","Phantom Kit"],["&#128055;","Piglin Pal"],
+["&#129422;","Axolotl Friend"],["&#128511;","Warden Whisper"],["&#128029;","Bee Buddy"],["&#128165;","Ghast Baby"],
+["&#128994;","Slime Blob"],["&#128058;","Wolf Pup"],["&#129418;","Fox Kit"],["&#127800;","Allay Sprite"],
+["&#129411;","Shulker Baby"],["&#128032;","Guardian Guppy"],["&#129680;","Villager Sprout"],["&#128036;","Chicken Scout"]
+]}},
+roblox:{{color:'#ffcc00',chars:[
+["&#128522;","Noob Hero"],["&#129363;","Bacon Hair Legend"],["&#11088;","Guest Star"],["&#127959;&#65039;","Builder Bot"],
+["&#127960;","Bloxburg Baby"],["&#129370;","Adopt Me Egg"],["&#127968;","Brookhaven Kid"],["&#127939;","Jailbreak Runner"],
+["&#128270;","Mystery Sleuth"],["&#128299;","Arsenal Rookie"],["&#128123;","Phantom Cadet"],["&#129399;","Shindo Cub"],
+["&#127822;","Blox Fruit Seed"],["&#128120;","Doors Entity Jr."],["&#128055;","Piggy Clone"],["&#128029;","Bee Swarm Drone"],
+["&#129412;","Pet Sim Hatchling"],["&#128081;","Royal Star"],["&#127918;","Tower Titan Jr."],["&#128125;","Alien Intern"]
+]}}
+}};
+
+var XP_TABLE=[0,50,130,240,380,550,750,1000,1300,1650,2050,2500,3050,3700,4450,5300,6300,7450,8800,10400,12300];
+var RARITY_LEVELS=[
+[1,'common','Common','#888'],[5,'uncommon','Uncommon','#44cc44'],
+[10,'rare','Rare','#4488ff'],[15,'epic','Epic','#aa44ff'],[20,'legendary','Legendary','#ffaa00']
+];
+
+var CD_FEED=15*60000,CD_TRAIN=30*60000,CD_REST=45*60000;
+var FEED_MSGS=["is feeling full!","loved that snack!","gobbled it up!","wants more already!"];
+var TRAIN_MSGS=["pushed through the training!","is getting stronger!","broke a sweat!","leveled their skills!"];
+var REST_MSGS=["is recharging nicely.","needed that nap.","feels refreshed!","is full of energy now!"];
+var STORAGE_KEY='bds_pet_v1';
+
+var pet=null;
+
+function load(){{try{{pet=JSON.parse(localStorage.getItem(STORAGE_KEY));}}catch(e){{pet=null;}}}}
+function save(){{localStorage.setItem(STORAGE_KEY,JSON.stringify(pet));}}
+
+function show(id){{document.querySelectorAll('.screen').forEach(function(s){{s.classList.remove('active');}});document.getElementById(id).classList.add('active');}}
+
+function getRarity(level){{var r=RARITY_LEVELS[0];for(var i=0;i<RARITY_LEVELS.length;i++){{if(level>=RARITY_LEVELS[i][0])r=RARITY_LEVELS[i];}}return r;}}
+
+function xpForNext(level){{if(level>=XP_TABLE.length-1)return 99999;return XP_TABLE[level]-XP_TABLE[level-1];}}
+function xpInLevel(level,totalXp){{if(level<=1)return totalXp;return totalXp-XP_TABLE[level-1];}}
+function levelFromXp(totalXp){{for(var i=1;i<XP_TABLE.length;i++){{if(totalXp<XP_TABLE[i])return i;}}return XP_TABLE.length;}}
+
+function getMood(){{
+    if(pet.hunger<15)return['&#128553;','Starving!','#ff4444'];
+    if(pet.happiness<20)return['&#128546;','Sad...','#ff6b6b'];
+    if(pet.energy<15)return['&#128564;','Exhausted','#8888ff'];
+    if(pet.hunger<35)return['&#128533;','Hungry','#ffaa44'];
+    if(pet.happiness>80&&pet.hunger>60&&pet.energy>60)return['&#129321;','Ecstatic!','#ffcc00'];
+    if(pet.happiness>60)return['&#128522;','Happy','#66ee66'];
+    return['&#128528;','Okay','var(--muted)'];
+}}
+
+function calcOffline(){{
+    if(!pet||!pet.lastVisit)return null;
+    var now=Date.now(),elapsed=(now-pet.lastVisit)/3600000;
+    if(elapsed<0.01)return null;
+    var report={{hours:elapsed,oldHunger:pet.hunger,oldEnergy:pet.energy,oldHappy:pet.happiness}};
+    pet.hunger=Math.max(0,Math.round(pet.hunger-elapsed*8));
+    pet.energy=Math.min(100,Math.round(pet.energy+elapsed*4));
+    if(pet.hunger<25)pet.happiness=Math.max(0,Math.round(pet.happiness-elapsed*5));
+    else pet.happiness=Math.max(0,Math.round(pet.happiness-elapsed*1.5));
+    report.newHunger=pet.hunger;report.newEnergy=pet.energy;report.newHappy=pet.happiness;
+    pet.lastVisit=now;save();
+    return report;
+}}
+
+function showAwayReport(r){{
+    if(!r||r.hours<0.05){{document.getElementById('away-box').innerHTML='';return;}}
+    var h=r.hours,timeStr=h>=1?Math.floor(h)+'h '+Math.round((h%1)*60)+'m':Math.round(h*60)+'m';
+    function delta(o,n){{var d=Math.round(n-o);return d>=0?'+'+d:String(d);}}
+    function cls(o,n){{return n>=o?'pos':'neg';}}
+    document.getElementById('away-box').innerHTML='<div class="away-report"><h3>While you were away ('+timeStr+')</h3>'+
+        '<div class="away-line"><span>&#127830; Hunger</span><span class="change '+cls(r.oldHunger,r.newHunger)+'">'+delta(r.oldHunger,r.newHunger)+'% &rarr; '+r.newHunger+'%</span></div>'+
+        '<div class="away-line"><span>&#9889; Energy</span><span class="change '+cls(r.oldEnergy,r.newEnergy)+'">'+delta(r.oldEnergy,r.newEnergy)+'% &rarr; '+r.newEnergy+'%</span></div>'+
+        '<div class="away-line"><span>&#128150; Happy</span><span class="change '+cls(r.oldHappy,r.newHappy)+'">'+delta(r.oldHappy,r.newHappy)+'% &rarr; '+r.newHappy+'%</span></div>'+
+        '</div>';
+    setTimeout(function(){{document.getElementById('away-box').innerHTML='';}},8000);
+}}
+
+function updateUI(){{
+    if(!pet)return;
+    var gd=GAMES[pet.game];
+    document.getElementById('pet-emoji').innerHTML=pet.emoji;
+    document.getElementById('pet-name').textContent=pet.name;
+    document.getElementById('pet-level').textContent='Level '+pet.level;
+    var rar=getRarity(pet.level);
+    document.getElementById('pet-rarity').textContent=rar[2];
+    document.getElementById('pet-rarity').style.cssText='background:'+rar[3]+'22;color:'+rar[3];
+    var card=document.getElementById('pet-card');
+    card.className='pet-card rarity-'+rar[1];
+
+    var mood=getMood();
+    document.getElementById('pet-mood').innerHTML=mood[0]+' '+mood[1];
+    document.getElementById('pet-mood').style.color=mood[2];
+
+    var needed=xpForNext(pet.level);
+    var inLvl=xpInLevel(pet.level,pet.xp);
+    var pct=Math.min(100,needed>0?(inLvl/needed)*100:100);
+    document.getElementById('xp-fill').style.width=pct+'%';
+    document.getElementById('xp-text').textContent=inLvl+' / '+needed+' XP';
+    document.getElementById('xp-next').textContent='Level '+(pet.level+1);
+
+    function setBar(id,val,valId){{
+        var el=document.getElementById(id);
+        el.style.width=val+'%';
+        var color=val>60?'#44cc44':val>30?'#ddaa00':'#ff4444';
+        el.style.background=color;
+        document.getElementById(valId).textContent=Math.round(val)+'%';
+    }}
+    setBar('bar-hunger',pet.hunger,'val-hunger');
+    setBar('bar-energy',pet.energy,'val-energy');
+    setBar('bar-happy',pet.happiness,'val-happy');
+
+    var created=pet.created||Date.now();
+    var ageMs=Date.now()-created;
+    var ageDays=Math.floor(ageMs/86400000);
+    var ageHrs=Math.floor((ageMs%86400000)/3600000);
+    var ageStr=ageDays>0?ageDays+'d '+ageHrs+'h':ageHrs>0?ageHrs+'h':'just now';
+    document.getElementById('pet-age').textContent=ageStr;
+}}
+
+function updateCooldowns(){{
+    if(!pet)return;
+    var now=Date.now();
+    function setCd(action,cdMs,btnId,cdId){{
+        var last=pet['last_'+action]||0;
+        var remaining=Math.max(0,(last+cdMs)-now);
+        var btn=document.getElementById(btnId);
+        var cdEl=document.getElementById(cdId);
+        btn.classList.remove('ready','on-cooldown','no-energy');
+        if(remaining>0){{
+            btn.classList.add('on-cooldown');
+            var m=Math.floor(remaining/60000),s=Math.floor((remaining%60000)/1000);
+            cdEl.textContent=m+':'+(s<10?'0':'')+s;
+            cdEl.classList.remove('ready-text');
+        }}else if(action==='train'&&pet.energy<20){{
+            btn.classList.add('no-energy');
+            cdEl.textContent='Need energy';
+            cdEl.classList.remove('ready-text');
+        }}else{{
+            btn.classList.add('ready');
+            cdEl.textContent='Ready!';
+            cdEl.classList.add('ready-text');
+        }}
+    }}
+    setCd('feed',CD_FEED,'btn-feed','cd-feed');
+    setCd('train',CD_TRAIN,'btn-train','cd-train');
+    setCd('rest',CD_REST,'btn-rest','cd-rest');
+}}
+
+function toast(msg){{
+    var t=document.getElementById('toast');
+    t.textContent=msg;t.classList.add('show');
+    setTimeout(function(){{t.classList.remove('show');}},2500);
+}}
+
+function spawnConfetti(){{
+    var c=document.getElementById('lvl-confetti');c.innerHTML='';
+    var colors=['#ff5c87','#7c5cff','#00d2b4','#ffcc00','#ff6b6b','#50c8ff','#60dd60','#ffa040','#aa44ff','#ffaa00'];
+    for(var i=0;i<50;i++){{
+        var p=document.createElement('div');p.className='c';
+        p.style.left=Math.random()*100+'%';p.style.top='-10px';
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDelay=Math.random()*0.8+'s';
+        p.style.width=(5+Math.random()*8)+'px';p.style.height=(5+Math.random()*8)+'px';
+        c.appendChild(p);
+    }}
+    setTimeout(function(){{c.innerHTML='';}},3000);
+}}
+
+function showLevelUp(newLevel,oldRarity,newRarity){{
+    var overlay=document.getElementById('levelup');
+    document.getElementById('lvl-text').textContent='LEVEL '+newLevel+'!';
+    document.getElementById('lvl-sub').textContent=pet.name+' grew stronger!';
+    var rarText='';
+    if(oldRarity[1]!==newRarity[1])rarText='Evolved to <span style="color:'+newRarity[3]+'">'+newRarity[2]+'</span>!';
+    document.getElementById('lvl-rarity').innerHTML=rarText;
+    overlay.classList.add('show');spawnConfetti();
+    if(typeof gtag!=='undefined')gtag('event','pet_levelup',{{level:newLevel,rarity:newRarity[1],game:pet.game}});
+    setTimeout(function(){{overlay.classList.remove('show');}},2800);
+}}
+
+function doAction(action){{
+    if(!pet)return;
+    var now=Date.now();
+    var cdMap={{feed:CD_FEED,train:CD_TRAIN,rest:CD_REST}};
+    var last=pet['last_'+action]||0;
+    if(now-last<cdMap[action])return;
+    if(action==='train'&&pet.energy<20){{toast('Not enough energy! Rest first.');return;}}
+
+    var oldLevel=pet.level;
+    var oldRarity=getRarity(oldLevel);
+    var msgs,result;
+
+    if(action==='feed'){{
+        pet.hunger=Math.min(100,pet.hunger+25);
+        pet.happiness=Math.min(100,pet.happiness+5);
+        msgs=FEED_MSGS;
+    }}else if(action==='train'){{
+        var xpGain=15+Math.floor(Math.random()*11);
+        pet.xp+=xpGain;pet.energy=Math.max(0,pet.energy-20);pet.hunger=Math.max(0,pet.hunger-10);
+        pet.level=levelFromXp(pet.xp);
+        msgs=TRAIN_MSGS;result='+'+xpGain+' XP! ';
+    }}else if(action==='rest'){{
+        pet.energy=Math.min(100,pet.energy+40);
+        pet.happiness=Math.min(100,pet.happiness+10);
+        msgs=REST_MSGS;
+    }}
+
+    pet['last_'+action]=now;pet.lastVisit=now;save();updateUI();updateCooldowns();
+    var msg=(result||'')+pet.name+' '+msgs[Math.floor(Math.random()*msgs.length)];
+    toast(msg);
+
+    if(typeof gtag!=='undefined')gtag('event','pet_action',{{action:action,game:pet.game,level:pet.level}});
+
+    if(pet.level>oldLevel){{
+        var newRarity=getRarity(pet.level);
+        setTimeout(function(){{showLevelUp(pet.level,oldRarity,newRarity);}},400);
+    }}
+}}
+
+function startAdopt(game){{
+    var g=GAMES[game];
+    var pick=g.chars[Math.floor(Math.random()*g.chars.length)];
+    show('screen-hatch');
+    if(typeof gtag!=='undefined')gtag('event','pet_adopt_start',{{game:game}});
+    setTimeout(function(){{
+        document.getElementById('hatch-egg').style.animation='none';
+        document.getElementById('hatch-egg').innerHTML='&#10024;';
+        document.getElementById('hatch-text').textContent='Here they come...';
+    }},2000);
+    setTimeout(function(){{
+        pet={{game:game,emoji:pick[0],name:pick[1],level:1,xp:0,hunger:50,energy:100,happiness:70,
+              created:Date.now(),lastVisit:Date.now(),last_feed:0,last_train:0,last_rest:0}};
+        save();show('screen-pet');updateUI();updateCooldowns();
+        toast('Welcome, '+pet.name+'!');spawnConfetti();
+        if(typeof gtag!=='undefined')gtag('event','pet_adopted',{{game:game,character:pick[1]}});
+    }},3500);
+}}
+
+function releasePet(){{
+    if(!confirm('Release '+pet.name+'? This cannot be undone.'))return;
+    localStorage.removeItem(STORAGE_KEY);pet=null;
+    show('screen-pick');
+}}
+
+function init(){{
+    load();
+    if(pet){{
+        var report=calcOffline();
+        show('screen-pet');updateUI();updateCooldowns();
+        if(report)showAwayReport(report);
+    }}else{{
+        var params=new URLSearchParams(window.location.search);
+        var game=params.get('game');
+        if(game&&GAMES[game])startAdopt(game);
+        else show('screen-pick');
+    }}
+}}
+
+setInterval(updateCooldowns,1000);
+init();
+}})();
+</script>
+</body>
+</html>'''
+
+
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def main():
@@ -1710,7 +2204,14 @@ def main():
     (BASE / "index.html").write_text(html, encoding="utf-8")
     print(f"  Built index.html (homepage)")
 
-    print(f"\nDone! {len(CHANNELS)} channel pages + 1 homepage built.")
+    # Build adopt page
+    html = build_adopt_page()
+    adopt_dir = BASE / "adopt"
+    adopt_dir.mkdir(exist_ok=True)
+    (adopt_dir / "index.html").write_text(html, encoding="utf-8")
+    print(f"  Built adopt/index.html (pet game)")
+
+    print(f"\nDone! {len(CHANNELS)} channel pages + 1 homepage + 1 adopt page built.")
 
 
 if __name__ == "__main__":
