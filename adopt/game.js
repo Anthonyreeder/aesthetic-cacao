@@ -637,8 +637,10 @@ if(_sbSession){sb.from("pets").delete().eq("user_id",_sbSession.user.id).then(fu
 localStorage.removeItem(KEY);pet=null;show("screen-pick");
 };
 
-// ── Chat System ─────────────────────────────────────────────
+// ── Chat System (uses fetch directly for reliability) ───────
 var _chatOpen=false,_chatPoll=null,_chatLoaded=false;
+var _chatAPI=SB_URL+"/rest/v1/chat_messages";
+var _chatHeaders={"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Content-Type":"application/json"};
 
 function chatFormatTime(iso){
 var d=new Date(iso),now=new Date(),diff=now-d;
@@ -660,18 +662,18 @@ cont.appendChild(div);
 });
 if(wasAtBottom||!_chatLoaded)cont.scrollTop=cont.scrollHeight;
 _chatLoaded=true;
+var c=document.getElementById("chat-count");if(c)c.textContent=msgs.length>0?msgs.length+" msgs":"";
 }
 
 function chatLoad(){
-if(!sb){console.warn("Chat: no sb client");return;}
-sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
-if(res.error){console.error("Chat load error:",res.error);return;}
-if(res.data){chatRenderMessages(res.data);var c=document.getElementById("chat-count");if(c)c.textContent=res.data.length>0?res.data.length+" msgs":"";}
-}).catch(function(e){console.error("Chat load exception:",e);});
+fetch(_chatAPI+"?select=*&order=created_at.asc&limit=50",{headers:_chatHeaders})
+.then(function(r){return r.json();})
+.then(function(data){if(Array.isArray(data))chatRenderMessages(data);})
+.catch(function(e){console.error("Chat load fail:",e);});
 }
 
 function chatPollNew(){
-if(!sb||!_chatOpen)return;
+if(!_chatOpen)return;
 chatLoad();
 }
 
@@ -681,36 +683,31 @@ _chatOpen=true;
 var body=document.getElementById("chat-body");if(body)body.classList.add("open");
 chatLoad();
 if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);
-var inp=document.getElementById("chat-input");
-if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
 };
 
 window._sendChat=function(){
-if(!sb){console.warn("Chat send: no sb");return;}
-if(!pet){console.warn("Chat send: no pet");return;}
+if(!pet)return;
 var inp=document.getElementById("chat-input");if(!inp)return;
 var msg=inp.value.trim();if(!msg)return;
 if(msg.length>150)msg=msg.slice(0,150);
 var btn=document.getElementById("chat-send-btn");
 if(btn)btn.disabled=true;
 inp.value="";
-sb.from("chat_messages").insert({
-pet_emoji:pet.emoji,
-pet_name:pet.name,
-message:msg
-}).then(function(res){
+fetch(_chatAPI,{method:"POST",headers:_chatHeaders,body:JSON.stringify({pet_emoji:pet.emoji,pet_name:pet.name,message:msg})})
+.then(function(r){
 if(btn)btn.disabled=false;
-if(res.error){console.error("Chat send error:",res.error);toast("Couldn't send: "+res.error.message);inp.value=msg;return;}
+if(!r.ok){toast("Couldn't send message");inp.value=msg;return;}
 chatLoad();
 if(typeof gtag!=="undefined")gtag("event","chat_message",{game:pet.game});
-}).catch(function(e){if(btn)btn.disabled=false;console.error("Chat send exception:",e);toast("Send failed");inp.value=msg;});
+}).catch(function(e){if(btn)btn.disabled=false;toast("Send failed");inp.value=msg;});
 };
 
 function chatInit(){
 if(!pet)return;
 _chatOpen=true;
 var body=document.getElementById("chat-body");if(body)body.classList.add("open");
-if(sb){chatLoad();if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);}
+chatLoad();
+if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);
 var inp=document.getElementById("chat-input");
 if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
 }
