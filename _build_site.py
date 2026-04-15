@@ -1715,6 +1715,7 @@ def build_adopt_page():
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 {ADSENSE}
 <style>
 *,*::before,*::after{{margin:0;padding:0;box-sizing:border-box}}
@@ -1841,9 +1842,47 @@ a{{color:var(--accent);text-decoration:none}}
 .release-btn{{background:none;border:none;color:var(--muted);font-size:.7rem;cursor:pointer;margin-top:.5rem;text-decoration:underline;font-family:inherit}}.release-btn:hover{{color:#ff6b6b}}
 
 @media(max-width:400px){{#screen-pet{{padding:1rem .8rem 3rem}}.pet-card{{padding:1.5rem 1rem 1rem}}}}
+
+/* ── Auth Modal ── */
+.auth-overlay{{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem}}
+.auth-overlay.show{{display:flex}}
+.auth-modal{{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem 1.5rem;max-width:380px;width:100%;position:relative;animation:authIn .3s ease}}
+@keyframes authIn{{0%{{transform:translateY(30px);opacity:0}}100%{{transform:translateY(0);opacity:1}}}}
+.auth-close{{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;font-family:inherit;line-height:1}}.auth-close:hover{{color:var(--text)}}
+.auth-modal h2{{font-size:1.3rem;font-weight:900;margin-bottom:.3rem}}
+.auth-modal .auth-sub{{color:var(--muted);font-size:.85rem;margin-bottom:1.2rem}}
+.auth-input{{display:block;width:100%;padding:.75rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.9rem;font-family:inherit;margin-bottom:.6rem;outline:none;transition:border-color .2s}}
+.auth-input:focus{{border-color:var(--accent)}}
+.auth-input::placeholder{{color:var(--muted)}}
+.auth-submit{{display:block;width:100%;padding:.8rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:.95rem;cursor:pointer;margin-top:.8rem;transition:transform .15s;font-family:inherit}}
+.auth-submit:hover{{transform:translateY(-2px)}}.auth-submit:active{{transform:scale(.98)}}
+.auth-submit:disabled{{opacity:.5;cursor:default;transform:none}}
+.auth-switch{{text-align:center;margin-top:1rem;font-size:.8rem;color:var(--muted)}}.auth-switch a{{color:var(--accent);cursor:pointer}}.auth-switch a:hover{{text-decoration:underline}}
+.auth-error{{color:#ff4444;font-size:.8rem;margin-top:.5rem;display:none}}
+.auth-age-row{{display:flex;gap:.6rem;align-items:center}}.auth-age-row .auth-input{{flex:1}}.auth-age-label{{color:var(--muted);font-size:.75rem;white-space:nowrap}}
+
+/* ── Save Progress Banner ── */
+.save-banner{{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,rgba(124,92,255,.15),rgba(0,0,0,.95));border-top:1px solid rgba(124,92,255,.3);padding:1rem 1.2rem;display:none;align-items:center;gap:.8rem;z-index:50;backdrop-filter:blur(10px)}}
+.save-banner.show{{display:flex}}
+.save-banner .sb-text{{flex:1;font-size:.85rem;line-height:1.4}}.save-banner .sb-text b{{color:var(--accent)}}
+.save-banner .sb-btn{{background:var(--accent);color:#fff;border:none;padding:.6rem 1.2rem;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;font-family:inherit}}
+.save-banner .sb-btn:hover{{transform:translateY(-1px)}}
+.save-banner .sb-dismiss{{background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;white-space:nowrap;font-family:inherit}}.save-banner .sb-dismiss:hover{{color:var(--text)}}
+@media(max-width:500px){{.save-banner{{flex-wrap:wrap}}.save-banner .sb-text{{width:100%}}}}
+
+/* ── Account Bar ── */
+.account-bar{{display:none;align-items:center;justify-content:center;gap:.6rem;padding:.5rem 1rem;font-size:.75rem;color:var(--muted);background:rgba(124,92,255,.06);border-bottom:1px solid rgba(124,92,255,.12)}}
+.account-bar.show{{display:flex}}
+.account-bar b{{color:var(--accent)}}.account-bar button{{background:none;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;text-decoration:underline;font-family:inherit}}
 </style>
 </head>
 <body>
+
+<!-- Account Bar -->
+<div class="account-bar" id="account-bar">
+    <span>&#9729;&#65039; Saved as <b id="account-name"></b></span>
+    <button onclick="window._doLogout()">Log out</button>
+</div>
 
 <!-- Pick Game - Full Width Landing -->
 <div class="screen" id="screen-pick">
@@ -1964,6 +2003,40 @@ a{{color:var(--accent);text-decoration:none}}
         <div>Adopted <span id="pet-age"></span> ago</div>
         <a href="/">Home</a> &middot; <a href="/channels/">Channels</a> &middot; <a href="{DISCORD}">Discord</a>
         <br><button class="release-btn" onclick="window._releasePet()">Release this pet</button>
+    </div>
+</div>
+
+<!-- Save Progress Banner -->
+<div class="save-banner" id="save-banner">
+    <div class="sb-text">Don't lose <b id="save-pet-name">your pet</b>! Create a free account to save your progress</div>
+    <button class="sb-btn" onclick="window._openAuth('register')">Save Progress</button>
+    <button class="sb-dismiss" onclick="window._dismissSave()">Later</button>
+</div>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="auth-overlay">
+    <div class="auth-modal">
+        <button class="auth-close" onclick="window._closeAuth()">&times;</button>
+        <div id="auth-register">
+            <h2>Save Your Progress</h2>
+            <p class="auth-sub" id="auth-reg-sub">Create a free account so you never lose your pet</p>
+            <input class="auth-input" type="text" placeholder="Display Name" id="reg-name" maxlength="30">
+            <input class="auth-input" type="email" placeholder="Email" id="reg-email">
+            <input class="auth-input" type="password" placeholder="Password (6+ characters)" id="reg-pass">
+            <div class="auth-age-row"><input class="auth-input" type="number" placeholder="Age" id="reg-age" min="1" max="120"><span class="auth-age-label">Optional</span></div>
+            <button class="auth-submit" id="reg-btn" onclick="window._doRegister()">Create Account</button>
+            <div class="auth-error" id="reg-error"></div>
+            <div class="auth-switch">Already have an account? <a onclick="window._openAuth('login')">Log in</a></div>
+        </div>
+        <div id="auth-login" style="display:none">
+            <h2>Welcome Back</h2>
+            <p class="auth-sub">Log in to load your pet</p>
+            <input class="auth-input" type="email" placeholder="Email" id="login-email">
+            <input class="auth-input" type="password" placeholder="Password" id="login-pass">
+            <button class="auth-submit" id="login-btn" onclick="window._doLogin()">Log In</button>
+            <div class="auth-error" id="login-error"></div>
+            <div class="auth-switch">Need an account? <a onclick="window._openAuth('register')">Sign up</a></div>
+        </div>
     </div>
 </div>
 
@@ -2114,6 +2187,8 @@ window._doAction=function(action){{
     toast(res+pet.name+' '+msgs[Math.floor(Math.random()*msgs.length)]);
     if(typeof gtag!=='undefined')gtag('event','pet_action',{{action:action,game:pet.game,level:pet.level}});
     if(pet.level>oldLv)setTimeout(function(){{showLevelUp(pet.level,oldR,getRarity(pet.level));}},400);
+    cloudSync();
+    checkSavePrompt();
 }};
 
 window._startAdopt=function(game){{
@@ -2130,14 +2205,155 @@ window._startAdopt=function(game){{
 
 window._releasePet=function(){{
     if(!confirm('Release '+pet.name+'? This cannot be undone.'))return;
+    if(_sbSession){{sb.from('pets').delete().eq('user_id',_sbSession.user.id).then(function(){{}});}}
     localStorage.removeItem(KEY);pet=null;show('screen-pick');
 }};
 
+/* ── Supabase Auth + Cloud Sync ── */
+var SB_URL='https://orupowewgrldfdsqwdwr.supabase.co';
+var SB_KEY='sb_publishable_gVsDPUh9mii_DSShVa8SUQ_VGxOQQhy';
+var sb=null,_sbSession=null;
+try{{sb=window.supabase.createClient(SB_URL,SB_KEY);}}catch(e){{console.warn('Supabase unavailable, offline mode');}}
+
+function cloudSync(){{
+    if(!sb||!_sbSession||!pet)return;
+    sb.from('pets').upsert({{
+        user_id:_sbSession.user.id,game:pet.game,emoji:pet.emoji,name:pet.name,
+        level:pet.level,xp:pet.xp,hunger:Math.round(pet.hunger),energy:Math.round(pet.energy),
+        happiness:Math.round(pet.happiness),last_feed:pet.last_feed||0,last_train:pet.last_train||0,
+        last_rest:pet.last_rest||0,last_visit:new Date().toISOString()
+    }},{{onConflict:'user_id'}}).then(function(){{}});
+}}
+
+function loadCloudPet(){{
+    if(!sb||!_sbSession)return Promise.resolve(false);
+    return sb.from('pets').select('*').eq('user_id',_sbSession.user.id).maybeSingle().then(function(res){{
+        if(!res.data)return false;
+        var d=res.data;
+        pet={{game:d.game,emoji:d.emoji,name:d.name,level:d.level,xp:d.xp,hunger:d.hunger,energy:d.energy,
+              happiness:d.happiness,last_feed:d.last_feed,last_train:d.last_train,last_rest:d.last_rest,
+              created:new Date(d.created_at).getTime(),lastVisit:new Date(d.last_visit).getTime()}};
+        save();return true;
+    }}).catch(function(){{return false;}});
+}}
+
+function showAccountBar(){{
+    if(!_sbSession)return;
+    sb.from('profiles').select('display_name').eq('id',_sbSession.user.id).maybeSingle().then(function(res){{
+        var name=(res.data&&res.data.display_name)||_sbSession.user.email;
+        document.getElementById('account-name').textContent=name;
+        document.getElementById('account-bar').classList.add('show');
+    }});
+}}
+
+function hideAccountBar(){{document.getElementById('account-bar').classList.remove('show');}}
+
+function checkSavePrompt(){{
+    if(_sbSession||!pet)return;
+    var v=parseInt(localStorage.getItem('bds_visits')||'0');
+    if((pet.level>=3||v>=3)&&!sessionStorage.getItem('save_dismissed')){{
+        document.getElementById('save-pet-name').textContent=pet.name;
+        document.getElementById('save-banner').classList.add('show');
+    }}
+}}
+
+window._dismissSave=function(){{
+    sessionStorage.setItem('save_dismissed','1');
+    document.getElementById('save-banner').classList.remove('show');
+}};
+
+window._openAuth=function(mode){{
+    document.getElementById('save-banner').classList.remove('show');
+    document.getElementById('auth-register').style.display=mode==='register'?'block':'none';
+    document.getElementById('auth-login').style.display=mode==='login'?'block':'none';
+    document.getElementById('reg-error').style.display='none';
+    document.getElementById('login-error').style.display='none';
+    if(mode==='register'&&pet)document.getElementById('auth-reg-sub').textContent='Create a free account so you never lose '+pet.name;
+    document.getElementById('auth-overlay').classList.add('show');
+}};
+
+window._closeAuth=function(){{document.getElementById('auth-overlay').classList.remove('show');}};
+
+function showAuthError(id,msg){{var el=document.getElementById(id);el.textContent=msg;el.style.display='block';}}
+
+window._doRegister=function(){{
+    if(!sb)return;
+    var name=document.getElementById('reg-name').value.trim();
+    var email=document.getElementById('reg-email').value.trim();
+    var pass=document.getElementById('reg-pass').value;
+    var age=parseInt(document.getElementById('reg-age').value)||null;
+    if(!name){{showAuthError('reg-error','Please enter a display name');return;}}
+    if(!email){{showAuthError('reg-error','Please enter your email');return;}}
+    if(pass.length<6){{showAuthError('reg-error','Password must be 6+ characters');return;}}
+    var btn=document.getElementById('reg-btn');btn.disabled=true;btn.textContent='Creating...';
+    sb.auth.signUp({{email:email,password:pass}}).then(function(res){{
+        btn.disabled=false;btn.textContent='Create Account';
+        if(res.error){{showAuthError('reg-error',res.error.message);return;}}
+        _sbSession=res.data.session;
+        if(!_sbSession&&res.data.user){{
+            _sbSession={{user:res.data.user}};
+        }}
+        if(!_sbSession){{showAuthError('reg-error','Check your email to confirm, then log in.');return;}}
+        sb.from('profiles').insert({{id:_sbSession.user.id,display_name:name,age:age}}).then(function(){{}});
+        cloudSync();
+        window._closeAuth();showAccountBar();
+        toast('Account created! '+pet.name+' is saved \\u2601\\uFE0F');
+        if(typeof gtag!=='undefined')gtag('event','user_registered',{{game:pet?pet.game:'none'}});
+    }});
+}};
+
+window._doLogin=function(){{
+    if(!sb)return;
+    var email=document.getElementById('login-email').value.trim();
+    var pass=document.getElementById('login-pass').value;
+    if(!email||!pass){{showAuthError('login-error','Enter email and password');return;}}
+    var btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Logging in...';
+    sb.auth.signInWithPassword({{email:email,password:pass}}).then(function(res){{
+        btn.disabled=false;btn.textContent='Log In';
+        if(res.error){{showAuthError('login-error',res.error.message);return;}}
+        _sbSession=res.data.session;
+        loadCloudPet().then(function(loaded){{
+            if(loaded){{
+                var r=calcOffline();
+                show('screen-pet');updateUI();updateCD();if(r)showAway(r);
+            }}
+            window._closeAuth();showAccountBar();
+            toast('Welcome back!');
+            if(typeof gtag!=='undefined')gtag('event','user_login',{{game:pet?pet.game:'none'}});
+        }});
+    }});
+}};
+
+window._doLogout=function(){{
+    if(!sb)return;
+    sb.auth.signOut().then(function(){{
+        _sbSession=null;hideAccountBar();
+        toast('Logged out');
+    }});
+}};
+
 (function init(){{
+    var visits=parseInt(localStorage.getItem('bds_visits')||'0')+1;
+    localStorage.setItem('bds_visits',String(visits));
     load();
-    if(pet){{var r=calcOffline();show('screen-pet');updateUI();updateCD();if(r)showAway(r);}}
-    else{{var p=new URLSearchParams(window.location.search),g=p.get('game');if(g&&GAMES[g])window._startAdopt(g);else show('screen-pick');}}
-    setInterval(updateCD,1000);
+
+    function startUI(){{
+        if(pet){{var r=calcOffline();show('screen-pet');updateUI();updateCD();if(r)showAway(r);checkSavePrompt();}}
+        else{{var p=new URLSearchParams(window.location.search),g=p.get('game');if(g&&GAMES[g])window._startAdopt(g);else show('screen-pick');}}
+        setInterval(updateCD,1000);
+    }}
+
+    if(sb){{
+        sb.auth.getSession().then(function(res){{
+            if(res.data&&res.data.session){{
+                _sbSession=res.data.session;
+                loadCloudPet().then(function(loaded){{
+                    if(loaded)load();
+                    startUI();showAccountBar();
+                }});
+            }}else{{startUI();}}
+        }}).catch(function(){{startUI();}});
+    }}else{{startUI();}}
 }})();
 </script>
 </body>
