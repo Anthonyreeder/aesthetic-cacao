@@ -2363,13 +2363,31 @@ window._doLogout=function(){{
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def main():
-    # Build channel pages
+    # Channel -> adopt game mapping
+    GAME_MAP = {
+        "fnrogebait": "fortnite",
+        "glitchzone": "fortnite",
+        "mcrogebait": "minecraft",
+        "blocksarebuildable": "minecraft",
+        "craftrank": "minecraft",
+        "rbxrogebait": "roblox",
+        "robloxbeliever": "roblox",
+        "lootlore": "fortnite",
+    }
+
+    # Build channel pages as redirects to adopt page
     for slug, ch in CHANNELS.items():
         out_dir = BASE / slug
         out_dir.mkdir(exist_ok=True)
-        html = build_channel_page(slug, ch)
-        (out_dir / "index.html").write_text(html, encoding="utf-8")
-        print(f"  Built {slug}/index.html ({len(ch.get('generators', []))} generators)")
+        game = GAME_MAP.get(slug)
+        dest = f"/?game={game}" if game else "/"
+        redir_html = f'''<!DOCTYPE html><html><head>
+<meta charset="UTF-8"><title>{ch["name"]} &mdash; BDS Anthony</title>
+<meta http-equiv="refresh" content="0;url={dest}">
+<script>window.location.replace("{dest}");</script>
+</head><body><p>Redirecting&hellip; <a href="{dest}">Click here</a></p></body></html>'''
+        (out_dir / "index.html").write_text(redir_html, encoding="utf-8")
+        print(f"  Built {slug}/index.html -> redirect to {dest}")
 
     # Adopt page IS the homepage now
     html = build_adopt_page()
