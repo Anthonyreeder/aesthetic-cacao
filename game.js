@@ -72,7 +72,7 @@ var FAKE_NAMES=["xXShadowXx","ProGamer99","NightWolf","DragonSlyr","NoobKing","S
 
 // ── State ──────────────────────────────────────────────────
 var KEY="bds_pet_v1",pet=null,sb=null,_sbSession=null,_pendingLoot=null,_opponents=[];
-try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){console.warn("Supabase unavailable, offline mode");}
+try{sb=window.supabase.createClient(SB_URL,SB_KEY);console.log("Supabase client OK");}catch(e){console.warn("Supabase unavailable:",e);}
 
 // ── Core ───────────────────────────────────────────────────
 function load(){
@@ -663,10 +663,11 @@ _chatLoaded=true;
 }
 
 function chatLoad(){
-if(!sb)return;
+if(!sb){console.warn("Chat: no sb client");return;}
 sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
+if(res.error){console.error("Chat load error:",res.error);return;}
 if(res.data){chatRenderMessages(res.data);var c=document.getElementById("chat-count");if(c)c.textContent=res.data.length>0?res.data.length+" msgs":"";}
-});
+}).catch(function(e){console.error("Chat load exception:",e);});
 }
 
 function chatPollNew(){
@@ -685,7 +686,8 @@ if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sen
 };
 
 window._sendChat=function(){
-if(!sb||!pet)return;
+if(!sb){console.warn("Chat send: no sb");return;}
+if(!pet){console.warn("Chat send: no pet");return;}
 var inp=document.getElementById("chat-input");if(!inp)return;
 var msg=inp.value.trim();if(!msg)return;
 if(msg.length>150)msg=msg.slice(0,150);
@@ -698,10 +700,10 @@ pet_name:pet.name,
 message:msg
 }).then(function(res){
 if(btn)btn.disabled=false;
-if(res.error){toast("Couldn't send message");inp.value=msg;return;}
+if(res.error){console.error("Chat send error:",res.error);toast("Couldn't send: "+res.error.message);inp.value=msg;return;}
 chatLoad();
 if(typeof gtag!=="undefined")gtag("event","chat_message",{game:pet.game});
-});
+}).catch(function(e){if(btn)btn.disabled=false;console.error("Chat send exception:",e);toast("Send failed");inp.value=msg;});
 };
 
 function chatInit(){
