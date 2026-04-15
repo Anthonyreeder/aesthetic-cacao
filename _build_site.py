@@ -1787,7 +1787,10 @@ a{{color:var(--accent);text-decoration:none}}
 .pet-card.rarity-rare{{border-color:#4488ff;box-shadow:0 0 25px rgba(68,136,255,.15)}}.pet-card.rarity-epic{{border-color:#aa44ff;box-shadow:0 0 30px rgba(170,68,255,.2)}}
 .pet-card.rarity-legendary{{border-color:#ffaa00;box-shadow:0 0 35px rgba(255,170,0,.2)}}
 .pet-emoji{{font-size:3.5rem;margin-bottom:.3rem}}
+.pet-name-row{{display:flex;align-items:center;justify-content:center;gap:.4rem}}
 .pet-name{{font-size:1.5rem;font-weight:900;letter-spacing:-.02em}}
+.rename-btn{{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.4;transition:opacity .2s;padding:2px 4px;line-height:1;font-family:inherit}}
+.rename-btn:hover{{opacity:.9}}
 .pet-level{{color:var(--muted);font-size:.85rem;margin-top:.2rem}}
 .rarity-badge{{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;padding:.2rem .7rem;border-radius:50px;font-weight:800;margin-top:.5rem}}
 .rarity-common .rarity-badge{{background:rgba(128,128,128,.2);color:#999}}
@@ -1871,7 +1874,7 @@ a{{color:var(--accent);text-decoration:none}}
 @media(max-width:500px){{.save-banner{{flex-wrap:wrap}}.save-banner .sb-text{{width:100%}}}}
 
 /* ── Account Bar ── */
-.account-bar{{display:none;align-items:center;justify-content:center;gap:.6rem;padding:.5rem 1rem;font-size:.75rem;color:var(--muted);background:rgba(124,92,255,.06);border-bottom:1px solid rgba(124,92,255,.12)}}
+.account-bar{{display:none;align-items:center;justify-content:center;gap:.6rem;padding:.45rem 1rem;font-size:.72rem;color:var(--muted);background:rgba(124,92,255,.08);border-bottom:1px solid rgba(124,92,255,.15)}}
 .account-bar.show{{display:flex}}
 .account-bar b{{color:var(--accent)}}.account-bar button{{background:none;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;text-decoration:underline;font-family:inherit}}
 
@@ -2029,7 +2032,7 @@ a{{color:var(--accent);text-decoration:none}}
     <div id="away-box"></div>
     <div class="pet-card" id="pet-card">
         <div class="pet-emoji" id="pet-emoji"></div>
-        <div class="pet-name" id="pet-name"></div>
+        <div class="pet-name-row"><span class="pet-name" id="pet-name"></span><button class="rename-btn" onclick="window._renamePet()" title="Rename">&#9999;&#65039;</button></div>
         <div class="pet-level" id="pet-level"></div>
         <div class="rarity-badge" id="pet-rarity"></div>
         <div class="mood-text" id="pet-mood"></div>

@@ -539,7 +539,7 @@ function hideAccountBar(){document.getElementById("account-bar").classList.remov
 function checkSavePrompt(){
 if(_sbSession||!pet)return;
 var v=parseInt(localStorage.getItem("bds_visits")||"0");
-if((pet.level>=3||v>=3)&&!sessionStorage.getItem("save_dismissed")){
+if((pet.level>=20||v>=3)&&!sessionStorage.getItem("save_dismissed")){
 document.getElementById("save-pet-name").textContent=pet.name;
 document.getElementById("save-banner").classList.add("show");
 }
@@ -618,6 +618,16 @@ created:Date.now(),lastVisit:Date.now()};
 save();show("screen-pet");updateUI();updateCD();toast("Welcome, "+pet.name+"!");confetti();
 if(typeof gtag!=="undefined")gtag("event","pet_adopted",{game:game,character:pick[1]});
 },3500);
+};
+
+window._renamePet=function(){
+if(!pet)return;
+var newName=prompt("Rename your pet:",pet.name);
+if(!newName||!newName.trim())return;
+newName=newName.trim().slice(0,20);
+pet.name=newName;pet.lastVisit=Date.now();save();updateUI();
+toast(pet.emoji+" is now called "+newName+"!");
+cloudSync();
 };
 
 window._releasePet=function(){
