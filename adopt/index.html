@@ -331,7 +331,7 @@ a{color:var(--accent);text-decoration:none}
     </div>
     <div class="gold-bar">&#128176; <span class="gold-amt" id="gold-amt">0</span> Gold <span style="margin:0 .4rem;opacity:.3">|</span> <span id="weapon-display">&#9876;&#65039; No weapon</span></div>
     <div class="xp-section">
-        <div class="xp-label"><span id="xp-text">XP</span><span id="xp-next">Next level</span></div>
+        <div class="xp-label"><span id="xp-text">Stats</span><span id="xp-next">Total</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
     </div>
     <div class="tab-nav">
@@ -436,6 +436,7 @@ a{color:var(--accent);text-decoration:none}
 <!-- Loot Reveal Overlay -->
 <div class="loot-overlay" id="loot-overlay">
     <div class="loot-reveal"><div class="lr-emoji"></div><div class="lr-name"></div><div class="lr-rarity"></div><div class="lr-power"></div></div>
+    <div id="lr-compare" style="margin-top:.8rem;padding:.8rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;display:none;text-align:center"></div>
     <div class="loot-btns">
         <button class="equip-btn" onclick="window._equipLoot()">&#9876;&#65039; Equip</button>
         <button class="discard-btn" onclick="window._discardLoot()">&#128465;&#65039; Discard</button>

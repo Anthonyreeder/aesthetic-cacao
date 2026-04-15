@@ -2,7 +2,7 @@
 // GAMES, SB_URL, SB_KEY are set by inline <script> in HTML
 
 var XP_TABLE=[0,50,130,240,380,550,750,1000,1300,1650,2050,2500,3050,3700,4450,5300,6300,7450,8800,10400,12300];
-var RARITY_LEVELS=[[1,'common','Common','#888'],[5,'uncommon','Uncommon','#44cc44'],[10,'rare','Rare','#4488ff'],[15,'epic','Epic','#aa44ff'],[20,'legendary','Legendary','#ffaa00']];
+var RARITY_LEVELS=[[1,'common','Common','#888'],[20,'uncommon','Uncommon','#44cc44'],[50,'rare','Rare','#4488ff'],[100,'epic','Epic','#aa44ff'],[150,'legendary','Legendary','#ffaa00']];
 var CD_FEED=15*60000,CD_REST=45*60000,JOB_CD=10*60000,MAX_BATTLES=10;
 var FEED_MSGS=["is feeling full!","loved that snack!","gobbled it up!","wants more already!"];
 var REST_MSGS=["is recharging nicely.","needed that nap.","feels refreshed!","is full of energy now!"];
@@ -96,6 +96,7 @@ function getRarity(lv){var r=RARITY_LEVELS[0];for(var i=0;i<RARITY_LEVELS.length
 function xpForNext(lv){return lv>=XP_TABLE.length-1?99999:XP_TABLE[lv]-XP_TABLE[lv-1];}
 function xpInLevel(lv,xp){return lv<=1?xp:xp-XP_TABLE[lv-1];}
 function levelFromXp(xp){for(var i=1;i<XP_TABLE.length;i++)if(xp<XP_TABLE[i])return i;return XP_TABLE.length;}
+function calcLevel(){if(!pet)return 1;return(pet.str||1)+(pet.def||1)+(pet.hp||10);}
 
 function getTrainCD(statLv){
 if(statLv<=10)return 5*60000;
@@ -145,6 +146,7 @@ function updateUI(){
 if(!pet)return;
 document.getElementById("pet-emoji").textContent=pet.emoji;
 document.getElementById("pet-name").textContent=pet.name;
+pet.level=calcLevel();
 document.getElementById("pet-level").textContent="Level "+pet.level;
 var rar=getRarity(pet.level);
 document.getElementById("pet-rarity").textContent=rar[2];
@@ -153,10 +155,12 @@ document.getElementById("pet-card").className="pet-card rarity-"+rar[1];
 var mood=getMood();
 document.getElementById("pet-mood").textContent=mood[0]+" "+mood[1];
 document.getElementById("pet-mood").style.color=mood[2];
-var needed=xpForNext(pet.level),inLvl=xpInLevel(pet.level,pet.xp),pct=Math.min(100,needed>0?(inLvl/needed)*100:100);
+var statTotal=(pet.str||1)+(pet.def||1)+(pet.hp||10);
+var maxPossible=50+50+100;
+var pct=Math.min(100,(statTotal/maxPossible)*100);
 document.getElementById("xp-fill").style.width=pct+"%";
-document.getElementById("xp-text").textContent=inLvl+"/"+needed+" XP";
-document.getElementById("xp-next").textContent="Level "+(pet.level+1);
+document.getElementById("xp-text").textContent="\uD83D\uDCAA "+(pet.str||1)+" + \uD83D\uDEE1\uFE0F "+(pet.def||1)+" + \u2764\uFE0F "+(pet.hp||10);
+document.getElementById("xp-next").textContent="Total: "+statTotal;
 function sb(id,val,vid){var el=document.getElementById(id);el.style.width=val+"%";el.style.background=val>60?"#44cc44":val>30?"#ddaa00":"#ff4444";document.getElementById(vid).textContent=Math.round(val)+"%";}
 sb("bar-hunger",pet.hunger,"val-hunger");sb("bar-energy",pet.energy,"val-energy");sb("bar-happy",pet.happiness,"val-happy");
 var ms=Date.now()-(pet.created||Date.now()),dd=Math.floor(ms/86400000),hh=Math.floor((ms%86400000)/3600000);
@@ -214,13 +218,12 @@ if(tab==="train")updateTrainUI();
 window._doAction=function(action){
 if(!pet)return;var now=Date.now(),cds={feed:CD_FEED,rest:CD_REST};
 if(now-(pet["last_"+action]||0)<cds[action])return;
-var oldLv=pet.level,oldR=getRarity(oldLv),msgs,res="";
+var msgs;
 if(action==="feed"){pet.hunger=Math.min(100,pet.hunger+25);pet.happiness=Math.min(100,pet.happiness+5);msgs=FEED_MSGS;}
 else{pet.energy=Math.min(100,pet.energy+40);pet.happiness=Math.min(100,pet.happiness+10);msgs=REST_MSGS;}
 pet["last_"+action]=now;pet.lastVisit=now;save();updateUI();updateCD();
-toast(res+pet.name+" "+msgs[Math.floor(Math.random()*msgs.length)]);
+toast(pet.name+" "+msgs[Math.floor(Math.random()*msgs.length)]);
 if(typeof gtag!=="undefined")gtag("event","pet_action",{action:action,game:pet.game,level:pet.level});
-if(pet.level>oldLv)setTimeout(function(){showLevelUp(pet.level,oldR,getRarity(pet.level));},400);
 cloudSync();checkSavePrompt();
 };
 
@@ -253,11 +256,13 @@ var lastSK=pet.last_train_stat||"str";
 var cdDur=getTrainCD(pet[lastSK]||1);
 if(now-(pet.last_train||0)<cdDur)return;
 if(pet.energy<10){toast("Need more energy! Rest first.");return;}
+var oldLv=calcLevel(),oldR=getRarity(oldLv);
 pet[stat]+=1;pet.last_train=now;pet.last_train_stat=stat;
 pet.energy=Math.max(0,pet.energy-10);pet.hunger=Math.max(0,pet.hunger-5);
-pet.lastVisit=now;save();updateUI();updateTrainUI();
+pet.level=calcLevel();pet.lastVisit=now;save();updateUI();updateTrainUI();
 var names={str:"Strength",def:"Defence",hp:"Health"};
 toast(pet.name+"'s "+names[stat]+" is now "+pet[stat]+"! \uD83D\uDCAA");
+if(pet.level>oldLv){var newR=getRarity(pet.level);if(oldR[1]!==newR[1])setTimeout(function(){showLevelUp(pet.level,oldR,newR);},400);}
 if(typeof gtag!=="undefined")gtag("event","pet_train_stat",{stat:stat,value:pet[stat],game:pet.game});
 cloudSync();
 };
@@ -350,6 +355,15 @@ ol.querySelector(".lr-rarity").textContent=rarity.toUpperCase();
 ol.querySelector(".lr-rarity").style.color=RARITY_COLORS[rarity];
 ol.querySelector(".lr-power").textContent="\u2694\uFE0F "+atk+" ATK";
 ol.querySelector(".loot-reveal").style.borderColor=RARITY_COLORS[rarity];
+var cmp=ol.querySelector("#lr-compare");
+if(pet.weapon){
+var diff=atk-pet.weapon.power;var diffStr=diff>0?'<span style="color:#44cc44">+'+diff+'</span>':diff<0?'<span style="color:#ff6b6b">'+diff+'</span>':'<span style="color:var(--muted)">+0</span>';
+cmp.innerHTML='<div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem">Currently Equipped</div><div style="display:flex;align-items:center;gap:.5rem;justify-content:center"><span style="font-size:1.3rem">'+pet.weapon.emoji+'</span><span style="font-weight:700">'+pet.weapon.name+'</span><span style="color:'+RARITY_COLORS[pet.weapon.rarity]+'">'+pet.weapon.power+' ATK</span></div><div style="margin-top:.3rem;font-size:.85rem;font-weight:700">New item: '+diffStr+' ATK</div>';
+cmp.style.display="block";
+}else{
+cmp.innerHTML='<div style="color:var(--muted);font-size:.8rem">No weapon equipped \u2014 this will be your first!</div>';
+cmp.style.display="block";
+}
 ol.classList.add("show");
 save();updateUI();updateLoot();
 if(typeof gtag!=="undefined")gtag("event","loot_opened",{tier:tier.id,rarity:rarity,item:item.n,game:pet.game});
@@ -375,7 +389,7 @@ toast("Item discarded");
 // ── Battle System ──────────────────────────────────────────
 function generateOpponents(){
 _opponents=[];var g=GAMES[pet.game];
-for(var i=0;i<3;i++){
+for(var i=0;i<10;i++){
 var lvl=Math.max(1,pet.level+Math.floor(Math.random()*7)-3);
 var ch=g.chars[Math.floor(Math.random()*g.chars.length)];
 var st=1+Math.floor(lvl*0.8+Math.random()*3);
@@ -459,13 +473,9 @@ function endBattle(won,opp,ol){
 pet.bat_today++;
 if(won){
 pet.wins=(pet.wins||0)+1;
-var xpR=10+opp.level*2,goldR=1+Math.floor(opp.level/3);
-pet.xp+=xpR;pet.gold+=goldR;
-var oldLv=pet.level;pet.level=levelFromXp(pet.xp);
 ol.querySelector("#ba-result").textContent="VICTORY!";
 ol.querySelector("#ba-result").className="ba-result win";
-ol.querySelector("#ba-rewards").textContent="+"+xpR+" XP, +"+goldR+" gold";
-if(pet.level>oldLv)setTimeout(function(){showLevelUp(pet.level,getRarity(oldLv),getRarity(pet.level));},500);
+ol.querySelector("#ba-rewards").textContent=pet.wins+" win"+(pet.wins===1?"":"s")+" total";
 }else{
 pet.losses=(pet.losses||0)+1;
 ol.querySelector("#ba-result").textContent="DEFEATED";
@@ -597,7 +607,7 @@ show("screen-hatch");
 if(typeof gtag!=="undefined")gtag("event","pet_adopt_start",{game:game});
 setTimeout(function(){document.getElementById("hatch-egg").style.animation="none";document.getElementById("hatch-egg").textContent="\u2728";document.getElementById("hatch-text").textContent="Here they come...";},2000);
 setTimeout(function(){
-pet={game:game,emoji:pick[0],name:pick[1],level:1,xp:0,hunger:50,energy:100,happiness:70,
+pet={game:game,emoji:pick[0],name:pick[1],level:12,xp:0,hunger:50,energy:100,happiness:70,
 str:1,def:1,hp:10,gold:1,weapon:null,wins:0,losses:0,bat_today:0,bat_date:"",
 last_feed:0,last_train:0,last_rest:0,last_job:0,last_train_stat:"str",
 created:Date.now(),lastVisit:Date.now()};
