@@ -576,7 +576,7 @@ _sbSession=res.data.session;
 if(!_sbSession&&res.data.user)_sbSession={user:res.data.user};
 if(!_sbSession){showAuthError("reg-error","Check your email to confirm, then log in.");return;}
 sb.from("profiles").insert({id:_sbSession.user.id,display_name:name,age:age}).then(function(){});
-cloudSync();window._closeAuth();showAccountBar();chatRenderInput();
+cloudSync();window._closeAuth();showAccountBar();
 toast("Account created! "+pet.name+" is saved \u2601\uFE0F");
 if(typeof gtag!=="undefined")gtag("event","user_registered",{game:pet?pet.game:"none"});
 });
@@ -594,7 +594,7 @@ if(res.error){showAuthError("login-error",res.error.message);return;}
 _sbSession=res.data.session;
 loadCloudPet().then(function(loaded){
 if(loaded){var r=calcOffline();show("screen-pet");updateUI();updateCD();if(r)showAway(r);}
-window._closeAuth();showAccountBar();chatRenderInput();toast("Welcome back!");
+window._closeAuth();showAccountBar();toast("Welcome back!");
 if(typeof gtag!=="undefined")gtag("event","user_login",{game:pet?pet.game:"none"});
 });
 });
@@ -638,20 +638,7 @@ localStorage.removeItem(KEY);pet=null;show("screen-pick");
 };
 
 // ── Chat System ─────────────────────────────────────────────
-var _chatOpen=false,_chatPoll=null,_chatLastId=0,_chatLoaded=false;
-
-function chatRenderInput(){
-var area=document.getElementById("chat-input-area");if(!area)return;
-if(_sbSession&&pet){
-area.innerHTML='<div class="chat-input-row"><input type="text" id="chat-input" placeholder="Say something..." maxlength="150" autocomplete="off"><button class="chat-send" id="chat-send-btn" onclick="window._sendChat()">Send</button></div>';
-var inp=document.getElementById("chat-input");
-if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
-}else if(pet&&!_sbSession){
-area.innerHTML='<div class="chat-cta"><a onclick="window._openAuth(\'register\')">Create an account</a> to chat with other players!</div>';
-}else{
-area.innerHTML='<div class="chat-cta">Adopt a pet to join the chat!</div>';
-}
-}
+var _chatOpen=false,_chatPoll=null,_chatLoaded=false;
 
 function chatFormatTime(iso){
 var d=new Date(iso),now=new Date(),diff=now-d;
@@ -673,49 +660,32 @@ cont.appendChild(div);
 });
 if(wasAtBottom||!_chatLoaded)cont.scrollTop=cont.scrollHeight;
 _chatLoaded=true;
-if(msgs.length>0)_chatLastId=msgs[msgs.length-1].id;
 }
 
 function chatLoad(){
 if(!sb)return;
 sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
-if(res.data)chatRenderMessages(res.data);
+if(res.data){chatRenderMessages(res.data);var c=document.getElementById("chat-count");if(c)c.textContent=res.data.length>0?res.data.length+" msgs":"";}
 });
 }
 
 function chatPollNew(){
 if(!sb||!_chatOpen)return;
-sb.from("chat_messages").select("*").order("created_at",{ascending:true}).limit(50).then(function(res){
-if(res.data){
-chatRenderMessages(res.data);
-if(res.data.length>0&&res.data[res.data.length-1].id>_chatLastId){
-var dot=document.getElementById("chat-dot");
-if(dot&&!_chatOpen)dot.classList.add("pulse");
-}
-}
-});
+chatLoad();
 }
 
-window._toggleChat=function(){
-_chatOpen=!_chatOpen;
-var box=document.getElementById("chat-box");
-var tog=document.getElementById("chat-toggle");
-if(_chatOpen){
-box.classList.add("open");
-tog.style.display="none";
-chatRenderInput();
+window._expandChat=function(){
+if(_chatOpen)return;
+_chatOpen=true;
+var body=document.getElementById("chat-body");if(body)body.classList.add("open");
 chatLoad();
 if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);
-document.getElementById("chat-dot").classList.remove("pulse");
-var inp=document.getElementById("chat-input");if(inp)inp.focus();
-}else{
-box.classList.remove("open");
-tog.style.display="flex";
-}
+var inp=document.getElementById("chat-input");
+if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
 };
 
 window._sendChat=function(){
-if(!sb||!_sbSession||!pet)return;
+if(!sb||!pet)return;
 var inp=document.getElementById("chat-input");if(!inp)return;
 var msg=inp.value.trim();if(!msg)return;
 if(msg.length>150)msg=msg.slice(0,150);
@@ -723,7 +693,6 @@ var btn=document.getElementById("chat-send-btn");
 if(btn)btn.disabled=true;
 inp.value="";
 sb.from("chat_messages").insert({
-user_id:_sbSession.user.id,
 pet_emoji:pet.emoji,
 pet_name:pet.name,
 message:msg
@@ -736,16 +705,8 @@ if(typeof gtag!=="undefined")gtag("event","chat_message",{game:pet.game});
 };
 
 function chatInit(){
-var tog=document.getElementById("chat-toggle");
-if(tog&&pet)tog.classList.add("visible");
-if(sb&&pet){
-sb.from("chat_messages").select("id",{count:"exact",head:true}).then(function(res){
-if(res.count&&res.count>0){
-var dot=document.getElementById("chat-dot");
-if(dot)dot.classList.add("pulse");
-}
-});
-}
+if(!pet)return;
+if(sb)chatLoad();
 }
 
 // ── Init ───────────────────────────────────────────────────

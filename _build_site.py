@@ -1873,38 +1873,28 @@ a{{color:var(--accent);text-decoration:none}}
 .save-banner .sb-dismiss{{background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;white-space:nowrap;font-family:inherit}}.save-banner .sb-dismiss:hover{{color:var(--text)}}
 @media(max-width:500px){{.save-banner{{flex-wrap:wrap}}.save-banner .sb-text{{width:100%}}}}
 
-/* ── Chat Widget ── */
-.chat-wrap{{position:fixed;bottom:0;right:0;left:0;z-index:40;pointer-events:none}}
-.chat-inner{{max-width:440px;margin:0 auto;pointer-events:auto;display:flex;flex-direction:column;align-items:stretch}}
-.chat-toggle{{display:none;align-items:center;gap:.5rem;padding:.55rem 1rem;background:var(--card);border:1px solid var(--border);border-bottom:none;border-radius:14px 14px 0 0;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--muted);font-family:inherit;transition:background .2s;align-self:flex-end;margin-right:1rem}}
-.chat-toggle.visible{{display:flex}}
-.chat-toggle:hover{{background:rgba(124,92,255,.12);color:var(--text)}}
-.chat-toggle .chat-dot{{width:7px;height:7px;border-radius:50%;background:#44cc44;display:none}}
-.chat-toggle .chat-dot.pulse{{display:inline-block;animation:chatPulse 1.5s infinite}}
-@keyframes chatPulse{{0%,100%{{opacity:1}}50%{{opacity:.3}}}}
-.chat-box{{display:none;flex-direction:column;background:var(--card);border:1px solid var(--border);border-bottom:none;border-radius:14px 14px 0 0;overflow:hidden;max-height:55vh}}
-.chat-box.open{{display:flex}}
-.chat-header{{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;border-bottom:1px solid var(--border);background:rgba(124,92,255,.06)}}
-.chat-header span{{font-size:.8rem;font-weight:800;color:var(--text)}}
-.chat-header button{{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;font-family:inherit;padding:0}}
-.chat-header button:hover{{color:var(--text)}}
-.chat-messages{{flex:1;overflow-y:auto;padding:.6rem .8rem;display:flex;flex-direction:column;gap:.4rem;min-height:120px;max-height:35vh}}
-.chat-msg{{display:flex;align-items:flex-start;gap:.45rem;font-size:.78rem;line-height:1.35;animation:chatIn .25s ease}}
+/* ── Chat Section ── */
+.chat-section{{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-top:1.2rem;overflow:hidden}}
+.chat-label{{display:flex;align-items:center;gap:.4rem;padding:.6rem 1rem;font-size:.8rem;font-weight:800;color:var(--text);cursor:pointer;background:rgba(124,92,255,.06);transition:background .2s;user-select:none}}
+.chat-label:hover{{background:rgba(124,92,255,.12)}}
+.chat-count{{font-size:.65rem;font-weight:700;color:var(--accent);margin-left:auto}}
+.chat-body{{max-height:0;overflow:hidden;transition:max-height .35s ease}}
+.chat-body.open{{max-height:400px}}
+.chat-messages{{overflow-y:auto;padding:.5rem .7rem;display:flex;flex-direction:column;gap:.35rem;max-height:220px;min-height:60px}}
+.chat-msg{{display:flex;align-items:flex-start;gap:.4rem;font-size:.76rem;line-height:1.35;animation:chatIn .25s ease}}
 @keyframes chatIn{{0%{{opacity:0;transform:translateY(6px)}}100%{{opacity:1;transform:translateY(0)}}}}
-.chat-msg .cm-avatar{{font-size:1.05rem;flex-shrink:0;margin-top:1px}}
+.chat-msg .cm-avatar{{font-size:1rem;flex-shrink:0;margin-top:1px}}
 .chat-msg .cm-body{{flex:1;min-width:0}}
 .chat-msg .cm-name{{font-weight:800;color:var(--accent);margin-right:.3rem}}
 .chat-msg .cm-text{{color:var(--text);word-break:break-word}}
-.chat-msg .cm-time{{color:var(--muted);font-size:.62rem;margin-left:.3rem;white-space:nowrap;flex-shrink:0;align-self:center}}
-.chat-input-row{{display:flex;gap:.4rem;padding:.5rem .6rem;border-top:1px solid var(--border);background:var(--bg)}}
-.chat-input-row input{{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.45rem .7rem;color:var(--text);font-size:.8rem;font-family:inherit;outline:none}}
+.chat-msg .cm-time{{color:var(--muted);font-size:.6rem;margin-left:.3rem;white-space:nowrap;flex-shrink:0;align-self:center}}
+.chat-input-row{{display:flex;gap:.4rem;padding:.5rem .6rem;border-top:1px solid var(--border)}}
+.chat-input-row input{{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.45rem .7rem;color:var(--text);font-size:.8rem;font-family:inherit;outline:none}}
 .chat-input-row input:focus{{border-color:var(--accent)}}
 .chat-input-row input::placeholder{{color:var(--muted)}}
 .chat-send{{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.45rem .8rem;font-weight:800;font-size:.75rem;cursor:pointer;font-family:inherit;transition:transform .15s}}
 .chat-send:hover{{transform:translateY(-1px)}}.chat-send:disabled{{opacity:.4;cursor:default;transform:none}}
-.chat-cta{{padding:.8rem 1rem;text-align:center;font-size:.78rem;color:var(--muted);border-top:1px solid var(--border)}}
-.chat-cta a{{color:var(--accent);cursor:pointer;font-weight:700}}.chat-cta a:hover{{text-decoration:underline}}
-.chat-empty{{text-align:center;color:var(--muted);font-size:.78rem;padding:2rem .5rem}}
+.chat-empty{{text-align:center;color:var(--muted);font-size:.76rem;padding:1.5rem .5rem}}
 
 /* ── Account Bar ── */
 .account-bar{{display:none;align-items:center;justify-content:center;gap:.6rem;padding:.45rem 1rem;font-size:.72rem;color:var(--muted);background:rgba(124,92,255,.08);border-bottom:1px solid rgba(124,92,255,.15)}}
@@ -2122,30 +2112,21 @@ a{{color:var(--accent);text-decoration:none}}
         </div>
         <div class="opp-list" id="opp-list"></div>
     </div>
+    <!-- Chat Section -->
+    <div class="chat-section" id="chat-section">
+        <div class="chat-label" onclick="window._expandChat()">&#128172; Global Chat <span class="chat-count" id="chat-count"></span></div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-messages" id="chat-messages"><div class="chat-empty">No messages yet. Say hi!</div></div>
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" placeholder="Say something..." maxlength="150" autocomplete="off" onfocus="window._expandChat()">
+                <button class="chat-send" id="chat-send-btn" onclick="window._sendChat()">Send</button>
+            </div>
+        </div>
+    </div>
     <div class="pet-footer">
         <div>Adopted <span id="pet-age"></span> ago</div>
         <a href="/">Home</a> &middot; <a href="/channels/">Channels</a> &middot; <a href="{DISCORD}">Discord</a>
         <br><button class="release-btn" onclick="window._releasePet()">Release this pet</button>
-    </div>
-</div>
-
-<!-- Chat Widget -->
-<div class="chat-wrap" id="chat-wrap">
-    <div class="chat-inner">
-        <button class="chat-toggle" id="chat-toggle" onclick="window._toggleChat()">
-            <span class="chat-dot" id="chat-dot"></span>
-            &#128172; Chat
-        </button>
-        <div class="chat-box" id="chat-box">
-            <div class="chat-header">
-                <span>&#128172; Global Chat</span>
-                <button onclick="window._toggleChat()">&times;</button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="chat-empty">No messages yet. Say hi!</div>
-            </div>
-            <div id="chat-input-area"></div>
-        </div>
     </div>
 </div>
 
