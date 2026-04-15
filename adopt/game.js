@@ -706,7 +706,11 @@ if(typeof gtag!=="undefined")gtag("event","chat_message",{game:pet.game});
 
 function chatInit(){
 if(!pet)return;
-if(sb)chatLoad();
+_chatOpen=true;
+var body=document.getElementById("chat-body");if(body)body.classList.add("open");
+if(sb){chatLoad();if(!_chatPoll)_chatPoll=setInterval(chatPollNew,5000);}
+var inp=document.getElementById("chat-input");
+if(inp)inp.addEventListener("keydown",function(e){if(e.key==="Enter")window._sendChat();});
 }
 
 // ── Init ───────────────────────────────────────────────────
