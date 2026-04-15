@@ -1874,6 +1874,67 @@ a{{color:var(--accent);text-decoration:none}}
 .account-bar{{display:none;align-items:center;justify-content:center;gap:.6rem;padding:.5rem 1rem;font-size:.75rem;color:var(--muted);background:rgba(124,92,255,.06);border-bottom:1px solid rgba(124,92,255,.12)}}
 .account-bar.show{{display:flex}}
 .account-bar b{{color:var(--accent)}}.account-bar button{{background:none;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;text-decoration:underline;font-family:inherit}}
+
+/* ── Tab Navigation ── */
+.tab-nav{{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:3px;margin:0 0 1rem}}
+.tab-btn{{flex:1;background:none;border:none;color:var(--muted);font-size:.68rem;font-weight:700;padding:.55rem .2rem;border-radius:11px;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}}
+.tab-btn.active{{background:var(--accent);color:#fff}}.tab-btn:not(.active):hover{{color:var(--text);background:rgba(124,92,255,.1)}}
+.tab-panel{{display:none}}.tab-panel.active{{display:block}}
+
+/* ── Gold & Weapon ── */
+.gold-bar{{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.5rem;margin:.5rem 0;background:rgba(255,204,0,.06);border:1px solid rgba(255,204,0,.15);border-radius:10px;font-size:.82rem;font-weight:700}}
+.gold-amt{{color:#ffcc00}}
+.weapon-slot{{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0;display:flex;align-items:center;gap:.6rem;font-size:.82rem}}
+.ws-empty{{color:var(--muted);font-style:italic}}.ws-rarity{{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800;padding:.15rem .5rem;border-radius:20px}}
+
+/* ── Training ── */
+.train-cards{{display:flex;flex-direction:column;gap:.7rem}}
+.train-card{{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;display:flex;align-items:center;gap:.8rem}}
+.tc-icon{{font-size:1.8rem;flex-shrink:0;width:2.5rem;text-align:center}}.tc-info{{flex:1;min-width:0}}.tc-name{{font-weight:800;font-size:.9rem}}.tc-level{{color:var(--muted);font-size:.75rem;margin-top:.1rem}}
+.tc-bar{{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:.4rem}}.tc-fill{{height:100%;border-radius:3px;transition:width .5s}}
+.train-btn{{background:var(--accent);color:#fff;border:none;padding:.5rem 1rem;border-radius:8px;font-weight:700;font-size:.78rem;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0}}
+.train-btn:hover{{transform:translateY(-1px)}}.train-btn:disabled{{opacity:.4;cursor:default;transform:none}}
+.train-cd{{color:var(--muted);font-size:.72rem;flex-shrink:0;text-align:right;min-width:3.5rem}}
+
+/* ── Jobs ── */
+.jobs-list{{display:flex;flex-direction:column;gap:.6rem}}
+.job-card{{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}}
+.job-card:not(.locked):not(.on-cd):hover{{border-color:var(--accent);transform:translateY(-1px)}}
+.job-card.locked{{opacity:.35;cursor:default}}.job-card.on-cd{{opacity:.5;cursor:default}}
+.job-top{{display:flex;align-items:center;gap:.7rem}}.job-emoji{{font-size:1.5rem;flex-shrink:0}}.job-info{{flex:1}}.job-name{{font-weight:700;font-size:.88rem}}.job-desc{{color:var(--muted);font-size:.72rem;margin-top:.15rem}}
+.job-reward{{text-align:right;flex-shrink:0}}.job-gold{{color:#ffcc00;font-weight:800;font-size:.9rem}}.job-chance{{color:var(--muted);font-size:.68rem}}
+.job-anim{{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:var(--card);flex-direction:column;gap:.5rem;z-index:2}}.job-anim.show{{display:flex}}
+.ja-emoji{{font-size:2.5rem;animation:jobBounce .5s ease infinite alternate}}.ja-text{{font-weight:700;font-size:.95rem}}
+.job-anim.fail .ja-emoji{{animation:jobShake .3s ease infinite}}
+@keyframes jobBounce{{0%{{transform:translateY(0)}}100%{{transform:translateY(-10px)}}}}
+@keyframes jobShake{{0%,100%{{transform:translateX(0)}}25%{{transform:translateX(-5px)}}75%{{transform:translateX(5px)}}}}
+
+/* ── Loot Boxes ── */
+.loot-grid{{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}}
+.loot-box{{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1rem;text-align:center;cursor:pointer;transition:all .25s}}.loot-box:not(.locked):hover{{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.3)}}
+.loot-box.locked{{opacity:.3;cursor:default}}.lb-emoji{{font-size:2rem;margin-bottom:.3rem}}.lb-name{{font-weight:800;font-size:.82rem}}.lb-cost{{color:#ffcc00;font-size:.78rem;font-weight:700;margin-top:.2rem}}.lb-hint{{color:var(--muted);font-size:.65rem;margin-top:.3rem}}
+.lb-basic{{border-color:rgba(128,128,128,.3)}}.lb-silver{{border-color:rgba(192,192,192,.3)}}.lb-gold{{border-color:rgba(255,204,0,.3)}}.lb-diamond{{border-color:rgba(0,212,255,.3)}}
+.loot-overlay{{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:250;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:1rem}}.loot-overlay.show{{display:flex}}
+.loot-reveal{{text-align:center;animation:lootPop .4s cubic-bezier(.34,1.56,.64,1);border:2px solid transparent;border-radius:16px;padding:2rem}}.lr-emoji{{font-size:4rem}}.lr-name{{font-size:1.3rem;font-weight:900;margin-top:.5rem}}.lr-rarity{{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;font-weight:800;margin-top:.3rem}}.lr-power{{font-size:1rem;margin-top:.5rem;color:var(--muted)}}
+.loot-btns{{display:flex;gap:.8rem;margin-top:1rem}}.loot-btns button{{padding:.7rem 1.5rem;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;border:none;font-family:inherit;transition:transform .15s}}.loot-btns button:hover{{transform:translateY(-2px)}}
+.equip-btn{{background:#44cc44;color:#0a2a0a}}.discard-btn{{background:rgba(255,255,255,.1);color:var(--muted);border:1px solid var(--border) !important}}
+@keyframes lootPop{{0%{{transform:scale(0)rotate(-10deg)}}100%{{transform:scale(1)rotate(0)}}}}
+
+/* ── Battle ── */
+.battle-header{{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;font-size:.82rem}}.bh-left{{color:var(--muted)}}.bh-record span{{font-weight:700}}
+.opp-list{{display:flex;flex-direction:column;gap:.6rem}}
+.opp-card{{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .2s}}.opp-card:hover{{border-color:#ff6b6b;transform:translateY(-1px)}}
+.opp-emoji{{font-size:1.8rem;flex-shrink:0}}.opp-info{{flex:1}}.opp-name{{font-weight:700;font-size:.88rem}}.opp-level{{color:var(--muted);font-size:.75rem;margin-top:.1rem}}.opp-hp{{text-align:right;flex-shrink:0;font-size:.8rem;color:#ff6b6b;font-weight:700}}
+.no-battles{{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}}
+.battle-overlay{{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:260;display:none;align-items:center;justify-content:center;flex-direction:column;padding:1rem}}.battle-overlay.show{{display:flex}}
+.battle-arena{{width:100%;max-width:400px;text-align:center}}.ba-vs{{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}}
+.ba-fighter{{text-align:center;flex:1}}.bf-emoji{{font-size:3rem;display:inline-block}}.bf-name{{font-size:.75rem;font-weight:700;margin-top:.3rem}}
+.bf-hp-bar{{width:80%;margin:.3rem auto;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}}.bf-hp-fill{{height:100%;background:#44cc44;border-radius:4px;transition:width .3s}}.bf-hp-text{{font-size:.7rem;color:var(--muted)}}
+.ba-vs-text{{font-size:1.5rem;font-weight:900;color:#ff6b6b;flex-shrink:0;padding:0 .5rem}}
+.ba-log{{max-height:120px;overflow-y:auto;margin:.8rem 0;padding:.5rem;background:rgba(255,255,255,.03);border-radius:8px;font-size:.72rem;color:var(--muted);text-align:left}}.ba-log div{{padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.03)}}.dmg-you{{color:#ff6b6b}}.dmg-them{{color:#44cc44}}
+.ba-result{{font-size:1.8rem;font-weight:900;margin:.5rem 0;animation:lvlPulse .5s ease}}.ba-result.win{{color:#44cc44}}.ba-result.lose{{color:#ff6b6b}}
+.ba-rewards{{color:var(--muted);font-size:.82rem;margin:.3rem 0}}.ba-close{{background:var(--accent);color:#fff;border:none;padding:.7rem 2rem;border-radius:10px;font-weight:700;cursor:pointer;margin-top:.8rem;font-family:inherit}}
+.bf-hit{{animation:bfHit .3s ease}}@keyframes bfHit{{0%{{transform:translateX(0)}}25%{{transform:translateX(-8px)}}75%{{transform:translateX(8px)}}100%{{transform:translateX(0)}}}}
 </style>
 </head>
 <body>
@@ -1973,31 +2034,57 @@ a{{color:var(--accent);text-decoration:none}}
         <div class="rarity-badge" id="pet-rarity"></div>
         <div class="mood-text" id="pet-mood"></div>
     </div>
+    <div class="gold-bar">&#128176; <span class="gold-amt" id="gold-amt">0</span> Gold <span style="margin:0 .4rem;opacity:.3">|</span> <span id="weapon-display">&#9876;&#65039; No weapon</span></div>
     <div class="xp-section">
         <div class="xp-label"><span id="xp-text">XP</span><span id="xp-next">Next level</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
     </div>
-    <div class="stats">
-        <div class="stat-row"><span class="stat-icon">&#127830;</span><span class="stat-name">Hunger</span><div class="stat-bar"><div class="stat-fill" id="bar-hunger"></div></div><span class="stat-val" id="val-hunger"></span></div>
-        <div class="stat-row"><span class="stat-icon">&#9889;</span><span class="stat-name">Energy</span><div class="stat-bar"><div class="stat-fill" id="bar-energy"></div></div><span class="stat-val" id="val-energy"></span></div>
-        <div class="stat-row"><span class="stat-icon">&#128150;</span><span class="stat-name">Happy</span><div class="stat-bar"><div class="stat-fill" id="bar-happy"></div></div><span class="stat-val" id="val-happy"></span></div>
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="pet" onclick="window._switchTab('pet')">&#128062; Pet</button>
+        <button class="tab-btn" data-tab="train" onclick="window._switchTab('train')">&#128170; Train</button>
+        <button class="tab-btn" data-tab="jobs" onclick="window._switchTab('jobs')">&#128188; Jobs</button>
+        <button class="tab-btn" data-tab="loot" onclick="window._switchTab('loot')">&#128230; Loot</button>
+        <button class="tab-btn" data-tab="battle" onclick="window._switchTab('battle')">&#127942; Battle</button>
     </div>
-    <div class="actions">
-        <button class="action-btn" id="btn-feed" onclick="window._doAction('feed')">
-            <span class="act-emoji">&#127830;</span>
-            <div class="act-info"><div class="act-name">Feed</div><div class="act-desc">Restores hunger &amp; a bit of happiness</div></div>
-            <span class="act-status" id="cd-feed">Ready!</span>
-        </button>
-        <button class="action-btn" id="btn-train" onclick="window._doAction('train')">
-            <span class="act-emoji">&#9876;&#65039;</span>
-            <div class="act-info"><div class="act-name">Train</div><div class="act-desc">Earn XP, costs energy &amp; hunger</div></div>
-            <span class="act-status" id="cd-train">Ready!</span>
-        </button>
-        <button class="action-btn" id="btn-rest" onclick="window._doAction('rest')">
-            <span class="act-emoji">&#128564;</span>
-            <div class="act-info"><div class="act-name">Rest</div><div class="act-desc">Restores energy &amp; happiness</div></div>
-            <span class="act-status" id="cd-rest">Ready!</span>
-        </button>
+    <!-- Pet Tab -->
+    <div class="tab-panel active" id="panel-pet">
+        <div class="stats">
+            <div class="stat-row"><span class="stat-icon">&#127830;</span><span class="stat-name">Hunger</span><div class="stat-bar"><div class="stat-fill" id="bar-hunger"></div></div><span class="stat-val" id="val-hunger"></span></div>
+            <div class="stat-row"><span class="stat-icon">&#9889;</span><span class="stat-name">Energy</span><div class="stat-bar"><div class="stat-fill" id="bar-energy"></div></div><span class="stat-val" id="val-energy"></span></div>
+            <div class="stat-row"><span class="stat-icon">&#128150;</span><span class="stat-name">Happy</span><div class="stat-bar"><div class="stat-fill" id="bar-happy"></div></div><span class="stat-val" id="val-happy"></span></div>
+        </div>
+        <div class="actions">
+            <button class="action-btn" id="btn-feed" onclick="window._doAction('feed')">
+                <span class="act-emoji">&#127830;</span>
+                <div class="act-info"><div class="act-name">Feed</div><div class="act-desc">Restores hunger &amp; happiness</div></div>
+                <span class="act-status" id="cd-feed">Ready!</span>
+            </button>
+            <button class="action-btn" id="btn-rest" onclick="window._doAction('rest')">
+                <span class="act-emoji">&#128564;</span>
+                <div class="act-info"><div class="act-name">Rest</div><div class="act-desc">Restores energy &amp; happiness</div></div>
+                <span class="act-status" id="cd-rest">Ready!</span>
+            </button>
+        </div>
+    </div>
+    <!-- Train Tab -->
+    <div class="tab-panel" id="panel-train"><div class="train-cards" id="train-cards"></div></div>
+    <!-- Jobs Tab -->
+    <div class="tab-panel" id="panel-jobs">
+        <div class="jobs-list" id="jobs-list"></div>
+        <div style="text-align:center;margin-top:.5rem"><span class="train-cd" id="job-cd-global"></span></div>
+    </div>
+    <!-- Loot Tab -->
+    <div class="tab-panel" id="panel-loot">
+        <div class="weapon-slot" id="current-weapon"><span class="ws-empty">No weapon equipped &mdash; open a loot box!</span></div>
+        <div class="loot-grid" id="loot-grid"></div>
+    </div>
+    <!-- Battle Tab -->
+    <div class="tab-panel" id="panel-battle">
+        <div class="battle-header" id="battle-header">
+            <span class="bh-left">Battles: 10/10 remaining</span>
+            <span class="bh-record"><span class="bh-wins" style="color:#44cc44">0</span>W / <span class="bh-losses" style="color:#ff6b6b">0</span>L</span>
+        </div>
+        <div class="opp-list" id="opp-list"></div>
     </div>
     <div class="pet-footer">
         <div>Adopted <span id="pet-age"></span> ago</div>
@@ -2051,6 +2138,30 @@ a{{color:var(--accent);text-decoration:none}}
 </div>
 <div class="lvl-confetti" id="lvl-confetti"></div>
 
+<!-- Loot Reveal Overlay -->
+<div class="loot-overlay" id="loot-overlay">
+    <div class="loot-reveal"><div class="lr-emoji"></div><div class="lr-name"></div><div class="lr-rarity"></div><div class="lr-power"></div></div>
+    <div class="loot-btns">
+        <button class="equip-btn" onclick="window._equipLoot()">&#9876;&#65039; Equip</button>
+        <button class="discard-btn" onclick="window._discardLoot()">&#128465;&#65039; Discard</button>
+    </div>
+</div>
+
+<!-- Battle Overlay -->
+<div class="battle-overlay" id="battle-overlay">
+    <div class="battle-arena">
+        <div class="ba-vs">
+            <div class="ba-fighter bf-you"><div class="bf-emoji"></div><div class="bf-name"></div><div class="bf-hp-bar"><div class="bf-hp-fill" style="width:100%"></div></div><div class="bf-hp-text"></div></div>
+            <div class="ba-vs-text">VS</div>
+            <div class="ba-fighter bf-opp"><div class="bf-emoji"></div><div class="bf-name"></div><div class="bf-hp-bar"><div class="bf-hp-fill" style="width:100%"></div></div><div class="bf-hp-text"></div></div>
+        </div>
+        <div id="ba-log" class="ba-log"></div>
+        <div id="ba-result" class="ba-result" style="display:none"></div>
+        <div id="ba-rewards" class="ba-rewards"></div>
+        <button id="ba-close" class="ba-close" style="display:none" onclick="window._closeBattle()">Continue</button>
+    </div>
+</div>
+
 <script>
 var GAMES={{
 fortnite:{{color:'#00d4ff',chars:[
@@ -2075,287 +2186,10 @@ roblox:{{color:'#ffcc00',chars:[
 ["\U0001f984","Pet Sim Hatchling"],["\U0001f451","Royal Star"],["\U0001f3ae","Tower Titan Jr."],["\U0001f47d","Alien Intern"]
 ]}}
 }};
-
-var XP_TABLE=[0,50,130,240,380,550,750,1000,1300,1650,2050,2500,3050,3700,4450,5300,6300,7450,8800,10400,12300];
-var RARITY_LEVELS=[[1,'common','Common','#888'],[5,'uncommon','Uncommon','#44cc44'],[10,'rare','Rare','#4488ff'],[15,'epic','Epic','#aa44ff'],[20,'legendary','Legendary','#ffaa00']];
-var CD_FEED=15*60000,CD_TRAIN=30*60000,CD_REST=45*60000;
-var FEED_MSGS=["is feeling full!","loved that snack!","gobbled it up!","wants more already!"];
-var TRAIN_MSGS=["pushed through the training!","is getting stronger!","broke a sweat!","leveled their skills!"];
-var REST_MSGS=["is recharging nicely.","needed that nap.","feels refreshed!","is full of energy now!"];
-var KEY='bds_pet_v1',pet=null;
-
-function load(){{try{{pet=JSON.parse(localStorage.getItem(KEY));}}catch(e){{pet=null;}}}}
-function save(){{localStorage.setItem(KEY,JSON.stringify(pet));}}
-function show(id){{document.querySelectorAll('.screen').forEach(function(s){{s.classList.remove('active');}});document.getElementById(id).classList.add('active');}}
-function getRarity(lv){{var r=RARITY_LEVELS[0];for(var i=0;i<RARITY_LEVELS.length;i++)if(lv>=RARITY_LEVELS[i][0])r=RARITY_LEVELS[i];return r;}}
-function xpForNext(lv){{return lv>=XP_TABLE.length-1?99999:XP_TABLE[lv]-XP_TABLE[lv-1];}}
-function xpInLevel(lv,xp){{return lv<=1?xp:xp-XP_TABLE[lv-1];}}
-function levelFromXp(xp){{for(var i=1;i<XP_TABLE.length;i++)if(xp<XP_TABLE[i])return i;return XP_TABLE.length;}}
-function getMood(){{
-    if(pet.hunger<15)return['\U0001f629','Starving!','#ff4444'];
-    if(pet.happiness<20)return['\U0001f622','Sad...','#ff6b6b'];
-    if(pet.energy<15)return['\U0001f634','Exhausted','#8888ff'];
-    if(pet.hunger<35)return['\U0001f615','Hungry','#ffaa44'];
-    if(pet.happiness>80&&pet.hunger>60&&pet.energy>60)return['\U0001f929','Ecstatic!','#ffcc00'];
-    if(pet.happiness>60)return['\U0001f60a','Happy','#66ee66'];
-    return['\U0001f610','Okay','#7a788e'];
-}}
-
-function calcOffline(){{
-    if(!pet||!pet.lastVisit)return null;
-    var now=Date.now(),hrs=(now-pet.lastVisit)/3600000;
-    if(hrs<0.01)return null;
-    var r={{hours:hrs,oH:pet.hunger,oE:pet.energy,oP:pet.happiness}};
-    pet.hunger=Math.max(0,Math.round(pet.hunger-hrs*8));
-    pet.energy=Math.min(100,Math.round(pet.energy+hrs*4));
-    pet.happiness=Math.max(0,Math.round(pet.happiness-hrs*(pet.hunger<25?5:1.5)));
-    r.nH=pet.hunger;r.nE=pet.energy;r.nP=pet.happiness;
-    pet.lastVisit=now;save();return r;
-}}
-
-function showAway(r){{
-    if(!r||r.hours<0.05){{document.getElementById('away-box').innerHTML='';return;}}
-    var h=r.hours,ts=h>=1?Math.floor(h)+'h '+Math.round((h%1)*60)+'m':Math.round(h*60)+'m';
-    function d(o,n){{var v=Math.round(n-o);return v>=0?'+'+v:''+v;}}
-    function c(o,n){{return n>=o?'pos':'neg';}}
-    document.getElementById('away-box').innerHTML='<div class="away-report"><h3>While you were away ('+ts+')</h3>'+
-        '<div class="away-line"><span>\U0001f356 Hunger</span><span class="change '+c(r.oH,r.nH)+'">'+d(r.oH,r.nH)+'% \u2192 '+r.nH+'%</span></div>'+
-        '<div class="away-line"><span>\u26a1 Energy</span><span class="change '+c(r.oE,r.nE)+'">'+d(r.oE,r.nE)+'% \u2192 '+r.nE+'%</span></div>'+
-        '<div class="away-line"><span>\U0001f496 Happy</span><span class="change '+c(r.oP,r.nP)+'">'+d(r.oP,r.nP)+'% \u2192 '+r.nP+'%</span></div></div>';
-    setTimeout(function(){{document.getElementById('away-box').innerHTML='';}},8000);
-}}
-
-function updateUI(){{
-    if(!pet)return;
-    document.getElementById('pet-emoji').textContent=pet.emoji;
-    document.getElementById('pet-name').textContent=pet.name;
-    document.getElementById('pet-level').textContent='Level '+pet.level;
-    var rar=getRarity(pet.level);
-    document.getElementById('pet-rarity').textContent=rar[2];
-    document.getElementById('pet-rarity').style.cssText='background:'+rar[3]+'22;color:'+rar[3];
-    document.getElementById('pet-card').className='pet-card rarity-'+rar[1];
-    var mood=getMood();
-    document.getElementById('pet-mood').textContent=mood[0]+' '+mood[1];
-    document.getElementById('pet-mood').style.color=mood[2];
-    var needed=xpForNext(pet.level),inLvl=xpInLevel(pet.level,pet.xp),pct=Math.min(100,needed>0?(inLvl/needed)*100:100);
-    document.getElementById('xp-fill').style.width=pct+'%';
-    document.getElementById('xp-text').textContent=inLvl+'/'+needed+' XP';
-    document.getElementById('xp-next').textContent='Level '+(pet.level+1);
-    function sb(id,val,vid){{var el=document.getElementById(id);el.style.width=val+'%';el.style.background=val>60?'#44cc44':val>30?'#ddaa00':'#ff4444';document.getElementById(vid).textContent=Math.round(val)+'%';}}
-    sb('bar-hunger',pet.hunger,'val-hunger');sb('bar-energy',pet.energy,'val-energy');sb('bar-happy',pet.happiness,'val-happy');
-    var ms=Date.now()-(pet.created||Date.now()),dd=Math.floor(ms/86400000),hh=Math.floor((ms%86400000)/3600000);
-    document.getElementById('pet-age').textContent=dd>0?dd+'d '+hh+'h':hh>0?hh+'h':'just now';
-}}
-
-function updateCD(){{
-    if(!pet)return;var now=Date.now();
-    function sc(a,cd,bi,ci){{var rem=Math.max(0,(pet['last_'+a]||0)+cd-now),b=document.getElementById(bi),c=document.getElementById(ci);
-    b.classList.remove('ready','on-cooldown','no-energy');
-    if(rem>0){{b.classList.add('on-cooldown');var m=Math.floor(rem/60000),s=Math.floor((rem%60000)/1000);c.textContent=m+':'+(s<10?'0':'')+s;c.classList.remove('ready-text');}}
-    else if(a==='train'&&pet.energy<20){{b.classList.add('no-energy');c.textContent='Need energy';c.classList.remove('ready-text');}}
-    else{{b.classList.add('ready');c.textContent='Ready!';c.classList.add('ready-text');}}}}
-    sc('feed',CD_FEED,'btn-feed','cd-feed');sc('train',CD_TRAIN,'btn-train','cd-train');sc('rest',CD_REST,'btn-rest','cd-rest');
-}}
-
-function toast(msg){{var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){{t.classList.remove('show');}},2500);}}
-
-function confetti(){{
-    var c=document.getElementById('lvl-confetti');c.innerHTML='';
-    var cols=['#ff5c87','#7c5cff','#00d2b4','#ffcc00','#ff6b6b','#50c8ff','#60dd60','#ffa040','#aa44ff','#ffaa00'];
-    for(var i=0;i<50;i++){{var p=document.createElement('div');p.className='c';p.style.left=Math.random()*100+'%';p.style.top='-10px';p.style.background=cols[i%cols.length];p.style.animationDelay=Math.random()*0.8+'s';p.style.width=(5+Math.random()*8)+'px';p.style.height=p.style.width;c.appendChild(p);}}
-    setTimeout(function(){{c.innerHTML='';}},3000);
-}}
-
-function showLevelUp(lv,oldR,newR){{
-    document.getElementById('lvl-text').textContent='LEVEL '+lv+'!';
-    document.getElementById('lvl-sub').textContent=pet.name+' grew stronger!';
-    document.getElementById('lvl-rarity').innerHTML=oldR[1]!==newR[1]?'Evolved to <span style="color:'+newR[3]+'">'+newR[2]+'</span>!':'';
-    document.getElementById('levelup').classList.add('show');confetti();
-    if(typeof gtag!=='undefined')gtag('event','pet_levelup',{{level:lv,rarity:newR[1],game:pet.game}});
-    setTimeout(function(){{document.getElementById('levelup').classList.remove('show');}},2800);
-}}
-
-window._doAction=function(action){{
-    if(!pet)return;var now=Date.now(),cd={{feed:CD_FEED,train:CD_TRAIN,rest:CD_REST}};
-    if(now-(pet['last_'+action]||0)<cd[action])return;
-    if(action==='train'&&pet.energy<20){{toast('Not enough energy! Rest first.');return;}}
-    var oldLv=pet.level,oldR=getRarity(oldLv),msgs,res='';
-    if(action==='feed'){{pet.hunger=Math.min(100,pet.hunger+25);pet.happiness=Math.min(100,pet.happiness+5);msgs=FEED_MSGS;}}
-    else if(action==='train'){{var xp=15+Math.floor(Math.random()*11);pet.xp+=xp;pet.energy=Math.max(0,pet.energy-20);pet.hunger=Math.max(0,pet.hunger-10);pet.level=levelFromXp(pet.xp);msgs=TRAIN_MSGS;res='+'+xp+' XP! ';}}
-    else{{pet.energy=Math.min(100,pet.energy+40);pet.happiness=Math.min(100,pet.happiness+10);msgs=REST_MSGS;}}
-    pet['last_'+action]=now;pet.lastVisit=now;save();updateUI();updateCD();
-    toast(res+pet.name+' '+msgs[Math.floor(Math.random()*msgs.length)]);
-    if(typeof gtag!=='undefined')gtag('event','pet_action',{{action:action,game:pet.game,level:pet.level}});
-    if(pet.level>oldLv)setTimeout(function(){{showLevelUp(pet.level,oldR,getRarity(pet.level));}},400);
-    cloudSync();
-    checkSavePrompt();
-}};
-
-window._startAdopt=function(game){{
-    var g=GAMES[game],pick=g.chars[Math.floor(Math.random()*g.chars.length)];
-    show('screen-hatch');
-    if(typeof gtag!=='undefined')gtag('event','pet_adopt_start',{{game:game}});
-    setTimeout(function(){{document.getElementById('hatch-egg').style.animation='none';document.getElementById('hatch-egg').textContent='\u2728';document.getElementById('hatch-text').textContent='Here they come...';}},2000);
-    setTimeout(function(){{
-        pet={{game:game,emoji:pick[0],name:pick[1],level:1,xp:0,hunger:50,energy:100,happiness:70,created:Date.now(),lastVisit:Date.now(),last_feed:0,last_train:0,last_rest:0}};
-        save();show('screen-pet');updateUI();updateCD();toast('Welcome, '+pet.name+'!');confetti();
-        if(typeof gtag!=='undefined')gtag('event','pet_adopted',{{game:game,character:pick[1]}});
-    }},3500);
-}};
-
-window._releasePet=function(){{
-    if(!confirm('Release '+pet.name+'? This cannot be undone.'))return;
-    if(_sbSession){{sb.from('pets').delete().eq('user_id',_sbSession.user.id).then(function(){{}});}}
-    localStorage.removeItem(KEY);pet=null;show('screen-pick');
-}};
-
-/* ── Supabase Auth + Cloud Sync ── */
 var SB_URL='https://orupowewgrldfdsqwdwr.supabase.co';
 var SB_KEY='sb_publishable_gVsDPUh9mii_DSShVa8SUQ_VGxOQQhy';
-var sb=null,_sbSession=null;
-try{{sb=window.supabase.createClient(SB_URL,SB_KEY);}}catch(e){{console.warn('Supabase unavailable, offline mode');}}
-
-function cloudSync(){{
-    if(!sb||!_sbSession||!pet)return;
-    sb.from('pets').upsert({{
-        user_id:_sbSession.user.id,game:pet.game,emoji:pet.emoji,name:pet.name,
-        level:pet.level,xp:pet.xp,hunger:Math.round(pet.hunger),energy:Math.round(pet.energy),
-        happiness:Math.round(pet.happiness),last_feed:pet.last_feed||0,last_train:pet.last_train||0,
-        last_rest:pet.last_rest||0,last_visit:new Date().toISOString()
-    }},{{onConflict:'user_id'}}).then(function(){{}});
-}}
-
-function loadCloudPet(){{
-    if(!sb||!_sbSession)return Promise.resolve(false);
-    return sb.from('pets').select('*').eq('user_id',_sbSession.user.id).maybeSingle().then(function(res){{
-        if(!res.data)return false;
-        var d=res.data;
-        pet={{game:d.game,emoji:d.emoji,name:d.name,level:d.level,xp:d.xp,hunger:d.hunger,energy:d.energy,
-              happiness:d.happiness,last_feed:d.last_feed,last_train:d.last_train,last_rest:d.last_rest,
-              created:new Date(d.created_at).getTime(),lastVisit:new Date(d.last_visit).getTime()}};
-        save();return true;
-    }}).catch(function(){{return false;}});
-}}
-
-function showAccountBar(){{
-    if(!_sbSession)return;
-    sb.from('profiles').select('display_name').eq('id',_sbSession.user.id).maybeSingle().then(function(res){{
-        var name=(res.data&&res.data.display_name)||_sbSession.user.email;
-        document.getElementById('account-name').textContent=name;
-        document.getElementById('account-bar').classList.add('show');
-    }});
-}}
-
-function hideAccountBar(){{document.getElementById('account-bar').classList.remove('show');}}
-
-function checkSavePrompt(){{
-    if(_sbSession||!pet)return;
-    var v=parseInt(localStorage.getItem('bds_visits')||'0');
-    if((pet.level>=3||v>=3)&&!sessionStorage.getItem('save_dismissed')){{
-        document.getElementById('save-pet-name').textContent=pet.name;
-        document.getElementById('save-banner').classList.add('show');
-    }}
-}}
-
-window._dismissSave=function(){{
-    sessionStorage.setItem('save_dismissed','1');
-    document.getElementById('save-banner').classList.remove('show');
-}};
-
-window._openAuth=function(mode){{
-    document.getElementById('save-banner').classList.remove('show');
-    document.getElementById('auth-register').style.display=mode==='register'?'block':'none';
-    document.getElementById('auth-login').style.display=mode==='login'?'block':'none';
-    document.getElementById('reg-error').style.display='none';
-    document.getElementById('login-error').style.display='none';
-    if(mode==='register'&&pet)document.getElementById('auth-reg-sub').textContent='Create a free account so you never lose '+pet.name;
-    document.getElementById('auth-overlay').classList.add('show');
-}};
-
-window._closeAuth=function(){{document.getElementById('auth-overlay').classList.remove('show');}};
-
-function showAuthError(id,msg){{var el=document.getElementById(id);el.textContent=msg;el.style.display='block';}}
-
-window._doRegister=function(){{
-    if(!sb)return;
-    var name=document.getElementById('reg-name').value.trim();
-    var email=document.getElementById('reg-email').value.trim();
-    var pass=document.getElementById('reg-pass').value;
-    var age=parseInt(document.getElementById('reg-age').value)||null;
-    if(!name){{showAuthError('reg-error','Please enter a display name');return;}}
-    if(!email){{showAuthError('reg-error','Please enter your email');return;}}
-    if(pass.length<6){{showAuthError('reg-error','Password must be 6+ characters');return;}}
-    var btn=document.getElementById('reg-btn');btn.disabled=true;btn.textContent='Creating...';
-    sb.auth.signUp({{email:email,password:pass}}).then(function(res){{
-        btn.disabled=false;btn.textContent='Create Account';
-        if(res.error){{showAuthError('reg-error',res.error.message);return;}}
-        _sbSession=res.data.session;
-        if(!_sbSession&&res.data.user){{
-            _sbSession={{user:res.data.user}};
-        }}
-        if(!_sbSession){{showAuthError('reg-error','Check your email to confirm, then log in.');return;}}
-        sb.from('profiles').insert({{id:_sbSession.user.id,display_name:name,age:age}}).then(function(){{}});
-        cloudSync();
-        window._closeAuth();showAccountBar();
-        toast('Account created! '+pet.name+' is saved \\u2601\\uFE0F');
-        if(typeof gtag!=='undefined')gtag('event','user_registered',{{game:pet?pet.game:'none'}});
-    }});
-}};
-
-window._doLogin=function(){{
-    if(!sb)return;
-    var email=document.getElementById('login-email').value.trim();
-    var pass=document.getElementById('login-pass').value;
-    if(!email||!pass){{showAuthError('login-error','Enter email and password');return;}}
-    var btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Logging in...';
-    sb.auth.signInWithPassword({{email:email,password:pass}}).then(function(res){{
-        btn.disabled=false;btn.textContent='Log In';
-        if(res.error){{showAuthError('login-error',res.error.message);return;}}
-        _sbSession=res.data.session;
-        loadCloudPet().then(function(loaded){{
-            if(loaded){{
-                var r=calcOffline();
-                show('screen-pet');updateUI();updateCD();if(r)showAway(r);
-            }}
-            window._closeAuth();showAccountBar();
-            toast('Welcome back!');
-            if(typeof gtag!=='undefined')gtag('event','user_login',{{game:pet?pet.game:'none'}});
-        }});
-    }});
-}};
-
-window._doLogout=function(){{
-    if(!sb)return;
-    sb.auth.signOut().then(function(){{
-        _sbSession=null;hideAccountBar();
-        toast('Logged out');
-    }});
-}};
-
-(function init(){{
-    var visits=parseInt(localStorage.getItem('bds_visits')||'0')+1;
-    localStorage.setItem('bds_visits',String(visits));
-    load();
-
-    function startUI(){{
-        if(pet){{var r=calcOffline();show('screen-pet');updateUI();updateCD();if(r)showAway(r);checkSavePrompt();}}
-        else{{var p=new URLSearchParams(window.location.search),g=p.get('game');if(g&&GAMES[g])window._startAdopt(g);else show('screen-pick');}}
-        setInterval(updateCD,1000);
-    }}
-
-    if(sb){{
-        sb.auth.getSession().then(function(res){{
-            if(res.data&&res.data.session){{
-                _sbSession=res.data.session;
-                loadCloudPet().then(function(loaded){{
-                    if(loaded)load();
-                    startUI();showAccountBar();
-                }});
-            }}else{{startUI();}}
-        }}).catch(function(){{startUI();}});
-    }}else{{startUI();}}
-}})();
 </script>
+<script src="game.js"></script>
 </body>
 </html>'''
 
@@ -2389,6 +2223,13 @@ def main():
         (out_dir / "index.html").write_text(redir_html, encoding="utf-8")
         print(f"  Built {slug}/index.html -> redirect to {dest}")
 
+    # Copy game.js to root
+    game_js_src = Path(__file__).parent / "game.js"
+    if game_js_src.is_file():
+        game_js_content = game_js_src.read_text(encoding="utf-8")
+        (BASE / "game.js").write_text(game_js_content, encoding="utf-8")
+        print(f"  Copied game.js to root")
+
     # Adopt page IS the homepage now
     html = build_adopt_page()
     (BASE / "index.html").write_text(html, encoding="utf-8")
@@ -2406,7 +2247,8 @@ def main():
     adopt_dir.mkdir(exist_ok=True)
     adopt_html = build_adopt_page()
     (adopt_dir / "index.html").write_text(adopt_html, encoding="utf-8")
-    print(f"  Built adopt/index.html (copy)")
+    (adopt_dir / "game.js").write_text(game_js_content, encoding="utf-8")
+    print(f"  Built adopt/index.html + game.js (copy)")
 
     print(f"\nDone! {len(CHANNELS)} channel pages + homepage + channels hub built.")
 
